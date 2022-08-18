@@ -1,0 +1,42 @@
+{
+    "name": "axytos/kaufaufrechnung-magento2",
+    "version": "1.0.0",
+    "description": "axytos Kauf auf Rechnung for Magento",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "require": {
+      "php": ">=7.4.0",
+      "axytos/ecommerce-sdk": "^1.0.0",
+      "magento/module-checkout": "100.4.3",
+      "magento/module-payment": "100.4.3",
+      "magento/module-sales": "100.4.3"
+    },
+    "autoload": {
+      "files": [ "registration.php" ],
+      "psr-4": {
+        "Axytos\\KaufAufRechnung\\": ""
+      }
+    },
+    "scripts": {
+      "phpstan": "/var/www/html/vendor/bin/phpstan analyse -c ./phpstan.neon",
+      "phpunit": "/var/www/html/vendor/bin/phpunit",
+      "phpunit-coverage": "/var/www/html/vendor/bin/phpunit --colors=always --coverage-html coverage ",
+      "magento": "/var/www/html/bin/magento",
+      "magento-clean": [
+        "rm -rf /var/www/html/generated/metadata",
+        "rm -rf /var/www/html/generated/code",
+        "@magento setup:upgrade",
+        "@magento cache:clean",
+        "@magento cache:flush"
+      ],
+      "magento-recompile": [
+        "rm -rf /var/www/html/generated/metadata",
+        "rm -rf /var/www/html/generated/code",
+        "@magento setup:di:compile",
+        "@magento setup:upgrade",
+        "@magento cache:clean",
+        "@magento cache:flush"
+      ]
+    }
+  }
+ 
