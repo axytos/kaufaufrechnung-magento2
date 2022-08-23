@@ -7,9 +7,9 @@
     "require": {
       "php": ">=7.4.0",
       "axytos/ecommerce-sdk": "^1.0.0",
-      "magento/module-checkout": "100.4.3",
-      "magento/module-payment": "100.4.3",
-      "magento/module-sales": "100.4.3"
+      "magento/module-checkout": "^100.4",
+      "magento/module-sales": "^103.0",
+      "magento/module-payment": "^100.4"
     },
     "autoload": {
       "files": [ "registration.php" ],

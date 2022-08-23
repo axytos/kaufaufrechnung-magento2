@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="axytos_kauf_auf_rechnung" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>axytos Kauf auf Rechnung</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="api_host" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API-Host</label>
+                </field>
+                <field id="api_key" translate="label" type="password" sortOrder="12" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API-Key</label>
+                </field>
+                <field id="client_secret" translate="label" type="password" sortOrder="13" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Client Secret</label>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

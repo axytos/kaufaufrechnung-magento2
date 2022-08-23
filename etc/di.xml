@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <!-- ============================================================================================================================= -->
+    <!-- Logging ===================================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+
+    <virtualType name="Axytos_KaufAufRechnung_Logger_Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/axytos_kaufaufrechnung.log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Axytos_KaufAufRechnung_Logger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Axytos_KaufAufRechnung_Logger_Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Axytos\KaufAufRechnung\Logging\LoggerAdapter">
+        <arguments>
+            <argument name="logger" xsi:type="object">Axytos_KaufAufRechnung_Logger</argument>
+        </arguments>
+    </type>
+
+    <preference for="Axytos\ECommerce\Logging\LoggerAdapterInterface" type="Axytos\KaufAufRechnung\Logging\LoggerAdapter"/>
+
+    <!-- ============================================================================================================================= -->
+    <!-- Model/UI ======================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+    
+    <type name="Axytos\KaufAufRechnung\Model\Ui\CreditCheckInfoProvider">
+        <arguments>
+            <argument name="pluginConfigurationValidator" xsi:type="object">Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator</argument>
+            <argument name="checkoutClientInterface" xsi:type="object">Axytos\ECommerce\Clients\Checkout\CheckoutClientInterface</argument>
+        </arguments>
+    </type>
+
+    <!-- ============================================================================================================================= -->
+    <!-- Axytos ECommerce SDK ======================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+    
+    <type name="Axytos\KaufAufRechnung\Client\PaymentMethodConfiguration">
+        <arguments>
+            <argument name="pluginConfig" xsi:type="object">Axytos\KaufAufRechnung\Configuration\PluginConfiguration</argument>
+        </arguments>
+    </type>
+
+    <type name="Axytos\KaufAufRechnung\Client\FallbackModeConfiguration">
+        <arguments>
+            <argument name="pluginConfig" xsi:type="object">Axytos\KaufAufRechnung\Configuration\PluginConfiguration</argument>
+        </arguments>
+    </type>
+
+    <type name="Axytos\KaufAufRechnung\Client\UserAgentInfoProvider">
+        <arguments>
+            <argument name="productMetaDataInterface" xsi:type="object">Magento\Framework\App\ProductMetadataInterface</argument>
+            <argument name="composerPackageInfoProvider" xsi:type="object">Axytos\ECommerce\PackageInfo\ComposerPackageInfoProvider</argument>
+        </arguments>
+    </type>
+
+    <type name="Axytos\ECommerce\AxytosECommerceClient">
+        <arguments>
+            <argument name="paymentMethodConfiguration" xsi:type="object">Axytos\ECommerce\Abstractions\PaymentMethodConfigurationInterface</argument>
+            <argument name="fallbackModeConfiguration" xsi:type="object">Axytos\ECommerce\Abstractions\FallbackModeConfigurationInterface</argument>
+            <argument name="userAgentInfoProvider" xsi:type="object">Axytos\ECommerce\Abstractions\UserAgentInfoProviderInterface</argument>
+            <argument name="logger" xsi:type="object">Axytos\ECommerce\Logging\LoggerAdapterInterface</argument>
+        </arguments>
+    </type>
+
+    <type name="Axytos\KaufAufRechnung\Client\ApiHostProvider">
+        <arguments>
+            <argument name="pluginConfig" xsi:type="object">Axytos\KaufAufRechnung\Configuration\PluginConfiguration</argument>
+        </arguments>
+    </type>
+
+    <type name="Axytos\KaufAufRechnung\Client\ApiKeyProvider">
+        <arguments>
+            <argument name="pluginConfig" xsi:type="object">Axytos\KaufAufRechnung\Configuration\PluginConfiguration</argument>
+        </arguments>
+    </type>
+
+    <type name="Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator">
+        <arguments>
+            <argument name="apiHostProvider" xsi:type="object">Axytos\ECommerce\Abstractions\ApiHostProviderInterface</argument>
+            <argument name="apiKeyProvider" xsi:type="object">Axytos\ECommerce\Abstractions\ApiKeyProviderInterface</argument>
+        </arguments>
+    </type>
+    
+    <preference for="Axytos\ECommerce\Abstractions\PaymentMethodConfigurationInterface" type="Axytos\KaufAufRechnung\Client\PaymentMethodConfiguration" />
+    <preference for="Axytos\ECommerce\Abstractions\FallbackModeConfigurationInterface" type="Axytos\KaufAufRechnung\Client\FallbackModeConfiguration" />
+    <preference for="Axytos\ECommerce\Abstractions\UserAgentInfoProviderInterface" type="Axytos\KaufAufRechnung\Client\UserAgentInfoProvider" />
+    <preference for="Axytos\ECommerce\Abstractions\ApiHostProviderInterface" type="Axytos\KaufAufRechnung\Client\ApiHostProvider" /> 
+    <preference for="Axytos\ECommerce\Abstractions\ApiKeyProviderInterface" type="Axytos\KaufAufRechnung\Client\ApiKeyProvider" /> 
+
+    <preference for="Axytos\ECommerce\Clients\Checkout\CheckoutClientInterface" type="Axytos\ECommerce\AxytosECommerceClient" />
+    <preference for="Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface" type="Axytos\ECommerce\AxytosECommerceClient" />
+    <preference for="Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface" type="Axytos\ECommerce\AxytosECommerceClient" />
+
+    <!-- ============================================================================================================================= -->
+    <!-- Observers =================================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+
+    <type name="Axytos\KaufAufRechnung\Observer\DisablePaymentMethodObserver">
+        <arguments>
+            <argument name="pluginConfigurationValidator" xsi:type="object">Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator</argument>
+        </arguments>
+    </type>
+    
+    <!-- ============================================================================================================================= -->
+    <!-- Interceptors/Plugins ======================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+
+    <type name="Magento\Sales\Model\Service\OrderService">
+        <plugin name="AxytosKaufAufRechnung_OrderServicePlugin" type="Axytos\KaufAufRechnung\Plugin\OrderServicePlugin" />
+    </type>
+
+    <!-- ============================================================================================================================= -->
+    <!-- Web API Controller== ======================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+
+    <preference for="Axytos\KaufAufRechnung\Api\PaymentControllerInterface" type="Axytos\KaufAufRechnung\Api\PaymentController"/>
+
+    <!-- ============================================================================================================================= -->
+    <!-- DataMapping ================================================================================================================= -->
+    <!-- ============================================================================================================================= -->
+
+    <type name="Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\BasketPositionDto"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoCollectionFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\RefundBasketPositionDtoCollectionFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\RefundBasketPositionDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoCollectionFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoCollectionFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoCollectionFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoFactory"></type>
+
+    <!-- ============================================================================================================================= -->
+    <!-- Payment Gateway DI Config =================================================================================================== -->
+    <!-- ============================================================================================================================= -->
+
+    <virtualType name="Axytos_KaufAufRechnung_Payment_Gateway_Facade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\Axytos\KaufAufRechnung\Model\Constants::PAYMENT_METHOD_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">Axytos_KaufAufRechnung_Payment_Gateway_ValueHandlerPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Axytos_KaufAufRechnung_Payment_Gateway_ValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">Axytos_KaufAufRechnung_Payment_Gateway_ConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Axytos_KaufAufRechnung_Payment_Gateway_ConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">Axytos_KaufAufRechnung_Payment_Gateway_Config</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Axytos_KaufAufRechnung_Payment_Gateway_Config" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\Axytos\KaufAufRechnung\Model\Constants::PAYMENT_METHOD_CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- ============================================================================================================================= -->
+    <!-- ============================================================================================================================= -->
+    <!-- ============================================================================================================================= -->
+
+</config>

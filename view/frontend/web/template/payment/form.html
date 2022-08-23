@@ -1,0 +1,57 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label class="label" data-bind="attr: {'for': getCode()}">
+            <span data-bind="text: getTitle()"></span>
+        </label>
+    </div>
+
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="field required">
+            <label class="label">
+                <input type="checkbox" class="checkbox" />
+                <span data-bind="i18n: 'CREDIT_CHECK_AGREEMENT_TEXT'"></span>
+            </label>
+        </div>
+
+        <a style="cursor: pointer" data-trigger="trigger" data-bind="i18n: 'CREDIT_CHECK_AGREEMENT_INFO_LINK_TEXT'"></a>
+        <div data-bind="mageInit: {
+                'Magento_Ui/js/modal/modal':{
+                    'type': 'popup',
+                    'title': 'Bonitätsprüfung Hinweistext',
+                    'trigger': '[data-trigger=trigger]',
+                    'responsive': true,
+                    'buttons': [],
+                    'innerScroll': true
+                }}">
+            <div class="content">
+                <div data-bind="html: getCreditCheckInfoText()"></div>
+            </div>
+        </div>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')}
+                        ">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

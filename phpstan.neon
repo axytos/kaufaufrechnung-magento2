@@ -1,0 +1,31 @@
+includes:
+    - /var/www/html/vendor/phpstan/phpstan-phpunit/extension.neon
+parameters:
+    level: max
+
+    reportUnmatchedIgnoredErrors: false
+    inferPrivatePropertyTypeFromConstructor: false
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false
+    tipsOfTheDay: false
+
+    bootstrapFiles:
+        - /var/www/html/dev/tests/unit/framework/bootstrap.php
+    paths:
+        - .
+    excludePaths:
+        - packages
+        - vendor
+        - coverage
+
+    ignoreErrors:
+        - '#apcu_#'
+        - '#ioncube_#'
+        - '#opcache_#'
+        - '#imagettftext#'
+        - '#class Redis#'
+        - '#Constant STARTTIME#'
+        - '#expects Axytos\\FinancialServicesAPI\\Client\\Model\\(ProofOfInterest|PaymentTypeSecurity|PaymentControlRequestMode)(\|null)?, string given#'
+
+    editorUrl: 'vscode://file/%%file%%:%%line%%'
