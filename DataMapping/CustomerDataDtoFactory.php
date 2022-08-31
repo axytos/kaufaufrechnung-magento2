@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -19,8 +21,7 @@ class CustomerDataDtoFactory
 
     private function getExternalCustomerId(OrderInterface $order): string
     {
-        if (boolval($order->getCustomerIsGuest()) || is_null($order->getCustomerId()))
-        {
+        if (boolval($order->getCustomerIsGuest()) || is_null($order->getCustomerId())) {
             return $order->getCustomerEmail();
         }
 

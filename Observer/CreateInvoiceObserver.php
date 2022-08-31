@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Observer;
 
@@ -20,44 +22,39 @@ class CreateInvoiceObserver implements ObserverInterface
     private PluginConfigurationValidator $pluginConfigurationValidator;
     private ErrorReportingClientInterface $errorReportingClient;
 
-    function __construct(
+    public function __construct(
         InvoiceClientInterface $invoiceClient,
         InvoiceOrderContextFactory $invoiceOrderContextFactory,
         PluginConfigurationValidator $pluginConfigurationValidator,
-        ErrorReportingClientInterface $errorReportingClient)
-    {
+        ErrorReportingClientInterface $errorReportingClient
+    ) {
         $this->invoiceClient = $invoiceClient;
         $this->invoiceOrderContextFactory = $invoiceOrderContextFactory;
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->errorReportingClient = $errorReportingClient;
     }
-    
-    function execute(Observer $observer): void
+
+    public function execute(Observer $observer): void
     {
-        try 
-        {
+        try {
             /** @var Invoice */
             $invoice = $observer->getDataByKey('invoice');
 
             /** @var Order */
             $order = $invoice->getOrder();
 
-            if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE)
-            {
+            if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE) {
                 return;
             }
 
-            if($this->pluginConfigurationValidator->isInvalid())
-            {
+            if ($this->pluginConfigurationValidator->isInvalid()) {
                 return;
             }
 
             $invoiceOrderContext = $this->invoiceOrderContextFactory->getInvoiceOrderContext($order, null, null, $invoice);
             $this->invoiceClient->createInvoice($invoiceOrderContext);
-        }
-        catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
             $this->errorReportingClient->reportError($exception);
-        }  
+        }
     }
 }

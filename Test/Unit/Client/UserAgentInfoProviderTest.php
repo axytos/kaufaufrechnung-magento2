@@ -9,7 +9,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\App\ProductMetadataInterface;
 
-
 class UserAgentInfoProviderTest extends TestCase
 {
     /** @var ComposerPackageInfoProvider&MockObject $composerPackageInfoProvider */

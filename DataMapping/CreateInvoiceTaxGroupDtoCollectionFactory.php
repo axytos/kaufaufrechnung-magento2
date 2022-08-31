@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -20,8 +22,8 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
         $taxGroups = array_values(
             array_reduce(
                 array_map([$this->createInvoiceTaxGroupDtoFactory, 'create'], $this->getItemsArray($invoice)),
-                function(array $agg, CreateInvoiceTaxGroupDto $cur) {
-                    if(array_key_exists("$cur->taxPercent", $agg)) {
+                function (array $agg, CreateInvoiceTaxGroupDto $cur) {
+                    if (array_key_exists("$cur->taxPercent", $agg)) {
                         $agg["$cur->taxPercent"]->total += $cur->total;
                         $agg["$cur->taxPercent"]->valueToTax += $cur->valueToTax;
                     } else {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Plugin;
 
@@ -32,8 +34,8 @@ class OrderServicePlugin
         InvoiceOrderContextFactory $invoiceOrderContextFactory,
         OrderCheckProcessStateMachine $orderCheckProcessStateMachine,
         OrderStateMachine $orderStateMachine,
-        ErrorReportingClientInterface $errorReportingClient)
-    {
+        ErrorReportingClientInterface $errorReportingClient
+    ) {
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->invoiceClient = $invoiceClient;
         $this->invoiceOrderContextFactory = $invoiceOrderContextFactory;
@@ -44,15 +46,12 @@ class OrderServicePlugin
 
     public function afterPlace(OrderService $subject, OrderInterface $order): OrderInterface
     {
-        try
-        {
-            if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE)
-            {
+        try {
+            if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE) {
                 return $order;
             }
 
-            if ($this->pluginConfigurationValidator->isInvalid())
-            {
+            if ($this->pluginConfigurationValidator->isInvalid()) {
                 return $order;
             }
 
@@ -64,9 +63,8 @@ class OrderServicePlugin
             $shopAction = $this->invoiceClient->precheck($invoiceOrderContext);
 
             $this->orderCheckProcessStateMachine->setChecked($order);
-            
-            if ($shopAction === ShopActions::CHANGE_PAYMENT_METHOD)
-            {
+
+            if ($shopAction === ShopActions::CHANGE_PAYMENT_METHOD) {
                 $this->orderStateMachine->setCanceled($order);
                 throw new DisablePaymentMethodException(__("PAYMENT_REJECTED_MESSAGE"), Constants::PAYMENT_METHOD_CODE);
             }
@@ -76,21 +74,17 @@ class OrderServicePlugin
             $this->orderStateMachine->setPendingPayment($order);
 
             return $order;
-        } 
-        catch (LocalizedException $exception) 
-        {
+        } catch (LocalizedException $exception) {
             $this->orderCheckProcessStateMachine->setFailed($order);
             $this->orderStateMachine->setTechnicalError($order);
 
             $couldNotSaveException = new CouldNotSaveException(__($exception->getMessage()));
             $couldNotSaveException->addException($exception);
             throw $couldNotSaveException;
-        } 
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->orderCheckProcessStateMachine->setFailed($order);
             $this->orderStateMachine->setTechnicalError($order);
-            
+
             $this->errorReportingClient->reportError($e);
             throw $e;
         }

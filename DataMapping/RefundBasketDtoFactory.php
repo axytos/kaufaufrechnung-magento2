@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -13,8 +15,7 @@ class RefundBasketDtoFactory
     public function __construct(
         RefundBasketPositionDtoCollectionFactory $refundBasketPositionDtoCollectionFactory,
         RefundBasketTaxGroupDtoCollectionFactory $refundBasketTaxGroupDtoCollectionFactory
-    )
-    {
+    ) {
         $this->refundBasketPositionDtoCollectionFactory = $refundBasketPositionDtoCollectionFactory;
         $this->refundBasketTaxGroupDtoCollectionFactory = $refundBasketTaxGroupDtoCollectionFactory;
     }

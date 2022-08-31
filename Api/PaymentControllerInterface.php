@@ -1,4 +1,5 @@
 <?php
+
 namespace Axytos\KaufAufRechnung\Api;
 
 use Magento\Framework\App\ActionInterface;

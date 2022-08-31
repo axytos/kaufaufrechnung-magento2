@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Observer;
 
@@ -17,30 +19,25 @@ class DisablePaymentMethodObserver implements ObserverInterface
 
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,
-        ErrorReportingClientInterface $errorReportingClient)
-    {
+        ErrorReportingClientInterface $errorReportingClient
+    ) {
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->errorReportingClient = $errorReportingClient;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer): void
     {
-        try 
-        {
-            if (!$this->isPaymentMethodIsActiveEvent($observer))
-            { 
+        try {
+            if (!$this->isPaymentMethodIsActiveEvent($observer)) {
                 return;
             }
 
-            if(!$this->isForAxytosKaufAufRechnungPaymentMethod($observer))
-            {
+            if (!$this->isForAxytosKaufAufRechnungPaymentMethod($observer)) {
                 return;
             }
 
             $this->setAxytosKaufAufRechnungAvailability($observer);
-        } 
-        catch (Exception $exception) 
-        {
+        } catch (Exception $exception) {
             $this->errorReportingClient->reportError($exception);
         }
     }
@@ -52,7 +49,7 @@ class DisablePaymentMethodObserver implements ObserverInterface
 
     private function isForAxytosKaufAufRechnungPaymentMethod(\Magento\Framework\Event\Observer $observer): bool
     {
-        /** 
+        /**
          * @var Adapter
          * @phpstan-ignore-next-line because getMethodInstance() is invoked via DataObject::__call
          */
@@ -63,8 +60,8 @@ class DisablePaymentMethodObserver implements ObserverInterface
     private function setAxytosKaufAufRechnungAvailability(\Magento\Framework\Event\Observer $observer): void
     {
         $isAvailable = !$this->pluginConfigurationValidator->isInvalid();
-        
-        /** 
+
+        /**
          * @var DataObject
          * @phpstan-ignore-next-line because getResult() is invoked via DataObject::__call
          */

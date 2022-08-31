@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Model\Ui;
 
@@ -9,7 +11,7 @@ use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
 use Axytos\KaufAufRechnung\Model\Constants;
 use Exception;
 
-final class CreditCheckInfoProvider implements ConfigProviderInterface
+class CreditCheckInfoProvider implements ConfigProviderInterface
 {
     private PluginConfigurationValidator $pluginConfigurationValidator;
     private CheckoutClientInterface $checkoutClientInterface;
@@ -18,8 +20,8 @@ final class CreditCheckInfoProvider implements ConfigProviderInterface
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,
         CheckoutClientInterface $checkoutClientInterface,
-        ErrorReportingClientInterface $errorReportingClient)
-    {
+        ErrorReportingClientInterface $errorReportingClient
+    ) {
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->checkoutClientInterface = $checkoutClientInterface;
         $this->errorReportingClient = $errorReportingClient;
@@ -27,8 +29,7 @@ final class CreditCheckInfoProvider implements ConfigProviderInterface
 
     public function getConfig(): array
     {
-        try 
-        {
+        try {
             return [
                 'creditCheckInfo' => [
                     Constants::PAYMENT_METHOD_CODE => [
@@ -38,9 +39,7 @@ final class CreditCheckInfoProvider implements ConfigProviderInterface
                     ]
                 ]
             ];
-        }
-        catch (Exception $exception) 
-        {
+        } catch (Exception $exception) {
             $this->errorReportingClient->reportError($exception);
             throw $exception;
         }
@@ -48,8 +47,7 @@ final class CreditCheckInfoProvider implements ConfigProviderInterface
 
     private function getInfoText(): string
     {
-        if ($this->pluginConfigurationValidator->isInvalid())
-        {
+        if ($this->pluginConfigurationValidator->isInvalid()) {
             return "";
         }
 

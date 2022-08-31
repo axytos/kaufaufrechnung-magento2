@@ -133,5 +133,4 @@ class ShipOrderObserverTest extends TestCase
 
         return $observer;
     }
-
 }

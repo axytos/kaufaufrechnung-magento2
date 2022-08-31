@@ -127,5 +127,4 @@ class CancelOrderObserverTest extends TestCase
 
         return $observer;
     }
-
 }

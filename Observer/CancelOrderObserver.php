@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Observer;
 
@@ -19,40 +21,35 @@ class CancelOrderObserver implements ObserverInterface
     private PluginConfigurationValidator $pluginConfigurationValidator;
     private ErrorReportingClientInterface $errorReportingClient;
 
-    function __construct(
+    public function __construct(
         InvoiceClientInterface $invoiceClient,
         InvoiceOrderContextFactory $invoiceOrderContextFactory,
         PluginConfigurationValidator $pluginConfigurationValidator,
-        ErrorReportingClientInterface $errorReportingClient)
-    {
+        ErrorReportingClientInterface $errorReportingClient
+    ) {
         $this->invoiceClient = $invoiceClient;
         $this->invoiceOrderContextFactory = $invoiceOrderContextFactory;
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->errorReportingClient = $errorReportingClient;
     }
 
-    function execute(Observer $observer): void
+    public function execute(Observer $observer): void
     {
-        try
-        {
+        try {
             /** @var Order */
             $order = $observer->getDataByKey("order");
 
-            if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE)
-            {
+            if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE) {
                 return;
             }
 
-            if($this->pluginConfigurationValidator->isInvalid())
-            {
+            if ($this->pluginConfigurationValidator->isInvalid()) {
                 return;
             }
-    
+
             $context = $this->invoiceOrderContextFactory->getInvoiceOrderContext($order);
             $this->invoiceClient->cancelOrder($context);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->errorReportingClient->reportError($e);
         }
     }

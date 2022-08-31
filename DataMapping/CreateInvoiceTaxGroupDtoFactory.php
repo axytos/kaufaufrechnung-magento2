@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -24,7 +26,7 @@ class CreateInvoiceTaxGroupDtoFactory
         $taxGroup->total = floatval($invoiceItem->getTaxAmount());
         $taxGroup->valueToTax = floatval($invoiceItem->getPrice());
         $taxGroup->taxPercent = floatval($orderItem->getTaxPercent());
-        
+
         return $taxGroup;
     }
 }

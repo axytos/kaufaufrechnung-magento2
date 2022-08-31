@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -12,8 +14,7 @@ class RefundBasketTaxGroupDtoFactory
 
     public function __construct(
         OrderItemRepositoryInterface $orderItemRepositoryInterface
-    )
-    {
+    ) {
         $this->orderItemRepositoryInterface = $orderItemRepositoryInterface;
     }
 
@@ -26,7 +27,7 @@ class RefundBasketTaxGroupDtoFactory
         $taxGroup->total = $creditmemoItem->getTaxAmount();
         $taxGroup->valueToTax = $creditmemoItem->getPrice();
         $taxGroup->taxPercent = floatval($orderItem->getTaxPercent());
-        
+
         return $taxGroup;
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -23,7 +25,7 @@ class InvoiceAddressDtoFactory
         $invoiceAddressDto->country = $orderBillingAddress->getCountryId();
         $invoiceAddressDto->vatId = $orderBillingAddress->getVatId();
         $street = $orderBillingAddress->getStreet();
-        if(!is_null($street) && current($street)) {
+        if (!is_null($street) && current($street)) {
             $invoiceAddressDto->addressLine1 = current($street);
         }
         return $invoiceAddressDto;

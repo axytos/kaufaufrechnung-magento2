@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\DataMapping;
 
@@ -23,7 +25,7 @@ class DeliveryAddressDtoFactory
         $deliveryAddressDto->country = $shippingAddress->getCountryId();
         $deliveryAddressDto->vatId = $shippingAddress->getVatId();
         $street = $shippingAddress->getStreet();
-        if(!is_null($street) && current($street)) {
+        if (!is_null($street) && current($street)) {
             $deliveryAddressDto->addressLine1 = current($street);
         }
         return $deliveryAddressDto;
@@ -36,13 +38,11 @@ class DeliveryAddressDtoFactory
         /** @phpstan-ignore-next-line */
         $shippingAssignments = $order->getExtensionAttributes()->getShippingAssignments();
 
-        if (!empty($shippingAssignments))
-        {
+        if (!empty($shippingAssignments)) {
             $shippingAssingment = current($shippingAssignments);
             $shippingAddress = $shippingAssingment->getShipping()->getAddress();
         }
 
         return $shippingAddress;
     }
-
 }

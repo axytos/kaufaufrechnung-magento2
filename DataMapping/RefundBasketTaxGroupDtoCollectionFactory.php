@@ -22,8 +22,8 @@ class RefundBasketTaxGroupDtoCollectionFactory
         $taxGroups = array_values(
             array_reduce(
                 array_map([$this->refundBasketTaxGroupDtoFactory, 'create'], $creditmemo->getItems()),
-                function(array $agg, RefundBasketTaxGroupDto $cur) {
-                    if(array_key_exists("$cur->taxPercent", $agg)) {
+                function (array $agg, RefundBasketTaxGroupDto $cur) {
+                    if (array_key_exists("$cur->taxPercent", $agg)) {
                         $agg["$cur->taxPercent"]->total += $cur->total;
                         $agg["$cur->taxPercent"]->valueToTax += $cur->valueToTax;
                     } else {

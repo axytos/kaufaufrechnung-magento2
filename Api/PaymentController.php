@@ -1,4 +1,5 @@
 <?php
+
 namespace Axytos\KaufAufRechnung\Api;
 
 use Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface;
@@ -34,8 +35,8 @@ class PaymentController implements PaymentControllerInterface
         InvoiceClientInterface $invoiceClient,
         OrderStateMachine $orderStateMachine,
         OrderRepositoryInterface $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder)
-    {
+        SearchCriteriaBuilder $searchCriteriaBuilder
+    ) {
         $this->request = $request;
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->pluginConfiguration = $pluginConfiguration;
@@ -48,33 +49,26 @@ class PaymentController implements PaymentControllerInterface
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * Payment.
      *
      * @param string $paymentId
      */
     public function payment(string $paymentId)
     {
-        try 
-        {
-            if ($this->pluginConfigurationValidator->isInvalid())
-            {
+        try {
+            if ($this->pluginConfigurationValidator->isInvalid()) {
                 throw new WebapiException(__(), 0, WebapiException::HTTP_INTERNAL_ERROR);
             }
-    
-            if($this->isClientSecretInvalid())
-            {
+
+            if ($this->isClientSecretInvalid()) {
                 throw new WebapiException(__(), 0, WebapiException::HTTP_UNAUTHORIZED);
             }
 
             $this->setOrderState($paymentId);
-        }
-        catch (WebapiException $webApiException)
-        {
+        } catch (WebapiException $webApiException) {
             throw $webApiException;
-        }
-        catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
             $this->errorReportingClient->reportError($exception);
 
             throw new WebapiException(__(), 0, WebapiException::HTTP_INTERNAL_ERROR);
@@ -84,7 +78,7 @@ class PaymentController implements PaymentControllerInterface
     private function isClientSecretInvalid(): bool
     {
         $configClientSecret = $this->pluginConfiguration->getClientSecret();
-        
+
         $headerClientSecret = $this->request->getHeader('X-secret');
 
         return is_null($configClientSecret) || $configClientSecret !== $headerClientSecret;
@@ -92,13 +86,18 @@ class PaymentController implements PaymentControllerInterface
 
     private function setOrderState(string $paymentId): void
     {
-        $invoiceOrderPaymentUpdate = $this->invoiceClient->getInvoiceOrderPaymentUpdate($paymentId);          
+        $invoiceOrderPaymentUpdate = $this->invoiceClient->getInvoiceOrderPaymentUpdate($paymentId);
 
-        if ($invoiceOrderPaymentUpdate->paymentStatus === PaymentStatus::PAID
-            || $invoiceOrderPaymentUpdate->paymentStatus === PaymentStatus::OVERPAID)
-        {
-            $order = $this->getOrderByIncrementId($invoiceOrderPaymentUpdate->orderId);
-            $this->orderStateMachine->setComplete($order);
+
+        switch ($invoiceOrderPaymentUpdate->paymentStatus) {
+            case PaymentStatus::PAID:
+                $order = $this->getOrderByIncrementId($invoiceOrderPaymentUpdate->orderId);
+                $this->orderStateMachine->setComplete($order);
+                return;
+            case PaymentStatus::OVERPAID:
+                $order = $this->getOrderByIncrementId($invoiceOrderPaymentUpdate->orderId);
+                $this->orderStateMachine->setComplete($order);
+                return;
         }
     }
 
@@ -109,9 +108,9 @@ class PaymentController implements PaymentControllerInterface
             ->create();
 
         $orders = $this->orderRepository->getList($criteria)->getItems();
-        /** 
+        /**
          * @phpstan-ignore-next-line because there will bet at least on order item
-         */        
+         */
         return current($orders);
     }
 }

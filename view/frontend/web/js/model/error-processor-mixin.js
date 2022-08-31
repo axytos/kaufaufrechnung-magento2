@@ -15,8 +15,8 @@ define(
         return function (targetModule) {
 
             targetModule.disablePaymentMethod = function (paymentMethod) {
-                $('INPUT#' + paymentMethod).parents('.payment-method').find('.action.checkout').prop( "disabled", true );
-                $('INPUT#' + paymentMethod).parents('.payment-method').delay(5000).fadeOut(2000, function() {
+                $('INPUT#' + paymentMethod).parents('.payment-method').find('.action.checkout').prop("disabled", true);
+                $('INPUT#' + paymentMethod).parents('.payment-method').delay(5000).fadeOut(2000, function () {
                     $('INPUT#' + paymentMethod).parents('.payment-method').remove();
                 });
             };
@@ -24,16 +24,16 @@ define(
             targetModule.process = wrapper.wrap(targetModule.process, function (originalAction, response, messageContainer) {
                 var origReturn = originalAction(response, messageContainer);
                 var responseJSON = response.responseJSON;
-                if(!responseJSON || !responseJSON.hasOwnProperty('errors')) {
+                if (!responseJSON || !responseJSON.hasOwnProperty('errors')) {
                     return origReturn;
                 }
                 var paymentMethodError = responseJSON.errors.find(error => error.parameters.hasOwnProperty('paymentMethod'));
-                if(!paymentMethodError) {
+                if (!paymentMethodError) {
                     return origReturn;
                 }
                 var paymentMethod = paymentMethodError.parameters.paymentMethod;
 
-                $.each(methodList(), function( key, value ) {
+                $.each(methodList(), function ( key, value ) {
                     if (value.method == paymentMethod) {
                         targetModule.disablePaymentMethod(value.method);
                     }

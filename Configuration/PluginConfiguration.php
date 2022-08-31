@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Configuration;
 
@@ -22,14 +24,15 @@ class PluginConfiguration extends AbstractHelper
         /** @phpstan-ignore-next-line */
         return $this->getConfigValue(PluginConfigurationValueNames::CLIENT_SECRET);
     }
-    
+
     /**
      * @return mixed
      */
     private function getConfigValue(string $field)
-	{
-		return $this->scopeConfig->getValue(
-			$field, ScopeInterface::SCOPE_STORE
-		);
-	}
+    {
+        return $this->scopeConfig->getValue(
+            $field,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }

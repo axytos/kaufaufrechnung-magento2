@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Exception;
 
@@ -17,8 +19,7 @@ class DisablePaymentMethodException extends LocalizedException
 
     public function getParameters()
     {
-        if(!empty($this->paymentMethod))
-        {
+        if (!empty($this->paymentMethod)) {
             return ['paymentMethod' => $this->paymentMethod];
         }
 

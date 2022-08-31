@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Core;
 
@@ -14,7 +16,7 @@ class OrderStateMachine
     {
         $this->orderRepository = $orderRepository;
     }
-    
+
     public function setCanceled(OrderInterface $order): void
     {
         $this->setState($order, Order::STATE_CANCELED, 'axytos Kauf auf Rechnung: Canceled');
@@ -43,12 +45,11 @@ class OrderStateMachine
     private function setState(OrderInterface $order, string $state, string $comment): void
     {
         $order->setState($state);
-        
-        if ($order instanceof Order)
-        {
+
+        if ($order instanceof Order) {
             $order->addCommentToStatusHistory($comment, true);
         }
-        
+
         $this->orderRepository->save($order);
     }
 }
