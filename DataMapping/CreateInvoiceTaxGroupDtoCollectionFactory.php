@@ -19,9 +19,12 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
 
     public function create(InvoiceInterface $invoice): CreateInvoiceTaxGroupDtoCollection
     {
+        $positionTaxValues = array_map([$this->createInvoiceTaxGroupDtoFactory, 'create'], $this->getItemsArray($invoice));
+        $positionTaxValues[] = $this->createInvoiceTaxGroupDtoFactory->createShippingPosition($invoice);
+
         $taxGroups = array_values(
             array_reduce(
-                array_map([$this->createInvoiceTaxGroupDtoFactory, 'create'], $this->getItemsArray($invoice)),
+                $positionTaxValues,
                 function (array $agg, CreateInvoiceTaxGroupDto $cur) {
                     if (array_key_exists("$cur->taxPercent", $agg)) {
                         $agg["$cur->taxPercent"]->total += $cur->total;

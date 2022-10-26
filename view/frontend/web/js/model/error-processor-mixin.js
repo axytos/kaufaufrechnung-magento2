@@ -22,22 +22,21 @@ define(
             };
 
             targetModule.process = wrapper.wrap(targetModule.process, function (originalAction, response, messageContainer) {
-                var origReturn = originalAction(response, messageContainer);
-                var responseJSON = response.responseJSON;
-                if (!responseJSON || !responseJSON.hasOwnProperty('errors')) {
-                    return origReturn;
-                }
-                var paymentMethodError = responseJSON.errors.find(error => error.parameters.hasOwnProperty('paymentMethod'));
-                if (!paymentMethodError) {
-                    return origReturn;
-                }
-                var paymentMethod = paymentMethodError.parameters.paymentMethod;
+                const origReturn = originalAction(response, messageContainer);
+                const responseJSON = response.responseJSON;
+                if (responseJSON && responseJSON.hasOwnProperty('errors')) {
+                    const paymentMethodError = responseJSON.errors.find(error => error.parameters.hasOwnProperty('paymentMethod'));
+                    if (paymentMethodError) {
+                        const paymentMethod = paymentMethodError.parameters.paymentMethod;
 
-                $.each(methodList(), function ( key, value ) {
-                    if (value.method == paymentMethod) {
-                        targetModule.disablePaymentMethod(value.method);
+                        $.each(methodList(), function ( key, value ) {
+                            if (value.method == paymentMethod) {
+                                targetModule.disablePaymentMethod(value.method);
+                            }
+                        });
                     }
-                });
+                }
+
                 return origReturn;
             });
             return targetModule;

@@ -1,42 +1,61 @@
 {
     "name": "axytos/kaufaufrechnung-magento2",
-    "version": "1.0.0",
+    "version": "1.1.0",
+    "authors": [
+        {
+            "name": "axytos GmbH",
+            "email": "info@axytos.com",
+            "homepage": "https://www.axytos.com"
+        }
+    ],
     "description": "axytos Kauf auf Rechnung for Magento",
     "type": "magento2-module",
     "license": "proprietary",
     "require": {
-      "php": ">=7.4.0",
-      "axytos/ecommerce-sdk": "^1.0.0",
-      "magento/module-checkout": "^100.4",
-      "magento/module-sales": "^103.0",
-      "magento/module-payment": "^100.4"
+        "php": ">=7.4.0",
+        "axytos/ecommerce-sdk": "^1.1.0",
+        "magento/module-checkout": "^100.4",
+        "magento/module-sales": "^103.0",
+        "magento/module-payment": "^100.4"
     },
     "autoload": {
-      "files": [ "registration.php" ],
-      "psr-4": {
-        "Axytos\\KaufAufRechnung\\": ""
-      }
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Axytos\\KaufAufRechnung\\": ""
+        }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com"
+        }
+    ],
     "scripts": {
-      "phpstan": "/var/www/html/vendor/bin/phpstan analyse -c ./phpstan.neon",
-      "phpunit": "/var/www/html/vendor/bin/phpunit",
-      "phpunit-coverage": "/var/www/html/vendor/bin/phpunit --colors=always --coverage-html coverage ",
-      "magento": "/var/www/html/bin/magento",
-      "magento-clean": [
-        "rm -rf /var/www/html/generated/metadata",
-        "rm -rf /var/www/html/generated/code",
-        "@magento setup:upgrade",
-        "@magento cache:clean",
-        "@magento cache:flush"
-      ],
-      "magento-recompile": [
-        "rm -rf /var/www/html/generated/metadata",
-        "rm -rf /var/www/html/generated/code",
-        "@magento setup:di:compile",
-        "@magento setup:upgrade",
-        "@magento cache:clean",
-        "@magento cache:flush"
-      ]
+        "phpstan": "/var/www/html/vendor/bin/phpstan analyse -c ./phpstan.neon",
+        "phpunit": "/var/www/html/vendor/bin/phpunit",
+        "phpunit-coverage": "/var/www/html/vendor/bin/phpunit --colors=always --coverage-html coverage ",
+        "magento": "/var/www/html/bin/magento",
+        "magento-clean": [
+            "rm -rf /var/www/html/generated/metadata",
+            "rm -rf /var/www/html/generated/code",
+            "@magento setup:upgrade",
+            "@magento cache:clean",
+            "@magento cache:flush"
+        ],
+        "magento-recompile": [
+            "rm -rf /var/www/html/generated/metadata",
+            "rm -rf /var/www/html/generated/code",
+            "@magento setup:di:compile",
+            "@magento setup:upgrade",
+            "@magento cache:clean",
+            "@magento cache:flush"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "magento/composer-dependency-version-audit-plugin": true
+        }
     }
-  }
- 
+}

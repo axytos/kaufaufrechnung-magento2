@@ -8,14 +8,10 @@
         <testsuite name="Tests">
             <directory>Test/Unit</directory>
         </testsuite>
-        <testsuite name="ECommerce-SDK-Tests">
-            <directory>/source/packages/ecommerce-sdk/tests</directory>
-        </testsuite>
     </testsuites>
     <coverage>
         <include>
             <directory>*</directory>
-            <directory>/source/packages/ecommerce-sdk/src</directory>
         </include>
     </coverage>
 </phpunit>

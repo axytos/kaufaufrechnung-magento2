@@ -128,7 +128,11 @@
     <!-- ============================================================================================================================= -->
 
     <type name="Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory"></type>
-    <type name="Axytos\KaufAufRechnung\DataMapping\BasketPositionDto"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoFactory">
+        <arguments>
+            <argument name="shippingPositionTaxPercentCalculator" xsi:type="object">Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator</argument>
+        </arguments>
+    </type>
     <type name="Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoCollectionFactory"></type>
     <type name="Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory"></type>
     <type name="Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory"></type>
@@ -140,9 +144,17 @@
     <type name="Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoFactory"></type>
     <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory"></type>
     <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoCollectionFactory"></type>
-    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoFactory">
+        <arguments>
+            <argument name="shippingPositionTaxPercentCalculator" xsi:type="object">Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator</argument>
+        </arguments>
+    </type>
     <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoCollectionFactory"></type>
-    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoFactory"></type>
+    <type name="Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoFactory">
+        <arguments>
+            <argument name="shippingPositionTaxPercentCalculator" xsi:type="object">Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator</argument>
+        </arguments>
+    </type>
     <type name="Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory"></type>
     <type name="Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoFactory"></type>
 

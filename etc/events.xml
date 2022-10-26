@@ -10,7 +10,7 @@
         <observer name="axytos_kaufaufrechnung_ship_order_observer" instance="Axytos\KaufAufRechnung\Observer\ShipOrderObserver" />
     </event>
     <event name="sales_order_payment_refund">
-        <observer name="axytos_kaufaufrechnung_refund_order_observer" instance="Axytos\KaufAufRechnung\Observer\RefundObserver" />
+        <observer name="axytos_kaufaufrechnung_refund_order_observer" instance="Axytos\KaufAufRechnung\Observer\RefundOrderObserver" />
     </event>
     <event name="sales_order_invoice_save_after">
         <observer name="axytos_kaufaufrechnung_create_invoice_observer" instance="Axytos\KaufAufRechnung\Observer\CreateInvoiceObserver" />

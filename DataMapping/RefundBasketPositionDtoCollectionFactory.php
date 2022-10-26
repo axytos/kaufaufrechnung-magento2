@@ -20,6 +20,7 @@ class RefundBasketPositionDtoCollectionFactory
     {
         $positions = array_map([$this->refundBasketPositionDtoFactory, 'create'], $creditmemo->getItems());
 
+        array_push($positions, $this->refundBasketPositionDtoFactory->createShippingPosition($creditmemo));
         return new RefundBasketPositionDtoCollection(...$positions);
     }
 }

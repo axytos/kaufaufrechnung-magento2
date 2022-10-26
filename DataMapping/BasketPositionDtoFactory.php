@@ -5,11 +5,19 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\BasketPositionDto;
+use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 
 class BasketPositionDtoFactory
 {
+    private ShippingPositionTaxPercentCalculator $shippingPositionTaxPercentCalculator;
+
+    public function __construct(ShippingPositionTaxPercentCalculator $shippingPositionTaxPercentCalculator)
+    {
+        $this->shippingPositionTaxPercentCalculator = $shippingPositionTaxPercentCalculator;
+    }
+
     public function create(OrderItemInterface $orderItem): BasketPositionDto
     {
         $position = new BasketPositionDto();
@@ -31,7 +39,7 @@ class BasketPositionDtoFactory
         $position->productId = '0';
         $position->productName = 'Shipping';
         $position->quantity = 1;
-        $position->taxPercent = floatval($order->getShippingTaxAmount());
+        $position->taxPercent = $this->shippingPositionTaxPercentCalculator->calculate(floatval($order->getShippingTaxAmount()), floatval($order->getShippingAmount()));
         $position->netPricePerUnit = floatval($order->getShippingAmount());
         $position->grossPricePerUnit = floatval($order->getShippingInclTax());
         $position->netPositionTotal = $position->quantity * $position->netPricePerUnit;

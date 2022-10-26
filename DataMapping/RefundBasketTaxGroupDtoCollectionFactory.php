@@ -19,9 +19,12 @@ class RefundBasketTaxGroupDtoCollectionFactory
 
     public function create(CreditmemoInterface $creditmemo): RefundBasketTaxGroupDtoCollection
     {
+        $positionTaxValues = array_map([$this->refundBasketTaxGroupDtoFactory, 'create'], $creditmemo->getItems());
+        $positionTaxValues[] = $this->refundBasketTaxGroupDtoFactory->createShippingPosition($creditmemo);
+
         $taxGroups = array_values(
             array_reduce(
-                array_map([$this->refundBasketTaxGroupDtoFactory, 'create'], $creditmemo->getItems()),
+                $positionTaxValues,
                 function (array $agg, RefundBasketTaxGroupDto $cur) {
                     if (array_key_exists("$cur->taxPercent", $agg)) {
                         $agg["$cur->taxPercent"]->total += $cur->total;

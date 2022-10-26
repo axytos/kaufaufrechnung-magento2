@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Tests\Observer;
 
@@ -64,11 +66,11 @@ class CancelOrderObserverTest extends TestCase
     public function test_does_not_call_invoice_client_when_plugin_config_invalid(): void
     {
         $observer = $this->createObserver(Constants::PAYMENT_METHOD_CODE);
-        
+
         $this->pluginConfigurationValidator
             ->method('isInvalid')
             ->willReturn(true);
-        
+
         $this->invoiceClient
             ->expects($this->never())
             ->method('cancelOrder');
@@ -83,7 +85,7 @@ class CancelOrderObserverTest extends TestCase
         $this->pluginConfigurationValidator
             ->method('isInvalid')
             ->willReturn(false);
-        
+
         $this->invoiceClient
             ->expects($this->never())
             ->method('cancelOrder');
@@ -98,7 +100,7 @@ class CancelOrderObserverTest extends TestCase
         $this->pluginConfigurationValidator
             ->method('isInvalid')
             ->willReturn(false);
-        
+
         $this->invoiceClient
             ->expects($this->once())
             ->method('cancelOrder')

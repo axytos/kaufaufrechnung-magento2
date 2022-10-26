@@ -19,6 +19,8 @@ class CreateInvoiceBasketPositionDtoCollectionFactory
     public function create(InvoiceInterface $invoice): CreateInvoiceBasketPositionDtoCollection
     {
         $positions = array_map([$this->createInvoiceBasketPositionDtoFactory, 'create'], $this->getItemsArray($invoice));
+        $shippingPosition = $this->createInvoiceBasketPositionDtoFactory->createShippingPosition($invoice);
+        array_push($positions, $shippingPosition);
 
         return new CreateInvoiceBasketPositionDtoCollection(...$positions);
     }

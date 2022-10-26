@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Tests\Client;
 
@@ -13,7 +15,7 @@ class UserAgentInfoProviderTest extends TestCase
 {
     /** @var ComposerPackageInfoProvider&MockObject $composerPackageInfoProvider */
     private ComposerPackageInfoProvider $composerPackageInfoProvider;
-    
+
     /** @var ProductMetadataInterface&MockObject $productMetadataInterface */
     private ProductMetadataInterface $productMetadataInterface;
 
@@ -106,7 +108,7 @@ class UserAgentInfoProviderTest extends TestCase
         $composerJson = file_get_contents(__DIR__ . '/../../../composer.json');
         /** @var string[] */
         $config = json_decode($composerJson, true);
-        
+
         return $config["name"];
     }
 }

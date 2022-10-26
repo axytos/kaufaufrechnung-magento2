@@ -14,6 +14,7 @@ use Exception;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\Invoice;
 
 class RefundOrderObserver implements ObserverInterface
 {
@@ -41,6 +42,9 @@ class RefundOrderObserver implements ObserverInterface
             $creditmemo = $observer->getDataByKey("creditmemo");
             $order = $creditmemo->getOrder();
 
+            /** @var Invoice */
+            $invoice = $order->getInvoiceCollection()->getFirstItem();
+
             if (is_null($order->getPayment()) || $order->getPayment()->getMethod() !== Constants::PAYMENT_METHOD_CODE) {
                 return;
             }
@@ -49,7 +53,7 @@ class RefundOrderObserver implements ObserverInterface
                 return;
             }
 
-            $context = $this->invoiceOrderContextFactory->getInvoiceOrderContext($order, null, $creditmemo);
+            $context = $this->invoiceOrderContextFactory->getInvoiceOrderContext($order, null, $creditmemo, $invoice);
             $this->invoiceClient->refund($context);
         } catch (Exception $exception) {
             $this->errorReportingClient->reportError($exception);
