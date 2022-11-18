@@ -7,12 +7,12 @@
             "homepage": "https://www.axytos.com"
         }
     ],
-    "description": "axytos Kauf auf Rechnung for Magento",
+    "description": "Kauf auf Rechnung",
     "type": "magento2-module",
     "license": "proprietary",
     "require": {
         "php": ">=7.4.0",
-        "axytos/ecommerce-sdk": "^1.1.0",
+        "axytos/ecommerce-sdk": "^1.2.0",
         "magento/module-checkout": "^100.4",
         "magento/module-sales": "^103.0",
         "magento/module-payment": "^100.4"
