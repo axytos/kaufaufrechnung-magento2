@@ -12,8 +12,14 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 
 class CreateInvoiceTaxGroupDtoFactory
 {
-    private OrderItemRepositoryInterface $orderItemRepositoryInterface;
-    private ShippingPositionTaxPercentCalculator $shippingPositionTaxPercentCalculator;
+    /**
+     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
+     */
+    private $orderItemRepositoryInterface;
+    /**
+     * @var \Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator
+     */
+    private $shippingPositionTaxPercentCalculator;
 
     public function __construct(OrderItemRepositoryInterface $orderItemRepositoryInterface, ShippingPositionTaxPercentCalculator $shippingPositionTaxPercentCalculator)
     {

@@ -10,7 +10,10 @@ use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 
 class FallbackModeConfiguration implements FallbackModeConfigurationInterface
 {
-    public PluginConfiguration $pluginConfig;
+    /**
+     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     */
+    public $pluginConfig;
 
     public function __construct(PluginConfiguration $pluginConfig)
     {

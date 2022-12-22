@@ -11,7 +11,10 @@ use Magento\Sales\Api\Data\OrderItemInterface;
 
 class BasketPositionDtoFactory
 {
-    private ShippingPositionTaxPercentCalculator $shippingPositionTaxPercentCalculator;
+    /**
+     * @var \Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator
+     */
+    private $shippingPositionTaxPercentCalculator;
 
     public function __construct(ShippingPositionTaxPercentCalculator $shippingPositionTaxPercentCalculator)
     {

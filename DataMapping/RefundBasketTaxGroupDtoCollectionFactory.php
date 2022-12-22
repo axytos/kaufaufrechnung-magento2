@@ -10,7 +10,10 @@ use Magento\Sales\Api\Data\CreditmemoInterface;
 
 class RefundBasketTaxGroupDtoCollectionFactory
 {
-    private RefundBasketTaxGroupDtoFactory $refundBasketTaxGroupDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoFactory
+     */
+    private $refundBasketTaxGroupDtoFactory;
 
     public function __construct(RefundBasketTaxGroupDtoFactory $refundBasketTaxGroupDtoFactory)
     {

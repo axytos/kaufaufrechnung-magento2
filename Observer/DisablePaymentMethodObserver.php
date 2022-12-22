@@ -14,8 +14,14 @@ use Magento\Payment\Model\Method\Adapter;
 
 class DisablePaymentMethodObserver implements ObserverInterface
 {
-    private PluginConfigurationValidator $pluginConfigurationValidator;
-    private ErrorReportingClientInterface $errorReportingClient;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     */
+    private $pluginConfigurationValidator;
+    /**
+     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     */
+    private $errorReportingClient;
 
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,

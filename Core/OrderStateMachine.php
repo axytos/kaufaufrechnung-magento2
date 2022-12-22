@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Core;
 
+use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 
 class OrderStateMachine
 {
-    private OrderRepositoryInterface $orderRepository;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $orderRepository;
+    /**
+     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     */
+    private $pluginConfig;
 
-    public function __construct(OrderRepositoryInterface $orderRepository)
+    public function __construct(OrderRepositoryInterface $orderRepository, PluginConfiguration $pluginConfig)
     {
         $this->orderRepository = $orderRepository;
+        $this->pluginConfig = $pluginConfig;
     }
 
     public function setCanceled(OrderInterface $order): void
@@ -40,6 +49,14 @@ class OrderStateMachine
     public function setComplete(OrderInterface $order): void
     {
         $this->setState($order, Order::STATE_COMPLETE, 'axytos Kauf auf Rechnung: Complete');
+    }
+
+    public function setConfiguredAfterCheckoutOrderStatus(OrderInterface $order): void
+    {
+        $afterCheckoutOrderState = $this->pluginConfig->getAfterCheckoutOrderState();
+
+        $orderState = $afterCheckoutOrderState->getOrderState();
+        $this->setState($order, $orderState, 'axytos Kauf auf Rechnung, Order State After Checkout: ' . $orderState);
     }
 
     private function setState(OrderInterface $order, string $state, string $comment): void

@@ -18,14 +18,38 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 
 class PaymentController implements PaymentControllerInterface
 {
-    private WebapiRequest $request;
-    private PluginConfigurationValidator $pluginConfigurationValidator;
-    private PluginConfiguration $pluginConfiguration;
-    private ErrorReportingClientInterface $errorReportingClient;
-    private InvoiceClientInterface $invoiceClient;
-    private OrderStateMachine $orderStateMachine;
-    private OrderRepositoryInterface $orderRepository;
-    private SearchCriteriaBuilder $searchCriteriaBuilder;
+    /**
+     * @var WebapiRequest
+     */
+    private $request;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     */
+    private $pluginConfigurationValidator;
+    /**
+     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     */
+    private $pluginConfiguration;
+    /**
+     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     */
+    private $errorReportingClient;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface
+     */
+    private $invoiceClient;
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\OrderStateMachine
+     */
+    private $orderStateMachine;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $orderRepository;
+    /**
+     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
 
     public function __construct(
         WebapiRequest $request,

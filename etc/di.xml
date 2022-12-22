@@ -88,6 +88,13 @@
             <argument name="apiKeyProvider" xsi:type="object">Axytos\ECommerce\Abstractions\ApiKeyProviderInterface</argument>
         </arguments>
     </type>
+
+    <type name="Axytos\KaufAufRechnung\Core\OrderStateMachine">
+        <arguments>
+            <argument name="orderRepository" xsi:type="object">Magento\Sales\Api\OrderRepositoryInterface</argument>
+            <argument name="pluginConfig" xsi:type="object">Axytos\KaufAufRechnung\Configuration\PluginConfiguration</argument>
+        </arguments>
+    </type>
     
     <preference for="Axytos\ECommerce\Abstractions\PaymentMethodConfigurationInterface" type="Axytos\KaufAufRechnung\Client\PaymentMethodConfiguration" />
     <preference for="Axytos\ECommerce\Abstractions\FallbackModeConfigurationInterface" type="Axytos\KaufAufRechnung\Client\FallbackModeConfiguration" />

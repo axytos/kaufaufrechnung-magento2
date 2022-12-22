@@ -9,7 +9,10 @@ use Magento\Framework\Phrase;
 
 class DisablePaymentMethodException extends LocalizedException
 {
-    private string $paymentMethod;
+    /**
+     * @var string
+     */
+    private $paymentMethod;
 
     public function __construct(Phrase $phrase, string $paymentMethod)
     {

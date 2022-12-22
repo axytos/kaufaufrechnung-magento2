@@ -20,24 +20,27 @@ use Magento\Sales\Model\Order;
 class CancelOrderObserverTest extends TestCase
 {
     /** @var InvoiceClientInterface&MockObject */
-    private InvoiceClientInterface $invoiceClient;
+    private $invoiceClient;
 
     /** @var InvoiceOrderContextFactory&MockObject */
-    private InvoiceOrderContextFactory $invoiceOrderContextFactory;
+    private $invoiceOrderContextFactory;
 
     /** @var PluginConfigurationValidator&MockObject */
-    private PluginConfigurationValidator $pluginConfigurationValidator;
+    private $pluginConfigurationValidator;
 
     /** @var InvoiceOrderContextInterface&MockObject */
-    private InvoiceOrderContextInterface $invoiceOrderContext;
+    private $invoiceOrderContext;
 
     /** @var ErrorReportingClientInterface&MockObject */
-    private ErrorReportingClientInterface $errorReportingClient;
+    private $errorReportingClient;
 
     /** @var Order&MockObject $order */
-    private Order $order;
+    private $order;
 
-    private CancelOrderObserver $sut;
+    /**
+     * @var \Axytos\KaufAufRechnung\Observer\CancelOrderObserver
+     */
+    private $sut;
 
     public function setUp(): void
     {

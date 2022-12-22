@@ -10,7 +10,10 @@ use Magento\Sales\Api\Data\InvoiceInterface;
 
 class CreateInvoiceTaxGroupDtoCollectionFactory
 {
-    private CreateInvoiceTaxGroupDtoFactory $createInvoiceTaxGroupDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoFactory
+     */
+    private $createInvoiceTaxGroupDtoFactory;
 
     public function __construct(CreateInvoiceTaxGroupDtoFactory $createInvoiceTaxGroupDtoFactory)
     {

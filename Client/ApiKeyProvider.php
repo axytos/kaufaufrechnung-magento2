@@ -9,7 +9,10 @@ use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 
 class ApiKeyProvider implements ApiKeyProviderInterface
 {
-    public PluginConfiguration $pluginConfig;
+    /**
+     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     */
+    public $pluginConfig;
 
     public function __construct(PluginConfiguration $pluginConfig)
     {

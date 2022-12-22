@@ -10,7 +10,10 @@ use Magento\Sales\Api\Data\OrderInterface;
 
 class OrderCheckProcessStateMachine
 {
-    private OrderRepositoryInterface $orderRepository;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $orderRepository;
 
     public function __construct(OrderRepositoryInterface $orderRepository)
     {

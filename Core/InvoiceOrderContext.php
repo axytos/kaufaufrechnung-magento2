@@ -30,19 +30,55 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 
 class InvoiceOrderContext implements InvoiceOrderContextInterface
 {
-    private OrderInterface $order;
-    private ?ShipmentInterface $shipment;
-    private ?CreditmemoInterface $creditmemo;
-    private ?InvoiceInterface $invoice;
+    /**
+     * @var \Magento\Sales\Api\Data\OrderInterface
+     */
+    private $order;
+    /**
+     * @var \Magento\Sales\Api\Data\ShipmentInterface|null
+     */
+    private $shipment;
+    /**
+     * @var \Magento\Sales\Api\Data\CreditmemoInterface|null
+     */
+    private $creditmemo;
+    /**
+     * @var \Magento\Sales\Api\Data\InvoiceInterface|null
+     */
+    private $invoice;
 
-    private OrderRepositoryInterface $orderRepository;
-    private CustomerDataDtoFactory $customerDataDtoFactory;
-    private InvoiceAddressDtoFactory $invoiceAddressDtoFactory;
-    private DeliveryAddressDtoFactory $deliveryAddressDtoFactoy;
-    private BasketDtoFactory $basketDtoFactory;
-    private RefundBasketDtoFactory $refundBasketDtoFactory;
-    private CreateInvoiceBasketDtoFactory $createInvoiceBasketDtoFactory;
-    private ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $orderRepository;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory
+     */
+    private $customerDataDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory
+     */
+    private $invoiceAddressDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory
+     */
+    private $deliveryAddressDtoFactoy;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory
+     */
+    private $basketDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory
+     */
+    private $refundBasketDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory
+     */
+    private $createInvoiceBasketDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory
+     */
+    private $shippingBasketPositionDtoCollectionFactory;
 
     public function __construct(
         OrderInterface $order,
@@ -72,22 +108,35 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         $this->shippingBasketPositionDtoCollectionFactory = $shippingBasketPositionDtoCollectionFactory;
     }
 
-    public function getOrderNumber(): string
+    /**
+     * @return string
+     */
+    public function getOrderNumber()
     {
         return strval($this->order->getIncrementId());
     }
 
-    public function getOrderInvoiceNumber(): string
+    /**
+     * @return string
+     */
+    public function getOrderInvoiceNumber()
     {
         /** @phpstan-ignore-next-line */
         return strval($this->invoice->getIncrementId());
     }
 
-    public function setOrderInvoiceNumber(string $invoiceNumber): void
+    /**
+     * @param string $invoiceNumber
+     * @return void
+     */
+    public function setOrderInvoiceNumber(string $invoiceNumber)
     {
     }
 
-    public function getOrderDateTime(): DateTimeInterface
+    /**
+     * @return DateTimeInterface
+     */
+    public function getOrderDateTime()
     {
         $createdAt = $this->order->getCreatedAt();
         if (is_null($createdAt)) {
@@ -96,27 +145,42 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         return new DateTime($createdAt);
     }
 
-    public function getPersonalData(): CustomerDataDto
+    /**
+     * @return CustomerDataDto
+     */
+    public function getPersonalData()
     {
         return $this->customerDataDtoFactory->create($this->order);
     }
 
-    public function getInvoiceAddress(): InvoiceAddressDto
+    /**
+     * @return InvoiceAddressDto
+     */
+    public function getInvoiceAddress()
     {
         return $this->invoiceAddressDtoFactory->create($this->order);
     }
 
-    public function getDeliveryAddress(): DeliveryAddressDto
+    /**
+     * @return DeliveryAddressDto
+     */
+    public function getDeliveryAddress()
     {
         return $this->deliveryAddressDtoFactoy->create($this->order);
     }
 
-    public function getBasket(): BasketDto
+    /**
+     * @return BasketDto
+     */
+    public function getBasket()
     {
         return $this->basketDtoFactory->create($this->order);
     }
 
-    public function getRefundBasket(): RefundBasketDto
+    /**
+     * @return RefundBasketDto
+     */
+    public function getRefundBasket()
     {
         if (is_null($this->creditmemo)) {
             return new RefundBasketDto();
@@ -124,7 +188,10 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         return $this->refundBasketDtoFactory->create($this->creditmemo);
     }
 
-    public function getCreateInvoiceBasket(): CreateInvoiceBasketDto
+    /**
+     * @return CreateInvoiceBasketDto
+     */
+    public function getCreateInvoiceBasket()
     {
         if (is_null($this->invoice)) {
             return new CreateInvoiceBasketDto();
@@ -132,7 +199,10 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         return $this->createInvoiceBasketDtoFactory->create($this->invoice);
     }
 
-    public function getShippingBasketPositions(): ShippingBasketPositionDtoCollection
+    /**
+     * @return ShippingBasketPositionDtoCollection
+     */
+    public function getShippingBasketPositions()
     {
         if (is_null($this->shipment)) {
             return new ShippingBasketPositionDtoCollection();
@@ -140,12 +210,18 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         return $this->shippingBasketPositionDtoCollectionFactory->create($this->shipment);
     }
 
-    public function getReturnPositions(): ReturnPositionModelDtoCollection
+    /**
+     * @return ReturnPositionModelDtoCollection
+     */
+    public function getReturnPositions()
     {
         return new ReturnPositionModelDtoCollection();
     }
 
-    public function getPreCheckResponseData(): array
+    /**
+     * @return array
+     */
+    public function getPreCheckResponseData()
     {
         /** @phpstan-ignore-next-line because extension interface is generated by magento2 */
         $preCheckResponse = $this->order->getExtensionAttributes()->getAxytosKaufaufrechnungPrecheckResult();
@@ -155,7 +231,11 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         return $preCheckResponse;
     }
 
-    public function setPreCheckResponseData(array $data): void
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function setPreCheckResponseData($data)
     {
         $attributes = $this->order->getExtensionAttributes();
 
@@ -168,5 +248,33 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         $this->order->setExtensionAttributes($attributes);
 
         $this->orderRepository->save($this->order);
+    }
+
+    /**
+     * @return float
+     */
+    public function getDeliveryWeight()
+    {
+        // for now delivery weight is not important for risk evaluation
+        // because different shop systems don't always provide the necessary
+        // information to accurately the exact delivery weight for each delivery
+        // we decided to return 0 as constant delivery weight
+        return 0;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTrackingIds()
+    {
+        throw new \Exception('Not Yet Implemented');
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogistician()
+    {
+        throw new \Exception('Not Yet Implemented');
     }
 }

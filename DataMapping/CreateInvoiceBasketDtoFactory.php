@@ -9,8 +9,14 @@ use Magento\Sales\Api\Data\InvoiceInterface;
 
 class CreateInvoiceBasketDtoFactory
 {
-    private CreateInvoiceBasketPositionDtoCollectionFactory $createInvoiceBasketPositionDtoCollectionFactory;
-    private CreateInvoiceTaxGroupDtoCollectionFactory $createInvoiceTaxGroupDtoCollectionFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoCollectionFactory
+     */
+    private $createInvoiceBasketPositionDtoCollectionFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoCollectionFactory
+     */
+    private $createInvoiceTaxGroupDtoCollectionFactory;
 
     public function __construct(
         CreateInvoiceBasketPositionDtoCollectionFactory $createInvoiceBasketPositionDtoCollectionFactory,

@@ -25,6 +25,13 @@ class PluginConfiguration extends AbstractHelper
         return $this->getConfigValue(PluginConfigurationValueNames::CLIENT_SECRET);
     }
 
+    public function getAfterCheckoutOrderState(): AfterCheckoutOrderState
+    {
+        $value = strval($this->getConfigValue(PluginConfigurationValueNames::ORDER_STATUS_AFTER_CHECKOUT));
+
+        return new AfterCheckoutOrderState($value);
+    }
+
     /**
      * @return mixed
      */

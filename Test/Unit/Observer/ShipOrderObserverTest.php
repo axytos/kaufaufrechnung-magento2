@@ -21,24 +21,27 @@ use Magento\Sales\Model\Order\Shipment;
 class ShipOrderObserverTest extends TestCase
 {
     /** @var InvoiceClientInterface&MockObject */
-    private InvoiceClientInterface $invoiceClient;
+    private $invoiceClient;
 
     /** @var InvoiceOrderContextFactory&MockObject */
-    private InvoiceOrderContextFactory $invoiceOrderContextFactory;
+    private $invoiceOrderContextFactory;
 
     /** @var PluginConfigurationValidator&MockObject */
-    private PluginConfigurationValidator $pluginConfigurationValidator;
+    private $pluginConfigurationValidator;
 
     /** @var InvoiceOrderContextInterface&MockObject */
-    private InvoiceOrderContextInterface $invoiceOrderContext;
+    private $invoiceOrderContext;
 
     /** @var ErrorReportingClientInterface&MockObject */
-    private ErrorReportingClientInterface $errorReportingClient;
+    private $errorReportingClient;
 
     /** @var Order&MockObject */
-    private Order $order;
+    private $order;
 
-    private ShipOrderObserver $sut;
+    /**
+     * @var \Axytos\KaufAufRechnung\Observer\ShipOrderObserver
+     */
+    private $sut;
 
     public function setUp(): void
     {

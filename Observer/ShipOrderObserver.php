@@ -16,10 +16,22 @@ use Magento\Sales\Model\Order\Shipment;
 
 class ShipOrderObserver implements ObserverInterface
 {
-    private InvoiceClientInterface $invoiceClient;
-    private InvoiceOrderContextFactory $invoiceOrderContextFactory;
-    private PluginConfigurationValidator $pluginConfigurationValidator;
-    private ErrorReportingClientInterface $errorReportingClient;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface
+     */
+    private $invoiceClient;
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContextFactory
+     */
+    private $invoiceOrderContextFactory;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     */
+    private $pluginConfigurationValidator;
+    /**
+     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     */
+    private $errorReportingClient;
 
     public function __construct(
         InvoiceClientInterface $invoiceClient,

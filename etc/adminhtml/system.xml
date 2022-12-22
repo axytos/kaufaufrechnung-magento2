@@ -17,6 +17,11 @@
                 <field id="client_secret" translate="label" type="password" sortOrder="13" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Client Secret</label>
                 </field>
+                <field id="order_status_after_checkout" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Order State after Checkout</label>
+                    <source_model>Axytos\KaufAufRechnung\Model\Admin\OrderStateAfterCheckoutDisplayOptions</source_model>
+                </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Sort Order</label>

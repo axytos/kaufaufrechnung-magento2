@@ -21,12 +21,30 @@ use Axytos\KaufAufRechnung\Core\OrderStateMachine;
 
 class OrderServicePlugin
 {
-    private PluginConfigurationValidator $pluginConfigurationValidator;
-    private InvoiceClientInterface $invoiceClient;
-    private InvoiceOrderContextFactory $invoiceOrderContextFactory;
-    private OrderCheckProcessStateMachine $orderCheckProcessStateMachine;
-    private OrderStateMachine $orderStateMachine;
-    private ErrorReportingClientInterface $errorReportingClient;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     */
+    private $pluginConfigurationValidator;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface
+     */
+    private $invoiceClient;
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContextFactory
+     */
+    private $invoiceOrderContextFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\OrderCheckProcessStateMachine
+     */
+    private $orderCheckProcessStateMachine;
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\OrderStateMachine
+     */
+    private $orderStateMachine;
+    /**
+     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     */
+    private $errorReportingClient;
 
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,
@@ -55,7 +73,6 @@ class OrderServicePlugin
                 return $order;
             }
 
-            $this->orderStateMachine->setPaymentReview($order);
             $this->orderCheckProcessStateMachine->setUnchecked($order);
 
             $invoiceOrderContext = $this->invoiceOrderContextFactory->getInvoiceOrderContext($order);
@@ -71,7 +88,7 @@ class OrderServicePlugin
 
             $this->invoiceClient->confirmOrder($invoiceOrderContext);
             $this->orderCheckProcessStateMachine->setConfirmed($order);
-            $this->orderStateMachine->setPendingPayment($order);
+            $this->orderStateMachine->setConfiguredAfterCheckoutOrderStatus($order);
 
             return $order;
         } catch (LocalizedException $exception) {

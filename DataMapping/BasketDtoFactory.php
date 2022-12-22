@@ -9,7 +9,10 @@ use Magento\Sales\Api\Data\OrderInterface;
 
 class BasketDtoFactory
 {
-    private BasketPositionDtoCollectionFactory $basketPostionDtoCollectionFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoCollectionFactory
+     */
+    private $basketPostionDtoCollectionFactory;
 
     public function __construct(BasketPositionDtoCollectionFactory $basketPostionDtoCollectionFactory)
     {

@@ -13,9 +13,18 @@ use Exception;
 
 class CreditCheckInfoProvider implements ConfigProviderInterface
 {
-    private PluginConfigurationValidator $pluginConfigurationValidator;
-    private CheckoutClientInterface $checkoutClientInterface;
-    private ErrorReportingClientInterface $errorReportingClient;
+    /**
+     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     */
+    private $pluginConfigurationValidator;
+    /**
+     * @var \Axytos\ECommerce\Clients\Checkout\CheckoutClientInterface
+     */
+    private $checkoutClientInterface;
+    /**
+     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     */
+    private $errorReportingClient;
 
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,

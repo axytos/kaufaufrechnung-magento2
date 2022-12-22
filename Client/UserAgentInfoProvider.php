@@ -10,8 +10,14 @@ use Magento\Framework\App\ProductMetadataInterface;
 
 class UserAgentInfoProvider implements UserAgentInfoProviderInterface
 {
-    private ProductMetadataInterface $productMetaDataInterface;
-    private ComposerPackageInfoProvider $composerPackageInfoProvider;
+    /**
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
+    private $productMetaDataInterface;
+    /**
+     * @var \Axytos\ECommerce\PackageInfo\ComposerPackageInfoProvider
+     */
+    private $composerPackageInfoProvider;
 
     public function __construct(ProductMetadataInterface $productMetaDataInterface, ComposerPackageInfoProvider $composerPackageInfoProvider)
     {

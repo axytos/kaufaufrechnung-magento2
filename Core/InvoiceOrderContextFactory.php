@@ -21,14 +21,38 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 
 class InvoiceOrderContextFactory
 {
-    private OrderRepositoryInterface $orderRepositoryInterface;
-    private CustomerDataDtoFactory $customerDataDtoFactory;
-    private InvoiceAddressDtoFactory $invoiceAddressDtoFactory;
-    private DeliveryAddressDtoFactory $deliveryAddressDtoFactoy;
-    private BasketDtoFactory $basketDtoFactory;
-    private RefundBasketDtoFactory $refundBasketDtoFactory;
-    private CreateInvoiceBasketDtoFactory $createInvoiceBasketDtoFactory;
-    private ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory;
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $orderRepositoryInterface;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory
+     */
+    private $customerDataDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory
+     */
+    private $invoiceAddressDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory
+     */
+    private $deliveryAddressDtoFactoy;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory
+     */
+    private $basketDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory
+     */
+    private $refundBasketDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory
+     */
+    private $createInvoiceBasketDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory
+     */
+    private $shippingBasketPositionDtoCollectionFactory;
 
     public function __construct(
         OrderRepositoryInterface $orderRepositoryInterface,

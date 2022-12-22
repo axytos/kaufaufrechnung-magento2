@@ -14,12 +14,15 @@ use Magento\Framework\App\ProductMetadataInterface;
 class UserAgentInfoProviderTest extends TestCase
 {
     /** @var ComposerPackageInfoProvider&MockObject $composerPackageInfoProvider */
-    private ComposerPackageInfoProvider $composerPackageInfoProvider;
+    private $composerPackageInfoProvider;
 
     /** @var ProductMetadataInterface&MockObject $productMetadataInterface */
-    private ProductMetadataInterface $productMetadataInterface;
+    private $productMetadataInterface;
 
-    private UserAgentInfoProvider $sut;
+    /**
+     * @var \Axytos\KaufAufRechnung\Client\UserAgentInfoProvider
+     */
+    private $sut;
 
     public function setUp(): void
     {

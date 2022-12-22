@@ -9,7 +9,10 @@ use Magento\Sales\Api\Data\ShipmentInterface;
 
 class ShippingBasketPositionDtoCollectionFactory
 {
-    private ShippingBasketPositionDtoFactory $shippingBasketPositionDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoFactory
+     */
+    private $shippingBasketPositionDtoFactory;
 
     public function __construct(ShippingBasketPositionDtoFactory $shippingBasketPositionDtoFactory)
     {
