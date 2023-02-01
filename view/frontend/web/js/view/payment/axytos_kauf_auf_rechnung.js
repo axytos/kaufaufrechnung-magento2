@@ -10,7 +10,7 @@ define(
     function (
         Component,
         rendererList,
-        additionalValidtaotrs,
+        additionalValidators,
         axytosCheckoutAgreementValidator
     ) {
         'use strict';
@@ -22,7 +22,7 @@ define(
             }
         );
 
-        additionalValidtaotrs.registerValidator(axytosCheckoutAgreementValidator);
+        additionalValidators.registerValidator(axytosCheckoutAgreementValidator);
 
         return Component.extend({});
     }

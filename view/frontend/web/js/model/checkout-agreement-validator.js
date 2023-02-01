@@ -15,6 +15,12 @@ define(
              * @returns {Boolean}
              */
             validate: function () {
+                // Check if axytos payment method exists
+                if ($('#axytos_kauf_auf_rechnung').length == 0) {
+                    return true;
+                }
+
+                // Check if axytos payment method is selected
                 if ($('#axytos_kauf_auf_rechnung').is(':not(:checked)')) {
                     return true;
                 }
