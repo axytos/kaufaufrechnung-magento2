@@ -5,8 +5,11 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="/var/www/html/dev/tests/unit/framework/bootstrap.php">
     <testsuites>
-        <testsuite name="Tests">
+        <testsuite name="Unit">
             <directory>Test/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>Test/Integration</directory>
         </testsuite>
     </testsuites>
     <coverage>

@@ -1,0 +1,90 @@
+<h1 id="installationsanleitung">Installationsanleitung</h1>
+<p>Das Plugin stellt die Bezahlmethode <strong>Kauf Auf
+Rechnung</strong> für den Einkauf in Ihrem Magento Shop bereit.</p>
+<p>Einkäufe mit dieser Bezahlmethode werden von axytos ggf. bis zum
+Forderungsmanagement übernommen.</p>
+<p>Alle relevanten Änderungen an Bestellungen mit dieser Bezahlmethode
+werden automatisch an axytos übermittelt.</p>
+<p>Anpassungen über die Installation hinaus, z.B. von Rechnungs- und
+E-Mail-Templates, sind nicht notwendig.</p>
+<p>Weitere Informationen erhalten Sie unter <a
+href="https://www.axytos.com/">https://www.axytos.com/</a>.</p>
+<h2 id="voraussetzungen">Voraussetzungen</h2>
+<ol type="1">
+<li><p>Vertragsbeziehung mit <a
+href="https://www.axytos.com/">https://www.axytos.com/</a>.</p></li>
+<li><p>Verbindungsdaten, um das Plugin mit <a
+href="https://portal.axytos.com/">https://portal.axytos.com/</a> zu
+verbinden.</p></li>
+</ol>
+<p>Um dieses Plugin nutzen zu können benötigen Sie zunächst eine
+Vertragsbeziehung mit <a
+href="https://www.axytos.com/">https://www.axytos.com/</a>.</p>
+<p>Während des Onboarding erhalten Sie die notwendigen Verbindungsdaten,
+um das Plugin mit <a
+href="https://portal.axytos.com/">https://portal.axytos.com/</a> zu
+verbinden.</p>
+<h2 id="plugin-installation">Plugin-Installation</h2>
+<h3 id="via-marketplace">Via Marketplace</h3>
+<ol type="1">
+<li><p>Plugin im Magento Marketplace nach <a
+href="https://marketplace.magento.com/catalogsearch/result/?q=axytos%20Kauf%20auf%20Rechnung">“axytos
+Kauf auf Rechnung”</a> kostenlos kaufen und hinzufügen.</p></li>
+<li><p>Folgen Sie der Anleitung im Marketplace.</p></li>
+</ol>
+<h3 id="via-composer">Via Composer</h3>
+<p>Installieren Sie <a href="https://getcomposer.org/">Composer</a>.</p>
+<p>Führen Sie die folgenden Kommandos in Ihrer Konsole im
+Root-Verzeichnis Ihrer Magento-Distribution aus.</p>
+<pre><code>composer require axytos/kaufaufrechnung-magento2
+php bin/magento module:enable Axytos_KaufAufRechnung
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento cache:clean</code></pre>
+<p>Das Plugin ist jetzt installiert und kann konfiguriert und aktiviert
+werden.</p>
+<p>Um das Plugin nutzen zu können, benötigen Sie valide Verbindungsdaten
+zu <a href="https://portal.axytos.com/">https://portal.axytos.com/</a>
+(siehe Voraussetzungen).</p>
+<h2
+id="bezahlmethoden-konfiguration-in-magento">Bezahlmethoden-Konfiguration
+in Magento</h2>
+<ol type="1">
+<li><p>Zur Administration Ihrer Magento Distribution wechseln. Die
+Bezahlmethode axytos Kauf auf Rechnung befindet sich unter STORES &gt;
+Configuration &gt; SALES &gt; Payment Methods &gt; OTHER PAYMENT
+METHODS.</p></li>
+<li><p><strong>Enabled</strong> auf “Yes” umstellen</p></li>
+<li><p><strong>API Host</strong> eintragen. Entweder <a
+href="https://api.axytos.com/">https://api.axytos.com/</a> oder <a
+href="https://api-sandbox.axytos.com/">https://api-sandbox.axytos.com/</a>,
+die korrekten Werte werden Ihnen von axytos während des Onboarding
+mitgeteilt (siehe Voraussetzungen)</p></li>
+<li><p><strong>API Key</strong> eintragen. Der korrekte Wert wird Ihnen
+während des Onboarding von axytos mitgeteilt (siehe
+Voraussetzungen).</p></li>
+<li><p><strong>Client Secret</strong> eintragen. Der korrekte Wert wird
+Ihnen ebenfalls im Onboarding mitgeteilt (siehe
+Voraussetzungen).</p></li>
+<li><p><strong>Save Config</strong> ausführen.</p></li>
+</ol>
+<p>Zur Konfiguration müssen Sie valide Verbindungsdaten zu <a
+href="https://portal.axytos.com/">https://portal.axytos.com/</a> (siehe
+Voraussetzungen), d.h. <strong>API Host</strong>, <strong>API
+Key</strong> und <strong>Client Secret</strong> für die Bezahlmethode
+speichern.</p>
+<h2
+id="kauf-auf-rechnung-kann-nicht-für-einkäufe-ausgewählt-werden">Kauf
+auf Rechnung kann nicht für Einkäufe ausgewählt werden?</h2>
+<p>Überprüfen Sie folgende Punkte:</p>
+<ol type="1">
+<li><p>Das Plugin <strong>axytos Kauf auf Rechnung</strong> ist
+installiert.</p></li>
+<li><p>Die Bezahlmethode <strong>axytos Kauf auf Rechnung</strong> ist
+aktiviert.</p></li>
+<li><p>Die Bezahlmethode <strong>axytos Kauf auf Rechnung</strong> ist
+mit korrekten Verbindungsdaten (<strong>API Host</strong> &amp;
+<strong>API Key</strong>) konfiguriert.</p></li>
+</ol>
+<p>Fehlerhafte Verbindungsdaten führen dazu, dass das Plugin nicht für
+Einkäufe ausgewählt werden kann.</p>

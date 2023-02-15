@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Axytos\KaufAufRechnung\Tests\Observer;
+namespace Axytos\KaufAufRechnung\Tests\Unit\Observer;
 
 use Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface;
 use Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface;

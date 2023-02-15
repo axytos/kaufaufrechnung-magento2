@@ -1,0 +1,83 @@
+<h1 id="installation-guide">Installation Guide</h1>
+<p>The plugin provides the payment method <strong>purchase on
+account</strong> for shopping in your Magento shop.</p>
+<p>Purchases made with this payment method may be accepted by axytos up
+to receivables management.</p>
+<p>All relevant changes to orders with this payment method are
+automatically sent to axytos.</p>
+<p>Adjustments beyond the installation, e.g. of invoice and email
+templates, are not necessary.</p>
+<p>For more information, see <a
+href="https://www.axytos.com/">https://www.axytos.com/</a>.</p>
+<h2 id="requirements">Requirements</h2>
+<ol type="1">
+<li><p>Contractual relationship with <a
+href="https://www.axytos.com/">https://www.axytos.com/</a>.</p></li>
+<li><p>Connection data to connect the plugin to <a
+href="https://portal.axytos.com/">https://portal.axytos.com/</a> zu
+verbinden.</p></li>
+</ol>
+<p>In order to be able to use this plugin, you first need a contractual
+relationship with <a
+href="https://www.axytos.com/">https://www.axytos.com/</a>.</p>
+<p>During onboarding you will receive the necessary connection data to
+connect the plugin to.</p>
+<h2 id="plugin-installation">Plugin installation</h2>
+<h3 id="via-marketplace">Via Marketplace</h3>
+<ol type="1">
+<li><p>Buy and add the plugin <a
+href="https://marketplace.magento.com/catalogsearch/result/?q=axytos%20Kauf%20auf%20Rechnung">“axytos
+Kauf auf Rechnung”</a> in Magento Marketplace for free.</p></li>
+<li><p>Follow the instructions in the Marketplace.</p></li>
+</ol>
+<h3 id="via-composer">Via Composer</h3>
+<p>Install the <a href="https://getcomposer.org/">Composer</a>.</p>
+<p>Run the following commands in your console in the root of your
+Magento distribution.</p>
+<pre><code>composer require axytos/kaufaufrechnung-magento2
+php bin/magento module:enable Axytos_KaufAufRechnung
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento cache:clean</code></pre>
+<p>The plugin is now installed and can be configured and activated.</p>
+<p>In order to be able to use the plugin, you need valid connection data
+for <a href="https://portal.axytos.com/">https://portal.axytos.com/</a>
+(see requirements).</p>
+<h2 id="payment-method-configuration-in-magento">Payment method
+configuration in Magento</h2>
+<ol type="1">
+<li><p>Switch to the administration of your Magento distribution. The
+axytos purchase on account payment method can be found under STORES &gt;
+Configuration &gt; SALES &gt; Payment Methods &gt; OTHER PAYMENT
+METHODS.</p></li>
+<li><p>Change <strong>Enabled</strong> to “Yes”.</p></li>
+<li><p>Enter <strong>API Host</strong>. Either <a
+href="https://api.axytos.com/">https://api.axytos.com/</a> or <a
+href="https://api-sandbox.axytos%20.com/">https://api-sandbox.axytos.com/</a>,
+the correct values will be communicated to you by axytos during
+onboarding (see requirements)</p></li>
+<li><p>Enter <strong>API Key</strong>. You will be informed of the
+correct value during the onboarding of axytos (see
+requirements).</p></li>
+<li><p>Enter <strong>Client Secret</strong>. You will also be informed
+of the correct value during onboarding (see requirements).</p></li>
+<li><p>Run <strong>Save Config</strong>.</p></li>
+</ol>
+<p>For configuration, you must save valid connection data to <a
+href="https://portal.axytos.com/">https://portal.axytos.com/</a> (see
+requirements), i.e. <strong>API Host</strong>, <strong>API Key</strong>
+and <strong>Client Secret</strong> for the payment method.</p>
+<h2 id="payment-method-cant-be-selected-for-purchases">Payment method
+can’t be selected for purchases?</h2>
+<p>Check the following points:</p>
+<ol type="1">
+<li><p>The plugin <strong>axytos purchase on account</strong> is
+installed.</p></li>
+<li><p>The payment method <strong>axytos purchase on account</strong> is
+activated.</p></li>
+<li><p>The payment method <strong>axytos purchase on account</strong> is
+configured with correct connection data (<strong>API Host</strong> &amp;
+<strong>API Key</strong>).</p></li>
+</ol>
+<p>Incorrect connection data means that the plugin cannot be selected
+for purchases.</p>

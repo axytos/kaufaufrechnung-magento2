@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Axytos\KaufAufRechnung\Tests\Configuration;
+namespace Axytos\KaufAufRechnung\Tests\Unit\Configuration;
 
 use Axytos\KaufAufRechnung\Configuration\AfterCheckoutOrderState;
 use Magento\Sales\Model\Order;

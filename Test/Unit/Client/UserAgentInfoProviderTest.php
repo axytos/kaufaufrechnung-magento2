@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Axytos\KaufAufRechnung\Tests\Client;
+namespace Axytos\KaufAufRechnung\Tests\Unit\Client;
 
 use Axytos\ECommerce\Abstractions\UserAgentInfoProviderInterface;
 use Axytos\KaufAufRechnung\Client\UserAgentInfoProvider;
@@ -37,7 +37,7 @@ class UserAgentInfoProviderTest extends TestCase
         $this->assertInstanceOf(UserAgentInfoProviderInterface::class, $this->sut);
     }
 
-    public function test_getPluginName_returns_PaymentControl(): void
+    public function test_getPluginName_returns_KaufAufRechnung(): void
     {
         $pluginName = $this->sut->getPluginName();
 
