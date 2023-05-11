@@ -9,7 +9,9 @@ use Magento\Framework\Option\ArrayInterface;
 
 class OrderStateAfterCheckoutDisplayOptions implements ArrayInterface
 {
-    /** @return array */
+    /**
+     * @return array<array<mixed>>
+     */
     public function toOptionArray()
     {
         return [

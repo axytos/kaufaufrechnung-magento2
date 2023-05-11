@@ -31,8 +31,8 @@ class RefundBasketDtoFactory
         $refundBasket = new RefundBasketDto();
         $refundBasket->positions = $this->refundBasketPositionDtoCollectionFactory->create($creditmemo);
         $refundBasket->taxGroups = $this->refundBasketTaxGroupDtoCollectionFactory->create($creditmemo);
-        $refundBasket->grossTotal = $creditmemo->getGrandTotal();
-        $refundBasket->netTotal = $creditmemo->getGrandTotal() - $creditmemo->getTaxAmount();
+        $refundBasket->grossTotal = floatval($creditmemo->getGrandTotal());
+        $refundBasket->netTotal = floatval($creditmemo->getGrandTotal()) - floatval($creditmemo->getTaxAmount());
         return $refundBasket;
     }
 }

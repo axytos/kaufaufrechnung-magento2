@@ -31,8 +31,8 @@ class CreateInvoiceBasketDtoFactory
         $basket = new CreateInvoiceBasketDto();
         $basket->positions = $this->createInvoiceBasketPositionDtoCollectionFactory->create($invoice);
         $basket->taxGroups = $this->createInvoiceTaxGroupDtoCollectionFactory->create($invoice);
-        $basket->grossTotal = $invoice->getGrandTotal();
-        $basket->netTotal = $invoice->getGrandTotal() - $invoice->getTaxAmount();
+        $basket->grossTotal = floatval($invoice->getGrandTotal());
+        $basket->netTotal = floatval($invoice->getGrandTotal()) - floatval($invoice->getTaxAmount());
         return $basket;
     }
 }

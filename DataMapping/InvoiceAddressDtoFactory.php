@@ -25,7 +25,7 @@ class InvoiceAddressDtoFactory
         $invoiceAddressDto->country = $orderBillingAddress->getCountryId();
         $invoiceAddressDto->vatId = $orderBillingAddress->getVatId();
         $street = $orderBillingAddress->getStreet();
-        if (!is_null($street) && current($street)) {
+        if (!is_null($street) && count($street) > 0) {
             $invoiceAddressDto->addressLine1 = current($street);
         }
         return $invoiceAddressDto;

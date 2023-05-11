@@ -43,6 +43,9 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
         return new CreateInvoiceTaxGroupDtoCollection(...$taxGroups);
     }
 
+    /**
+     * @return \Magento\Sales\Api\Data\InvoiceItemInterface[]
+     */
     private function getItemsArray(InvoiceInterface $invoice): array
     {
         $items = [];

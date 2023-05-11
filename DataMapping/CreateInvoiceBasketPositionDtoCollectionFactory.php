@@ -28,6 +28,9 @@ class CreateInvoiceBasketPositionDtoCollectionFactory
         return new CreateInvoiceBasketPositionDtoCollection(...$positions);
     }
 
+    /**
+     * @return \Magento\Sales\Api\Data\InvoiceItemInterface[]
+     */
     private function getItemsArray(InvoiceInterface $invoice): array
     {
         $items = [];

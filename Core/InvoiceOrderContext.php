@@ -219,7 +219,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getPreCheckResponseData()
     {
@@ -232,7 +232,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
     }
 
     /**
-     * @param array $data
+     * @param array<mixed> $data
      * @return void
      */
     public function setPreCheckResponseData($data)

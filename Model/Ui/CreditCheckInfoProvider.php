@@ -36,6 +36,9 @@ class CreditCheckInfoProvider implements ConfigProviderInterface
         $this->errorReportingClient = $errorReportingClient;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getConfig(): array
     {
         try {
