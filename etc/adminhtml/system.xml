@@ -22,6 +22,9 @@
                     <label>Order State after Checkout</label>
                     <source_model>Axytos\KaufAufRechnung\Model\Admin\OrderStateAfterCheckoutDisplayOptions</source_model>
                 </field>
+                <field id="error_message" translate="label" type="textarea" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Errormessage on rejection</label>
+                </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Sort Order</label>

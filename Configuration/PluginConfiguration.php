@@ -32,6 +32,17 @@ class PluginConfiguration extends AbstractHelper
         return new AfterCheckoutOrderState($value);
     }
 
+    public function getCustomErrorMessage(): ?string
+    {
+        $errorMessage = $this->getConfigValue(PluginConfigurationValueNames::ERROR_MESSAGE);
+        /** @phpstan-ignore-next-line */
+        if (empty($errorMessage)) {
+            return null;
+        } else {
+            return strval($errorMessage);
+        }
+    }
+
     /**
      * @return mixed
      */

@@ -9,6 +9,7 @@ use Exception;
 use Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface;
 use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
 use Axytos\ECommerce\Clients\Invoice\ShopActions;
+use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 use Axytos\KaufAufRechnung\Core\InvoiceOrderContextFactory;
 use Axytos\KaufAufRechnung\Exception\DisablePaymentMethodException;
 use Axytos\KaufAufRechnung\Model\Constants;
@@ -18,6 +19,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Service\OrderService;
 use Axytos\KaufAufRechnung\Core\OrderCheckProcessStateMachine;
 use Axytos\KaufAufRechnung\Core\OrderStateMachine;
+use Magento\Framework\Phrase;
 
 class OrderServicePlugin
 {
@@ -45,6 +47,10 @@ class OrderServicePlugin
      * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
      */
     private $errorReportingClient;
+    /**
+     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     */
+    private $pluginConfiguration;
 
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,
@@ -52,7 +58,8 @@ class OrderServicePlugin
         InvoiceOrderContextFactory $invoiceOrderContextFactory,
         OrderCheckProcessStateMachine $orderCheckProcessStateMachine,
         OrderStateMachine $orderStateMachine,
-        ErrorReportingClientInterface $errorReportingClient
+        ErrorReportingClientInterface $errorReportingClient,
+        PluginConfiguration $pluginConfiguration
     ) {
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->invoiceClient = $invoiceClient;
@@ -60,6 +67,7 @@ class OrderServicePlugin
         $this->orderCheckProcessStateMachine = $orderCheckProcessStateMachine;
         $this->orderStateMachine = $orderStateMachine;
         $this->errorReportingClient = $errorReportingClient;
+        $this->pluginConfiguration = $pluginConfiguration;
     }
 
     public function afterPlace(OrderService $subject, OrderInterface $order): OrderInterface
@@ -83,7 +91,15 @@ class OrderServicePlugin
 
             if ($shopAction === ShopActions::CHANGE_PAYMENT_METHOD) {
                 $this->orderStateMachine->setCanceled($order);
-                throw new DisablePaymentMethodException(__("PAYMENT_REJECTED_MESSAGE"), Constants::PAYMENT_METHOD_CODE);
+
+                $errorMessage = $this->pluginConfiguration->getCustomErrorMessage();
+                if (is_null($errorMessage)) {
+                    $errorPhrase = __("PAYMENT_REJECTED_MESSAGE");
+                } else {
+                    $errorPhrase = new Phrase($errorMessage);
+                }
+
+                throw new DisablePaymentMethodException($errorPhrase, Constants::PAYMENT_METHOD_CODE);
             }
 
             $this->invoiceClient->confirmOrder($invoiceOrderContext);
