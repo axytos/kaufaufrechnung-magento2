@@ -25,11 +25,10 @@
                 <span data-bind="i18n: 'CREDIT_CHECK_AGREEMENT_TEXT'"></span>
             </label>
             
+            <a style="cursor: pointer" data-trigger="trigger" data-bind="i18n: 'CREDIT_CHECK_AGREEMENT_INFO_LINK_TEXT'"></a>
+            <br/>
+            <span id="axytos_kauf_auf_rechnung_agreement_error" style="display:none;color:red"></span>
         </div>
-
-        <a style="cursor: pointer" data-trigger="trigger" data-bind="i18n: 'CREDIT_CHECK_AGREEMENT_INFO_LINK_TEXT'"></a>
-
-        <span id="axytos_kauf_auf_rechnung_agreement_error" style="display:none;color:red"></span>
 
         <div data-bind="mageInit: {
                 'Magento_Ui/js/modal/modal':{
@@ -43,6 +42,12 @@
             <div class="content">
                 <div data-bind="html: getCreditCheckInfoText()"></div>
             </div>
+        </div>
+
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
         </div>
 
         <div class="actions-toolbar">
