@@ -8,6 +8,10 @@ class ShippingPositionTaxPercentCalculator
 {
     public function calculate(float $shippingTaxAmount, float $shippingAmount): float
     {
-        return ($shippingTaxAmount / $shippingAmount) * 100;
+        if ($shippingAmount === 0.0) {
+            return 0.0;
+        } else {
+            return ($shippingTaxAmount / $shippingAmount) * 100;
+        }
     }
 }
