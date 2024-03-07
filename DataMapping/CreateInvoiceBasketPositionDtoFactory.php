@@ -51,6 +51,7 @@ class CreateInvoiceBasketPositionDtoFactory
         $position->productName = 'Shipping';
         $position->quantity = 1;
         $position->taxPercent = $this->shippingPositionTaxPercentCalculator->calculate(floatval($invoice->getShippingTaxAmount()), floatval($invoice->getShippingAmount()));
+        $position->netPricePerUnit = floatval($invoice->getShippingAmount());
         $position->grossPricePerUnit = floatval($invoice->getShippingInclTax());
         $position->netPositionTotal = floatval($invoice->getShippingAmount());
         $position->grossPositionTotal = floatval($invoice->getShippingInclTax());
