@@ -6,6 +6,7 @@ namespace Axytos\KaufAufRechnung\Tests\Unit\Configuration;
 
 use Axytos\KaufAufRechnung\Configuration\AfterCheckoutOrderState;
 use Magento\Sales\Model\Order;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AfterCheckoutOrderStateTest extends TestCase
@@ -13,6 +14,7 @@ class AfterCheckoutOrderStateTest extends TestCase
     /**
      * @dataProvider getOrderStateTestCases
      */
+    #[DataProvider('getOrderStateTestCases')]
     public function test_getOrderState_returns_correct_value(string $value, string $expectedValue): void
     {
         $afterCheckoutOrderState = new AfterCheckoutOrderState($value);
