@@ -22,8 +22,8 @@ class BasketDtoFactory
     public function create(OrderInterface $order): BasketDto
     {
         $basketDto = new BasketDto();
-        $basketDto->netTotal = floatval($order->getTotalDue()) - floatval($order->getTaxAmount());
-        $basketDto->grossTotal = floatval($order->getTotalDue());
+        $basketDto->netTotal = floatval($order->getGrandTotal()) - floatval($order->getTaxAmount());
+        $basketDto->grossTotal = floatval($order->getGrandTotal());
         $basketDto->currency = $order->getOrderCurrencyCode();
         $basketDto->positions = $this->basketPostionDtoCollectionFactory->create($order);
 

@@ -35,8 +35,9 @@ class RefundBasketTaxGroupDtoFactory
         $orderItem = $this->orderItemRepositoryInterface->get($orderItemId);
 
         $taxGroup = new RefundBasketTaxGroupDto();
-        $taxGroup->total = $creditmemoItem->getTaxAmount();
-        $taxGroup->valueToTax = $creditmemoItem->getPrice();
+
+        $taxGroup->total = floatval($creditmemoItem->getTaxAmount());
+        $taxGroup->valueToTax = floatval($creditmemoItem->getPrice());
         $taxGroup->taxPercent = floatval($orderItem->getTaxPercent());
 
         return $taxGroup;
@@ -45,14 +46,14 @@ class RefundBasketTaxGroupDtoFactory
     public function createShippingPosition(CreditmemoInterface $creditmemo): RefundBasketTaxGroupDto
     {
         /** @var float */
-        $shippingTaxAmount = $creditmemo->getShippingTaxAmount();
+        $shippingTaxAmount = floatval($creditmemo->getShippingTaxAmount());
         /** @var float */
-        $shippingAmount = $creditmemo->getShippingAmount();
+        $shippingAmount = floatval($creditmemo->getShippingAmount());
 
         $taxGroup = new RefundBasketTaxGroupDto();
-        $taxGroup->total = $creditmemo->getShippingTaxAmount();
-        $taxGroup->valueToTax = $creditmemo->getShippingAmount();
-        $taxGroup->taxPercent = $this->shippingPositionTaxPercentCalculator->calculate($shippingTaxAmount, $shippingAmount);
+        $taxGroup->total = floatval($creditmemo->getShippingTaxAmount());
+        $taxGroup->valueToTax = floatval($creditmemo->getShippingAmount());
+        $taxGroup->taxPercent = floatval($this->shippingPositionTaxPercentCalculator->calculate($shippingTaxAmount, $shippingAmount));
 
         return $taxGroup;
     }
