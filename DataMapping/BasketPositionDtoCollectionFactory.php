@@ -24,6 +24,13 @@ class BasketPositionDtoCollectionFactory
         $positions = array_map([$this->basketPositionDtoFactory, 'create'], $order->getItems());
         $positions = array_values($positions);
 
+        $voucherPosition = $this->basketPositionDtoFactory->createVoucherPosition($order);
+        if (!is_null($voucherPosition)) {
+            if ($voucherPosition->grossPositionTotal !== 0.0) {
+                array_push($positions, $voucherPosition);
+            }
+        }
+
         array_push($positions, $this->basketPositionDtoFactory->createShippingPosition($order));
 
         return new BasketPositionDtoCollection(...$positions);

@@ -16,12 +16,12 @@ class OrderStateAfterCheckoutDisplayOptions implements ArrayInterface
     {
         return [
             [
-                'label' => 'Pending Payment',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_PENDING_PAYMENT
-            ],
-            [
                 'label' => 'New',
                 'value' => AfterCheckoutOrderState::ORDER_STATE_NEW
+            ],
+            [
+                'label' => 'Pending Payment',
+                'value' => AfterCheckoutOrderState::ORDER_STATE_PENDING_PAYMENT
             ],
             [
                 'label' => 'Canceled',

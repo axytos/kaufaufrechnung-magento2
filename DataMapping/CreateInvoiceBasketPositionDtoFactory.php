@@ -44,6 +44,20 @@ class CreateInvoiceBasketPositionDtoFactory
         return $position;
     }
 
+    public function createVoucherPosition(InvoiceInterface $order): CreateInvoiceBasketPositionDto
+    {
+        $position = new CreateInvoiceBasketPositionDto();
+        $position->productId = 'magentovoucherdiscount';
+        $position->productName = 'Discount';
+        $position->quantity = 1;
+        $position->taxPercent = 0.0;
+        $position->netPricePerUnit = 0;
+        $position->grossPricePerUnit = -floatval($order->getDiscountAmount());
+        $position->netPositionTotal = 0;
+        $position->grossPositionTotal = $position->grossPricePerUnit;
+        return $position;
+    }
+
     public function createShippingPosition(InvoiceInterface $invoice): CreateInvoiceBasketPositionDto
     {
         $position = new CreateInvoiceBasketPositionDto();

@@ -25,6 +25,13 @@ class CreateInvoiceBasketPositionDtoCollectionFactory
         $shippingPosition = $this->createInvoiceBasketPositionDtoFactory->createShippingPosition($invoice);
         array_push($positions, $shippingPosition);
 
+        $voucherPosition = $this->createInvoiceBasketPositionDtoFactory->createVoucherPosition($invoice);
+        if (!is_null($voucherPosition)) {
+            if ($voucherPosition->grossPositionTotal !== 0.0) {
+                array_push($positions, $voucherPosition);
+            }
+        }
+
         return new CreateInvoiceBasketPositionDtoCollection(...$positions);
     }
 

@@ -6,6 +6,7 @@ namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\BasketPositionDto;
 use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
+use AxytosKaufAufRechnungShopware5\Adapter\Common\BasketPosition;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 
@@ -33,6 +34,21 @@ class BasketPositionDtoFactory
         $position->grossPricePerUnit = floatval($orderItem->getPriceInclTax());
         $position->netPositionTotal = $position->quantity * $position->netPricePerUnit;
         $position->grossPositionTotal = $position->quantity * $position->grossPricePerUnit;
+        return $position;
+    }
+
+    public function createVoucherPosition(OrderInterface $order): BasketPositionDto
+    {
+        $position = new BasketPositionDto();
+        $position->productId = 'magentovoucherdiscount';
+        $position->productName = 'Discount';
+        $position->productCategory = 'Discount';
+        $position->quantity = 1;
+        $position->taxPercent = 0.0;
+        $position->netPricePerUnit = 0;
+        $position->grossPricePerUnit = -floatval($order->getDiscountAmount());
+        $position->netPositionTotal = 0;
+        $position->grossPositionTotal = $position->grossPricePerUnit;
         return $position;
     }
 
