@@ -11,7 +11,7 @@ class ShippingPositionTaxPercentCalculator
         if ($shippingAmount === 0.0) {
             return 0.0;
         } else {
-            return ($shippingTaxAmount / $shippingAmount) * 100;
+            return round(($shippingTaxAmount / $shippingAmount) * 100, 2);
         }
     }
 }

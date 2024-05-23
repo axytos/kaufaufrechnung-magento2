@@ -32,8 +32,8 @@ class BasketPositionDtoFactory
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($orderItem->getPrice());
         $position->grossPricePerUnit = floatval($orderItem->getPriceInclTax());
-        $position->netPositionTotal = $position->quantity * $position->netPricePerUnit;
-        $position->grossPositionTotal = $position->quantity * $position->grossPricePerUnit;
+        $position->netPositionTotal = round($position->quantity * $position->netPricePerUnit, 2);
+        $position->grossPositionTotal = round($position->quantity * $position->grossPricePerUnit, 2);
         return $position;
     }
 
@@ -61,8 +61,8 @@ class BasketPositionDtoFactory
         $position->taxPercent = $this->shippingPositionTaxPercentCalculator->calculate(floatval($order->getShippingTaxAmount()), floatval($order->getShippingAmount()));
         $position->netPricePerUnit = floatval($order->getShippingAmount());
         $position->grossPricePerUnit = floatval($order->getShippingInclTax());
-        $position->netPositionTotal = $position->quantity * $position->netPricePerUnit;
-        $position->grossPositionTotal = $position->quantity * $position->grossPricePerUnit;
+        $position->netPositionTotal = round($position->quantity * $position->netPricePerUnit, 2);
+        $position->grossPositionTotal = round($position->quantity * $position->grossPricePerUnit, 2);
         return $position;
     }
 }

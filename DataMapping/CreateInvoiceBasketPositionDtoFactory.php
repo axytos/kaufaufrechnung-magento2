@@ -39,8 +39,8 @@ class CreateInvoiceBasketPositionDtoFactory
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($invoiceItem->getPrice());
         $position->grossPricePerUnit = floatval($invoiceItem->getPriceInclTax());
-        $position->netPositionTotal = $position->quantity * $position->netPricePerUnit;
-        $position->grossPositionTotal = $position->quantity * $position->grossPricePerUnit;
+        $position->netPositionTotal = round($position->quantity * $position->netPricePerUnit, 2);
+        $position->grossPositionTotal = round($position->quantity * $position->grossPricePerUnit, 2);
         return $position;
     }
 
