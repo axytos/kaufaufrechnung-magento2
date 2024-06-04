@@ -107,6 +107,13 @@ class OrderServicePlugin
             $this->orderStateMachine->setConfiguredAfterCheckoutOrderStatus($order);
 
             return $order;
+        } catch (DisablePaymentMethodException $exception) {
+            $this->orderCheckProcessStateMachine->setFailed($order);
+            $this->orderStateMachine->setRejected($order);
+
+            $couldNotSaveException = new CouldNotSaveException(__($exception->getMessage()));
+            $couldNotSaveException->addException($exception);
+            throw $couldNotSaveException;
         } catch (LocalizedException $exception) {
             $this->orderCheckProcessStateMachine->setFailed($order);
             $this->orderStateMachine->setTechnicalError($order);

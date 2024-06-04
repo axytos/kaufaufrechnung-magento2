@@ -33,7 +33,7 @@ class CreateInvoiceBasketPositionDtoFactory
         $orderItem = $this->orderItemRepositoryInterface->get($orderItemId);
 
         $position = new CreateInvoiceBasketPositionDto();
-        $position->productId = strval($invoiceItem->getProductId());
+        $position->productId = strval($invoiceItem->getSku());
         $position->productName = $invoiceItem->getName();
         $position->quantity = intval($invoiceItem->getQty());
         $position->taxPercent = floatval($orderItem->getTaxPercent());

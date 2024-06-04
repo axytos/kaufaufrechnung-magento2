@@ -13,7 +13,7 @@ class ShippingBasketPositionDtoFactory
     public function create(ShipmentItemInterface $shippingItem): ShippingBasketPositionDto
     {
         $position = new ShippingBasketPositionDto();
-        $position->productId = strval($shippingItem->getProductId());
+        $position->productId = strval($shippingItem->getSku());
         $position->quantity = intval($shippingItem->getQty());
         return $position;
     }

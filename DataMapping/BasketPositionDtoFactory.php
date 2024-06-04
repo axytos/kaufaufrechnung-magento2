@@ -25,7 +25,7 @@ class BasketPositionDtoFactory
     public function create(OrderItemInterface $orderItem): BasketPositionDto
     {
         $position = new BasketPositionDto();
-        $position->productId = strval($orderItem->getProductId());
+        $position->productId = strval($orderItem->getSku());
         $position->productName = $orderItem->getName();
         $position->productCategory = $orderItem->getProductType();
         $position->quantity = intval($orderItem->getQtyOrdered());

@@ -13,7 +13,7 @@ class RefundBasketPositionDtoFactory
     public function create(CreditmemoItemInterface $creditmemoItem): RefundBasketPositionDto
     {
         $position = new RefundBasketPositionDto();
-        $position->productId = strval($creditmemoItem->getProductId());
+        $position->productId = strval($creditmemoItem->getSku());
         $position->grossRefundTotal = floatval($creditmemoItem->getPriceInclTax());
         $position->netRefundTotal = floatval($creditmemoItem->getPrice());
         return $position;

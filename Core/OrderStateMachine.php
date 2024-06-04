@@ -46,6 +46,11 @@ class OrderStateMachine
         $this->setState($order, Order::STATE_CANCELED, 'axytos Kauf auf Rechnung: Technical Error');
     }
 
+    public function setRejected(OrderInterface $order): void
+    {
+        $this->setState($order, Order::STATE_CANCELED, 'axytos Kauf auf Rechnung: Rejected');
+    }
+
     public function setComplete(OrderInterface $order): void
     {
         $this->setState($order, Order::STATE_COMPLETE, 'axytos Kauf auf Rechnung: Complete');
