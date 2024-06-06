@@ -13,6 +13,7 @@ use Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\InvoiceInterface;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -54,6 +55,11 @@ class InvoiceOrderContextFactory
      */
     private $shippingBasketPositionDtoCollectionFactory;
 
+    /**
+     * @var \Magento\Framework\Serialize\SerializerInterface
+     */
+    private $serializer;
+
     public function __construct(
         OrderRepositoryInterface $orderRepositoryInterface,
         CustomerDataDtoFactory $customerDataDtoFactory,
@@ -62,7 +68,8 @@ class InvoiceOrderContextFactory
         BasketDtoFactory $basketDtoFactory,
         RefundBasketDtoFactory $refundBasketDtoFactory,
         CreateInvoiceBasketDtoFactory $createInvoiceBasketDtoFactory,
-        ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory
+        ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory,
+        SerializerInterface $serializer
     ) {
         $this->orderRepositoryInterface = $orderRepositoryInterface;
         $this->customerDataDtoFactory = $customerDataDtoFactory;
@@ -72,8 +79,16 @@ class InvoiceOrderContextFactory
         $this->refundBasketDtoFactory = $refundBasketDtoFactory;
         $this->createInvoiceBasketDtoFactory = $createInvoiceBasketDtoFactory;
         $this->shippingBasketPositionDtoCollectionFactory = $shippingBasketPositionDtoCollectionFactory;
+        $this->serializer = $serializer;
     }
 
+    /**
+     * @param OrderInterface $order
+     * @param null|ShipmentInterface $shipment
+     * @param null|CreditmemoInterface $creditmemo
+     * @param null|InvoiceInterface $invoice
+     * @return \Axytos\ECommerce\Clients\Invoice\InvoiceOrderContextInterface&\Axytos\KaufAufRechnung\Core\InvoiceOrderContext
+     */
     public function getInvoiceOrderContext(
         OrderInterface $order,
         ?ShipmentInterface $shipment = null,
@@ -92,7 +107,8 @@ class InvoiceOrderContextFactory
             $this->basketDtoFactory,
             $this->refundBasketDtoFactory,
             $this->createInvoiceBasketDtoFactory,
-            $this->shippingBasketPositionDtoCollectionFactory
+            $this->shippingBasketPositionDtoCollectionFactory,
+            $this->serializer
         );
     }
 }

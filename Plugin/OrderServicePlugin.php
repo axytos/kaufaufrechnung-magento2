@@ -6,18 +6,18 @@ namespace Axytos\KaufAufRechnung\Plugin;
 
 use Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface;
 use Exception;
-use Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface;
 use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
 use Axytos\ECommerce\Clients\Invoice\ShopActions;
+use Axytos\KaufAufRechnung\Adapter\MagentoSalesOrder;
+use Axytos\KaufAufRechnung\Adapter\PluginOrderFactory;
 use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
-use Axytos\KaufAufRechnung\Core\InvoiceOrderContextFactory;
+use Axytos\KaufAufRechnung\Core\Model\AxytosOrderFactory;
 use Axytos\KaufAufRechnung\Exception\DisablePaymentMethodException;
 use Axytos\KaufAufRechnung\Model\Constants;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Service\OrderService;
-use Axytos\KaufAufRechnung\Core\OrderCheckProcessStateMachine;
 use Axytos\KaufAufRechnung\Core\OrderStateMachine;
 use Magento\Framework\Phrase;
 
@@ -27,18 +27,6 @@ class OrderServicePlugin
      * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
      */
     private $pluginConfigurationValidator;
-    /**
-     * @var \Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface
-     */
-    private $invoiceClient;
-    /**
-     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContextFactory
-     */
-    private $invoiceOrderContextFactory;
-    /**
-     * @var \Axytos\KaufAufRechnung\Core\OrderCheckProcessStateMachine
-     */
-    private $orderCheckProcessStateMachine;
     /**
      * @var \Axytos\KaufAufRechnung\Core\OrderStateMachine
      */
@@ -52,22 +40,30 @@ class OrderServicePlugin
      */
     private $pluginConfiguration;
 
+    /**
+     * @var \Axytos\KaufAufRechnung\Adapter\PluginOrderFactory
+     */
+    private $pluginOrderFactory;
+
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\Model\AxytosOrderFactory
+     */
+    private $axytosOrderFactory;
+
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,
-        InvoiceClientInterface $invoiceClient,
-        InvoiceOrderContextFactory $invoiceOrderContextFactory,
-        OrderCheckProcessStateMachine $orderCheckProcessStateMachine,
         OrderStateMachine $orderStateMachine,
         ErrorReportingClientInterface $errorReportingClient,
-        PluginConfiguration $pluginConfiguration
+        PluginConfiguration $pluginConfiguration,
+        PluginOrderFactory $pluginOrderFactory,
+        AxytosOrderFactory $axytosOrderFactory
     ) {
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
-        $this->invoiceClient = $invoiceClient;
-        $this->invoiceOrderContextFactory = $invoiceOrderContextFactory;
-        $this->orderCheckProcessStateMachine = $orderCheckProcessStateMachine;
         $this->orderStateMachine = $orderStateMachine;
         $this->errorReportingClient = $errorReportingClient;
         $this->pluginConfiguration = $pluginConfiguration;
+        $this->pluginOrderFactory = $pluginOrderFactory;
+        $this->axytosOrderFactory = $axytosOrderFactory;
     }
 
     public function afterPlace(OrderService $subject, OrderInterface $order): OrderInterface
@@ -81,13 +77,13 @@ class OrderServicePlugin
                 return $order;
             }
 
-            $this->orderCheckProcessStateMachine->setUnchecked($order);
+            // order is already persisted by magento
+            // so PluginOrderFactory can load complete sales model
+            $pluginOrder = $this->pluginOrderFactory->create($order);
+            $axytosOrder = $this->axytosOrderFactory->create($pluginOrder);
+            $axytosOrder->checkout();
 
-            $invoiceOrderContext = $this->invoiceOrderContextFactory->getInvoiceOrderContext($order);
-
-            $shopAction = $this->invoiceClient->precheck($invoiceOrderContext);
-
-            $this->orderCheckProcessStateMachine->setChecked($order);
+            $shopAction = $axytosOrder->getOrderCheckoutAction();
 
             if ($shopAction === ShopActions::CHANGE_PAYMENT_METHOD) {
                 $this->orderStateMachine->setCanceled($order);
@@ -102,29 +98,21 @@ class OrderServicePlugin
                 throw new DisablePaymentMethodException($errorPhrase, Constants::PAYMENT_METHOD_CODE);
             }
 
-            $this->invoiceClient->confirmOrder($invoiceOrderContext);
-            $this->orderCheckProcessStateMachine->setConfirmed($order);
             $this->orderStateMachine->setConfiguredAfterCheckoutOrderStatus($order);
 
             return $order;
         } catch (DisablePaymentMethodException $exception) {
-            $this->orderCheckProcessStateMachine->setFailed($order);
             $this->orderStateMachine->setRejected($order);
-
             $couldNotSaveException = new CouldNotSaveException(__($exception->getMessage()));
             $couldNotSaveException->addException($exception);
             throw $couldNotSaveException;
         } catch (LocalizedException $exception) {
-            $this->orderCheckProcessStateMachine->setFailed($order);
             $this->orderStateMachine->setTechnicalError($order);
-
             $couldNotSaveException = new CouldNotSaveException(__($exception->getMessage()));
             $couldNotSaveException->addException($exception);
             throw $couldNotSaveException;
         } catch (Exception $e) {
-            $this->orderCheckProcessStateMachine->setFailed($order);
             $this->orderStateMachine->setTechnicalError($order);
-
             $this->errorReportingClient->reportError($e);
             throw $e;
         }

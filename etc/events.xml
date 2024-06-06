@@ -3,16 +3,4 @@
     <event name="payment_method_is_active">
         <observer name="axytos_kaufaufrechnung_disable_payment_method_observer" instance="Axytos\KaufAufRechnung\Observer\DisablePaymentMethodObserver" />
     </event>
-    <event name="order_cancel_after">
-        <observer name="axytos_kaufaufrechnung_cancel_order_observer" instance="Axytos\KaufAufRechnung\Observer\CancelOrderObserver" />
-    </event>
-    <event name="sales_order_shipment_save_after">
-        <observer name="axytos_kaufaufrechnung_ship_order_observer" instance="Axytos\KaufAufRechnung\Observer\ShipOrderObserver" />
-    </event>
-    <event name="sales_order_payment_refund">
-        <observer name="axytos_kaufaufrechnung_refund_order_observer" instance="Axytos\KaufAufRechnung\Observer\RefundOrderObserver" />
-    </event>
-    <event name="sales_order_invoice_save_after">
-        <observer name="axytos_kaufaufrechnung_create_invoice_observer" instance="Axytos\KaufAufRechnung\Observer\CreateInvoiceObserver" />
-    </event>
 </config>
