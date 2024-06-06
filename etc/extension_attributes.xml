@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
    <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
-       <attribute code="axytos_kaufaufrechnung_order_attributes" type="Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributesInterface"/>
+       <attribute code="axytos_kaufaufrechnung_precheck_result" type="string[]"/>
+       <attribute code="axytos_kaufaufrechnung_order_check_process_state" type="string"/>
    </extension_attributes>
 </config>
