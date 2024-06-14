@@ -110,7 +110,7 @@
     <!-- Observers =================================================================================================================== -->
     <!-- ============================================================================================================================= -->
 
-    <type name="Axytos\KaufAufRechnung\Observer\DisablePaymentMethodObserver">
+    <type name="Axytos\KaufAufRechnung\Observer\CheckPaymentMethodAvailabilityObserver">
         <arguments>
             <argument name="pluginConfigurationValidator" xsi:type="object">Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator</argument>
         </arguments>

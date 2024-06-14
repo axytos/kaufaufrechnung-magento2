@@ -43,6 +43,27 @@ class PluginConfiguration extends AbstractHelper
         }
     }
 
+    public function getMaximumOrderAmount(): float
+    {
+        // input field has type 'text'
+        /** @var string */
+        $configuredValue = $this->getConfigValue(PluginConfigurationValueNames::MAXIMUM_ORDER_AMOUNT);
+
+        // convert to int, intval removes leading zeros and ignores trailing non-digit characters
+        /** @var int */
+        $intMaximumOrderAmount = intval($configuredValue);
+
+        // convert to float
+        /** @var float */
+        $floatMaximumOrderAmount = floatval($intMaximumOrderAmount);
+
+        if ($floatMaximumOrderAmount < 0.0) {
+            return 0.0;
+        }
+
+        return $floatMaximumOrderAmount;
+    }
+
     /**
      * @return mixed
      */

@@ -12,10 +12,11 @@
     "license": "proprietary",
     "require": {
         "php": ">=7.3.0",
-        "axytos/ecommerce-sdk": "1.6.14-rc",
+        "axytos/ecommerce-sdk": "1.6.15-rc",
         "magento/module-checkout": "^100.4",
         "magento/module-sales": "^103.0",
-        "magento/module-payment": "^100.4"
+        "magento/module-payment": "^100.4",
+        "magento/module-quote": "^101.2"
     },
     "autoload": {
         "files": [
