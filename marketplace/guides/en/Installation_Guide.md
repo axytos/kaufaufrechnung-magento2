@@ -1,9 +1,9 @@
 ---
 author: axytos GmbH
 title: "Installation Guide"
-subtitle: "axytos BNPL, Magento2"
-header-right: "axytos BNPL, Magento2"
-lang: "de"
+subtitle: "axytos BNPL for Magento2"
+header-right: "axytos BNPL for Magento2"
+lang: "en"
 titlepage: true
 titlepage-rule-height: 2
 toc-own-page: true

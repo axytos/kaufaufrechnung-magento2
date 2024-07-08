@@ -1,8 +1,8 @@
 ---
 author: axytos GmbH
 title: "Installationsanleitung"
-subtitle: "axytos Kauf auf Rechnung, Magento2"
-header-right: axytos Kauf auf Rechnung, Magento2
+subtitle: "axytos Kauf auf Rechnung für Magento2"
+header-right: axytos Kauf auf Rechnung für Magento2
 lang: "de"
 titlepage: true
 titlepage-rule-height: 2
