@@ -25,16 +25,20 @@ class BasketPositionDtoFactory
 
     public function create(OrderItemInterface $orderItem, ProductInformationInterface $productInformation): BasketPositionDto
     {
+        // quantity can have decimal values for things sold by meter, kilogram, etc.
+        // we need this value to calculate correct position totals and per unit prices
+        $floatQuantity = floatval($orderItem->getQtyOrdered());
+
         $position = new BasketPositionDto();
         $position->productId = $productInformation->getSku();
         $position->productName = $productInformation->getName();
         $position->productCategory = $productInformation->getCategory();
-        $position->quantity = intval($orderItem->getQtyOrdered());
+        $position->quantity = intval($floatQuantity); // api does not accept float values yet
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($orderItem->getPrice());
         $position->grossPricePerUnit = floatval($orderItem->getPriceInclTax());
-        $position->netPositionTotal = round($position->quantity * $position->netPricePerUnit, 2);
-        $position->grossPositionTotal = round($position->quantity * $position->grossPricePerUnit, 2);
+        $position->netPositionTotal = round($floatQuantity * $position->netPricePerUnit, 2);
+        $position->grossPositionTotal = round($floatQuantity * $position->grossPricePerUnit, 2);
         return $position;
     }
 
