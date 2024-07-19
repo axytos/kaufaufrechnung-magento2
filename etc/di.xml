@@ -110,7 +110,7 @@
     <!-- Observers =================================================================================================================== -->
     <!-- ============================================================================================================================= -->
 
-    <type name="Axytos\KaufAufRechnung\Observer\DisablePaymentMethodObserver">
+    <type name="Axytos\KaufAufRechnung\Observer\CheckPaymentMethodAvailabilityObserver">
         <arguments>
             <argument name="pluginConfigurationValidator" xsi:type="object">Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator</argument>
         </arguments>
@@ -202,6 +202,13 @@
             <argument name="methodCode" xsi:type="const">\Axytos\KaufAufRechnung\Model\Constants::PAYMENT_METHOD_CODE</argument>
         </arguments>
     </virtualType>
+
+    <!-- ============================================================================================================================= -->
+    <!-- Product Information ========================================================================================================= -->
+    <!-- ============================================================================================================================= -->
+
+    <type name="Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory"></type>
+    <type name="Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver"></type>
 
     <!-- ============================================================================================================================= -->
     <!-- Custom Data ================================================================================================================= -->

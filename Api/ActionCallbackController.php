@@ -10,6 +10,7 @@ use Axytos\KaufAufRechnung\Core\Model\Actions\Results\FatalErrorResult;
 use Axytos\KaufAufRechnung\Core\Model\Actions\Results\InvalidDataResult;
 use Axytos\KaufAufRechnung\Core\Model\Actions\Results\InvalidMethodResult;
 use Axytos\KaufAufRechnung\Core\Model\Actions\Results\PluginNotConfiguredResult;
+use Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Logging\LoggerAdapterInterface;
 use Exception;
 use Magento\Framework\Webapi\Exception as WebapiException;
 use Magento\Framework\Webapi\Request as WebapiRequest;
@@ -49,18 +50,25 @@ class ActionCallbackController implements ActionCallbackControllerInterface
      */
     private $errorReportingClient;
 
+    /**
+     * @var \Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Logging\LoggerAdapterInterface
+     */
+    private $logger;
+
     public function __construct(
         WebapiRequest $request,
         WebapiResponse $response,
         ActionExecutorInterface $actionExecutor,
         PluginConfigurationValidator $pluginConfigurationValidator,
-        ErrorReportingClientInterface $errorReportingClient
+        ErrorReportingClientInterface $errorReportingClient,
+        LoggerAdapterInterface $logger
     ) {
         $this->request = $request;
         $this->response = $response;
         $this->actionExecutor = $actionExecutor;
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->errorReportingClient = $errorReportingClient;
+        $this->logger = $logger;
     }
 
     /**
@@ -97,34 +105,46 @@ class ActionCallbackController implements ActionCallbackControllerInterface
     {
         $rawBody = $this->getRequestBody();
 
-        if ($rawBody === false) {
+        if ($rawBody === '') {
+            $this->logger->error('Process Action Request: HTTP request body empty');
             $this->setResult(new InvalidDataResult('HTTP request body empty'));
             return;
         }
 
         $decodedBody = json_decode($rawBody, true);
         if (!is_array($decodedBody)) {
+            $this->logger->error('Process Action Request: HTTP request body is not a json object');
             $this->setResult(new InvalidDataResult('HTTP request body is not a json object'));
             return;
         }
 
-        if (!isset($decodedBody['clientSecret']) || !is_string($decodedBody['clientSecret'])) {
+        $loggableRequestBody = $decodedBody;
+        if (array_key_exists('clientSecret', $loggableRequestBody)) {
+            $loggableRequestBody['clientSecret'] = '****';
+        }
+        $encodedLoggableRequestBody = json_encode($loggableRequestBody);
+        $this->logger->info("Process Action Request: request body '$encodedLoggableRequestBody'");
+
+        $clientSecret = array_key_exists('clientSecret', $decodedBody) ? $decodedBody['clientSecret'] : null;
+        if (!is_string($clientSecret)) {
+            $this->logger->error("Process Action Request: Required string property 'clientSecret' is missing");
             $this->setResult(new InvalidDataResult('Required string property', 'clientSecret'));
             return;
         }
-        $clientSecret = $decodedBody['clientSecret'];
 
-        if (!isset($decodedBody['action']) || !is_string($decodedBody['action'])) {
+        $action = array_key_exists('action', $decodedBody) ?  $decodedBody['action'] : null;
+        if (!is_string($action)) {
+            $this->logger->error("Process Action Request: Required string property 'action' is missing");
             $this->setResult(new InvalidDataResult('Required string property', 'action'));
             return;
         }
-        $action = $decodedBody['action'];
 
-        if (!isset($decodedBody['params']) || (!is_null($decodedBody['params']) && !is_array($decodedBody['params']))) {
+        $params = array_key_exists('params', $decodedBody) ? $decodedBody['params'] : null;
+        if (!is_null($params) && !is_array($params)) {
+            $this->logger->error("Process Action Request: Optional object property 'params' ist not an array");
             $this->setResult(new InvalidDataResult('Optional object property', 'params'));
             return;
         }
-        $params = $decodedBody['params'];
 
         $result = $this->actionExecutor->executeAction($clientSecret, $action, $params);
         $this->setResult($result);
@@ -135,7 +155,11 @@ class ActionCallbackController implements ActionCallbackControllerInterface
      */
     private function getRequestBody()
     {
-        return $this->request->getContent();
+        $content = $this->request->getContent();
+        if (!is_string($content)) {
+            return '';
+        }
+        return $content;
     }
 
     /**

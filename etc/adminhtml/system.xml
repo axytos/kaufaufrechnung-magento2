@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <!-- 
+    Reference: https://experienceleague.adobe.com/en/docs/commerce-operations/configuration-guide/files/config-reference-systemxml#field-type-reference 
+    -->
     <system>
         <section id="payment">
             <group id="axytos_kauf_auf_rechnung" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -24,6 +27,9 @@
                 </field>
                 <field id="error_message" translate="label" type="textarea" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Errormessage on rejection</label>
+                </field>
+                <field id="maximum_order_amount" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Maximum Order Amount</label>
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
                        showInStore="0">

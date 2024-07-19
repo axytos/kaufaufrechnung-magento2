@@ -6,13 +6,15 @@ namespace Axytos\KaufAufRechnung\Observer;
 
 use Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface;
 use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
+use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 use Axytos\KaufAufRechnung\Model\Constants;
 use Exception;
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Payment\Model\Method\Adapter;
+use Magento\Quote\Api\CartTotalRepositoryInterface;
 
-class DisablePaymentMethodObserver implements ObserverInterface
+class CheckPaymentMethodAvailabilityObserver implements ObserverInterface
 {
     /**
      * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
@@ -22,13 +24,25 @@ class DisablePaymentMethodObserver implements ObserverInterface
      * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
      */
     private $errorReportingClient;
+    /**
+     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     */
+    private $pluginConfiguration;
+    /**
+     * @var \Magento\Quote\Api\CartTotalRepositoryInterface
+     */
+    private $cartTotalRepository;
 
     public function __construct(
         PluginConfigurationValidator $pluginConfigurationValidator,
-        ErrorReportingClientInterface $errorReportingClient
+        ErrorReportingClientInterface $errorReportingClient,
+        PluginConfiguration $pluginConfiguration,
+        CartTotalRepositoryInterface $cartTotalRepository
     ) {
         $this->pluginConfigurationValidator = $pluginConfigurationValidator;
         $this->errorReportingClient = $errorReportingClient;
+        $this->pluginConfiguration = $pluginConfiguration;
+        $this->cartTotalRepository = $cartTotalRepository;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer): void
@@ -65,7 +79,7 @@ class DisablePaymentMethodObserver implements ObserverInterface
 
     private function setAxytosKaufAufRechnungAvailability(\Magento\Framework\Event\Observer $observer): void
     {
-        $isAvailable = !$this->pluginConfigurationValidator->isInvalid();
+        $isAvailable = $this->isAxytosKaufAufRechnungAvailable($observer);
 
         /**
          * @var DataObject
@@ -73,5 +87,40 @@ class DisablePaymentMethodObserver implements ObserverInterface
          */
         $eventResult = $observer->getEvent()->getResult();
         $eventResult->setData('is_available', $isAvailable);
+    }
+
+    private function isAxytosKaufAufRechnungAvailable(\Magento\Framework\Event\Observer $observer): bool
+    {
+        if ($this->pluginConfigurationValidator->isInvalid()) {
+            return false;
+        }
+
+        if (!$this->isCartGrandTotalWithinConfiguredLimit($observer)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function isCartGrandTotalWithinConfiguredLimit(\Magento\Framework\Event\Observer $observer): bool
+    {
+        $event = $observer->getEvent();
+        /** @var \Magento\Quote\Api\Data\CartInterface|null */
+        $quote = $event->getDataByKey('quote');
+
+        if ($quote instanceof \Magento\Quote\Api\Data\CartInterface) {
+            /** @var \Magento\Quote\Api\Data\TotalsInterface */
+            $totals = $this->cartTotalRepository->get($quote->getId());
+            /** @var float|null */
+            $grandTotal = $totals->getGrandTotal();
+            /** @var float */
+            $maximumOrderAmount = $this->pluginConfiguration->getMaximumOrderAmount();
+
+            if (!is_null($grandTotal) && 0 < $maximumOrderAmount) {
+                return $grandTotal <= $maximumOrderAmount;
+            }
+        }
+
+        return true;
     }
 }

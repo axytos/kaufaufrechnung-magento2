@@ -12,13 +12,18 @@
     "license": "proprietary",
     "require": {
         "php": ">=7.3.0",
-        "axytos/ecommerce-sdk": "1.6.14-alpha",
-        "axytos/kaufaufrechnung-core": "1.6.14-alpha",
-        "axytos/kaufaufrechnung-core-abstractions": "1.6.14-alpha",
-        "axytos/kaufaufrechnung-core-plugin-abstractions": "1.6.14-alpha",
+        "axytos/ecommerce-sdk": "1.7.0-alpha",
+        "axytos/kaufaufrechnung-core": "1.7.0-alpha",
+        "axytos/kaufaufrechnung-core-abstractions": "1.7.0-alpha",
+        "axytos/kaufaufrechnung-core-plugin-abstractions": "1.7.0-alpha",
         "magento/module-checkout": "^100.4",
         "magento/module-sales": "^103.0",
-        "magento/module-payment": "^100.4"
+        "magento/module-payment": "^100.4",
+        "magento/module-quote": "^101.2",
+        "magento/module-catalog": "^104.0",
+        "magento/module-configurable-product": "^100.4",
+        "magento/module-grouped-product": "^100.4",
+        "magento/module-downloadable": "^100.4"
     },
     "autoload": {
         "files": [
