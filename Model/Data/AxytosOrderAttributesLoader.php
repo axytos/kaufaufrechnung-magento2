@@ -90,7 +90,7 @@ class AxytosOrderAttributesLoader
             ->limit($limit);
 
         if (!is_null($startId)) {
-            $select->where(AxytosOrderAttributesInterface::MAGENTO_ORDER_INCREMENT_ID . ' > ?', $startId);
+            $select->where(AxytosOrderAttributesInterface::MAGENTO_ORDER_INCREMENT_ID . ' >= ?', $startId);
         }
 
         return $connection->fetchCol($select);
