@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\BasketPositionDtoCollection;
+use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
+use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Magento\Sales\Api\Data\OrderInterface;
 
 class BasketPositionDtoCollectionFactory
@@ -13,15 +15,31 @@ class BasketPositionDtoCollectionFactory
      * @var \Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoFactory
      */
     private $basketPositionDtoFactory;
+    /**
+     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     */
+    private $productVariantResolver;
 
-    public function __construct(BasketPositionDtoFactory $basketPositionDtoFactory)
-    {
+    public function __construct(
+        BasketPositionDtoFactory $basketPositionDtoFactory,
+        ProductVariantResolver $productVariantResolver
+    ) {
         $this->basketPositionDtoFactory = $basketPositionDtoFactory;
+        $this->productVariantResolver = $productVariantResolver;
     }
 
     public function create(OrderInterface $order): BasketPositionDtoCollection
     {
-        $positions = array_map([$this->basketPositionDtoFactory, 'create'], $order->getItems());
+        $productVariantResolution = $this->productVariantResolver->resolveProductVariants($order);
+
+        $positions = array_map(function ($itemResolution) {
+            /** @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem */
+            $orderItem = $itemResolution['item'];
+            /** @var \Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface $productInfo */
+            $productInfo = $itemResolution['product'];
+            return $this->basketPositionDtoFactory->create($orderItem, $productInfo);
+        }, $productVariantResolution);
+
         $positions = array_values($positions);
 
         $voucherPosition = $this->basketPositionDtoFactory->createVoucherPosition($order);

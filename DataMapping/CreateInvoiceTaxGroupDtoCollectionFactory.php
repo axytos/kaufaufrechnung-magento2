@@ -6,6 +6,7 @@ namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\CreateInvoiceTaxGroupDto;
 use Axytos\ECommerce\DataTransferObjects\CreateInvoiceTaxGroupDtoCollection;
+use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Magento\Sales\Api\Data\InvoiceInterface;
 
 class CreateInvoiceTaxGroupDtoCollectionFactory
@@ -15,14 +16,31 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
      */
     private $createInvoiceTaxGroupDtoFactory;
 
-    public function __construct(CreateInvoiceTaxGroupDtoFactory $createInvoiceTaxGroupDtoFactory)
-    {
+    /**
+     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     */
+    private $productVariantResolver;
+
+    public function __construct(
+        CreateInvoiceTaxGroupDtoFactory $createInvoiceTaxGroupDtoFactory,
+        ProductVariantResolver $productVariantResolver
+    ) {
         $this->createInvoiceTaxGroupDtoFactory = $createInvoiceTaxGroupDtoFactory;
+        $this->productVariantResolver = $productVariantResolver;
     }
 
     public function create(InvoiceInterface $invoice): CreateInvoiceTaxGroupDtoCollection
     {
-        $positionTaxValues = array_map([$this->createInvoiceTaxGroupDtoFactory, 'create'], $this->getItemsArray($invoice));
+        $productVariantResolution = $this->productVariantResolver->resolveProductVariants($invoice);
+
+        $positionTaxValues = array_map(function ($itemResolution) {
+            /** @var \Magento\Sales\Api\Data\InvoiceItemInterface $invoiceItem */
+            $invoiceItem = $itemResolution['item'];
+            return $this->createInvoiceTaxGroupDtoFactory->create($invoiceItem);
+        }, $productVariantResolution);
+
+        $positionTaxValues = array_values($positionTaxValues);
+
         $positionTaxValues[] = $this->createInvoiceTaxGroupDtoFactory->createShippingPosition($invoice);
 
         $taxGroups = array_values(
@@ -41,19 +59,5 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
             )
         );
         return new CreateInvoiceTaxGroupDtoCollection(...$taxGroups);
-    }
-
-    /**
-     * @return \Magento\Sales\Api\Data\InvoiceItemInterface[]
-     */
-    private function getItemsArray(InvoiceInterface $invoice): array
-    {
-        $items = [];
-
-        foreach ($invoice->getItems() as $item) {
-            $items[] = $item;
-        }
-
-        return $items;
     }
 }

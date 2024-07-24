@@ -6,6 +6,7 @@ namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\RefundBasketTaxGroupDto;
 use Axytos\ECommerce\DataTransferObjects\RefundBasketTaxGroupDtoCollection;
+use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 
 class RefundBasketTaxGroupDtoCollectionFactory
@@ -15,14 +16,31 @@ class RefundBasketTaxGroupDtoCollectionFactory
      */
     private $refundBasketTaxGroupDtoFactory;
 
-    public function __construct(RefundBasketTaxGroupDtoFactory $refundBasketTaxGroupDtoFactory)
-    {
+    /**
+     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     */
+    private $productVariantResolver;
+
+    public function __construct(
+        RefundBasketTaxGroupDtoFactory $refundBasketTaxGroupDtoFactory,
+        ProductVariantResolver $productVariantResolver
+    ) {
         $this->refundBasketTaxGroupDtoFactory = $refundBasketTaxGroupDtoFactory;
+        $this->productVariantResolver = $productVariantResolver;
     }
 
     public function create(CreditmemoInterface $creditmemo): RefundBasketTaxGroupDtoCollection
     {
-        $positionTaxValues = array_map([$this->refundBasketTaxGroupDtoFactory, 'create'], $creditmemo->getItems());
+        $productVariantResolution = $this->productVariantResolver->resolveProductVariants($creditmemo);
+
+        $positionTaxValues = array_map(function ($itemResolution) {
+            /** @var \Magento\Sales\Api\Data\CreditmemoItemInterface $creditmemoItem */
+            $creditmemoItem = $itemResolution['item'];
+            return $this->refundBasketTaxGroupDtoFactory->create($creditmemoItem);
+        }, $productVariantResolution);
+
+        $positionTaxValues = array_values($positionTaxValues);
+
         $positionTaxValues[] = $this->refundBasketTaxGroupDtoFactory->createShippingPosition($creditmemo);
 
         $taxGroups = array_values(

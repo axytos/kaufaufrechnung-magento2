@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\BasketPositionDto;
+use Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface;
 use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
 use AxytosKaufAufRechnungShopware5\Adapter\Common\BasketPosition;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -22,12 +23,12 @@ class BasketPositionDtoFactory
         $this->shippingPositionTaxPercentCalculator = $shippingPositionTaxPercentCalculator;
     }
 
-    public function create(OrderItemInterface $orderItem): BasketPositionDto
+    public function create(OrderItemInterface $orderItem, ProductInformationInterface $productInformation): BasketPositionDto
     {
         $position = new BasketPositionDto();
-        $position->productId = strval($orderItem->getSku());
-        $position->productName = $orderItem->getName();
-        $position->productCategory = $orderItem->getProductType();
+        $position->productId = $productInformation->getSku();
+        $position->productName = $productInformation->getName();
+        $position->productCategory = $productInformation->getCategory();
         $position->quantity = intval($orderItem->getQtyOrdered());
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($orderItem->getPrice());
@@ -39,6 +40,10 @@ class BasketPositionDtoFactory
 
     public function createVoucherPosition(OrderInterface $order): BasketPositionDto
     {
+        // getDscountAmount() may return negative values
+        $discountAmount = floatval($order->getDiscountAmount());
+        $discountAmount = $discountAmount <= 0 ? $discountAmount : -$discountAmount;
+
         $position = new BasketPositionDto();
         $position->productId = 'magentovoucherdiscount';
         $position->productName = 'Discount';
@@ -46,7 +51,7 @@ class BasketPositionDtoFactory
         $position->quantity = 1;
         $position->taxPercent = 0.0;
         $position->netPricePerUnit = 0;
-        $position->grossPricePerUnit = -floatval($order->getDiscountAmount());
+        $position->grossPricePerUnit = $discountAmount;
         $position->netPositionTotal = 0;
         $position->grossPositionTotal = $position->grossPricePerUnit;
         return $position;
