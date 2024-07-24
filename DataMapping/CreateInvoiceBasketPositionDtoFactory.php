@@ -33,15 +33,19 @@ class CreateInvoiceBasketPositionDtoFactory
         $orderItemId = $invoiceItem->getOrderItemId();
         $orderItem = $this->orderItemRepositoryInterface->get($orderItemId);
 
+        // quantity can have decimal values for things sold by meter, kilogram, etc.
+        // we need this value to calculate correct position totals and per unit prices
+        $floatQuantity = floatval($invoiceItem->getQty());
+
         $position = new CreateInvoiceBasketPositionDto();
         $position->productId = $productInformation->getSku();
         $position->productName = $productInformation->getName();
-        $position->quantity = intval($invoiceItem->getQty());
+        $position->quantity = intval($floatQuantity); // api does not accept float values yet
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($invoiceItem->getPrice());
         $position->grossPricePerUnit = floatval($invoiceItem->getPriceInclTax());
-        $position->netPositionTotal = round($position->quantity * $position->netPricePerUnit, 2);
-        $position->grossPositionTotal = round($position->quantity * $position->grossPricePerUnit, 2);
+        $position->netPositionTotal = round($floatQuantity * $position->netPricePerUnit, 2);
+        $position->grossPositionTotal = round($floatQuantity * $position->grossPricePerUnit, 2);
         return $position;
     }
 
