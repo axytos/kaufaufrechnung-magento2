@@ -17,36 +17,36 @@ class OrderStateAfterCheckoutDisplayOptions implements ArrayInterface
         return [
             [
                 'label' => 'New',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_NEW
+                'value' => AfterCheckoutOrderState::ORDER_STATE_NEW,
             ],
             [
                 'label' => 'Pending Payment',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_PENDING_PAYMENT
+                'value' => AfterCheckoutOrderState::ORDER_STATE_PENDING_PAYMENT,
             ],
             [
                 'label' => 'Canceled',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_CANCELED
+                'value' => AfterCheckoutOrderState::ORDER_STATE_CANCELED,
             ],
             [
                 'label' => 'Closed',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_CLOSED
+                'value' => AfterCheckoutOrderState::ORDER_STATE_CLOSED,
             ],
             [
                 'label' => 'Complete',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_COMPLETE
+                'value' => AfterCheckoutOrderState::ORDER_STATE_COMPLETE,
             ],
             [
                 'label' => 'On Hold',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_HOLDED
+                'value' => AfterCheckoutOrderState::ORDER_STATE_HOLDED,
             ],
             [
                 'label' => 'Processing',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_PROCESSING
+                'value' => AfterCheckoutOrderState::ORDER_STATE_PROCESSING,
             ],
             [
                 'label' => 'Payment Review',
-                'value' => AfterCheckoutOrderState::ORDER_STATE_PAYMENT_REVIEW
-            ]
+                'value' => AfterCheckoutOrderState::ORDER_STATE_PAYMENT_REVIEW,
+            ],
         ];
     }
 }

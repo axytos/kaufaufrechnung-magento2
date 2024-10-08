@@ -9,6 +9,9 @@ use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationAssert
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationMockFactoryTrait;
 use Magento\Framework\Api\SearchCriteria;
 
+/**
+ * @internal
+ */
 class ResolveInvoiceItemsTest extends ProductInformationTestCase
 {
     use ProductInformationMockFactoryTrait;

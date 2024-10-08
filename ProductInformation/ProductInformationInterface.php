@@ -6,24 +6,12 @@ namespace Axytos\KaufAufRechnung\ProductInformation;
 
 interface ProductInformationInterface
 {
-    /**
-     * @return int|null
-     */
-    public function getId(): int|null;
+    public function getId(): ?int;
 
-    /**
-     * @return string
-     */
     public function getSku(): string;
 
-    /**
-     * @return string
-     */
     public function getName(): string;
 
-    /**
-     * @return string
-     */
     public function getCategory(): string;
 
     /**
@@ -31,9 +19,6 @@ interface ProductInformationInterface
      */
     public function getCategoryNames(): array;
 
-    /**
-     * @return bool
-     */
     public function isConfigurable(): bool;
 
     /**

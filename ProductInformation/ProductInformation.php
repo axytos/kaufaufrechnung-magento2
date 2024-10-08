@@ -24,9 +24,9 @@ class ProductInformation implements ProductInformationInterface
     private $variants = [];
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @param string[] $categoryNames
+     * @param string[]                                     $categoryNames
      * @param \Magento\Catalog\Api\Data\ProductInterface[] $variants
+     *
      * @return void
      */
     public function __construct(ProductInterface $product, $categoryNames, $variants)
@@ -36,7 +36,7 @@ class ProductInformation implements ProductInformationInterface
         $this->variants = $variants;
     }
 
-    public function getId(): int|null
+    public function getId(): ?int
     {
         return $this->product->getId();
     }
@@ -63,7 +63,7 @@ class ProductInformation implements ProductInformationInterface
 
     public function isConfigurable(): bool
     {
-        return $this->product->getTypeId() === ProductTypeCodes::CONFIGURABLE;
+        return ProductTypeCodes::CONFIGURABLE === $this->product->getTypeId();
     }
 
     public function getVariants(): array

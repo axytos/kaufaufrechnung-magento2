@@ -6,7 +6,6 @@ namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\ShippingBasketPositionDto;
 use Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface;
-use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\ShipmentItemInterface;
 
 class ShippingBasketPositionDtoFactory
@@ -15,7 +14,8 @@ class ShippingBasketPositionDtoFactory
     {
         $position = new ShippingBasketPositionDto();
         $position->productId = $productInformation->getSku();
-        $position->quantity = intval($shippingItem->getQty());
+        $position->quantity = floatval($shippingItem->getQty());
+
         return $position;
     }
 
@@ -24,6 +24,7 @@ class ShippingBasketPositionDtoFactory
         $position = new ShippingBasketPositionDto();
         $position->productId = '0';
         $position->quantity = 1;
+
         return $position;
     }
 }

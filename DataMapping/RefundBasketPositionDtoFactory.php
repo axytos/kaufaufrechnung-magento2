@@ -6,8 +6,8 @@ namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\RefundBasketPositionDto;
 use Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface;
-use Magento\Sales\Api\Data\CreditmemoItemInterface;
 use Magento\Sales\Api\Data\CreditmemoInterface;
+use Magento\Sales\Api\Data\CreditmemoItemInterface;
 
 class RefundBasketPositionDtoFactory
 {
@@ -17,6 +17,7 @@ class RefundBasketPositionDtoFactory
         $position->productId = $productInformation->getSku();
         $position->grossRefundTotal = floatval($creditmemoItem->getPriceInclTax());
         $position->netRefundTotal = floatval($creditmemoItem->getPrice());
+
         return $position;
     }
 
@@ -26,6 +27,7 @@ class RefundBasketPositionDtoFactory
         $position->productId = '0';
         $position->grossRefundTotal = floatval($creditmemo->getShippingInclTax());
         $position->netRefundTotal = floatval($creditmemo->getShippingAmount());
+
         return $position;
     }
 }

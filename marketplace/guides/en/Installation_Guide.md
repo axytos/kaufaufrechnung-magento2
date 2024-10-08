@@ -67,7 +67,7 @@ In order to be able to use the plugin, you need valid connection data for [https
 
 2. Change __Enabled__ to "Yes".
 
-3. Enter __API Host__. Either [https://api.axytos.com/](https://api.axytos.com/) or [https://api-sandbox.axytos.com/](https://api-sandbox.axytos .com/), the correct values will be communicated to you by axytos during onboarding (see requirements)
+3. Choose __API Host__, either 'Live' or 'Sandbox'.
 
 4. Enter __API Key__. You will be informed of the correct value during the onboarding of axytos (see requirements).
 

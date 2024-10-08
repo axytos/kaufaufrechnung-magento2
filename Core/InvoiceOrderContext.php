@@ -20,8 +20,7 @@ use Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory;
-use DateTime;
-use DateTimeInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\InvoiceInterface;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -31,54 +30,59 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 class InvoiceOrderContext implements InvoiceOrderContextInterface
 {
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var OrderInterface
      */
     private $order;
     /**
-     * @var \Magento\Sales\Api\Data\ShipmentInterface|null
+     * @var ShipmentInterface|null
      */
     private $shipment;
     /**
-     * @var \Magento\Sales\Api\Data\CreditmemoInterface|null
+     * @var CreditmemoInterface|null
      */
     private $creditmemo;
     /**
-     * @var \Magento\Sales\Api\Data\InvoiceInterface|null
+     * @var InvoiceInterface|null
      */
     private $invoice;
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory
+     * @var CustomerDataDtoFactory
      */
     private $customerDataDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory
+     * @var InvoiceAddressDtoFactory
      */
     private $invoiceAddressDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory
+     * @var DeliveryAddressDtoFactory
      */
     private $deliveryAddressDtoFactoy;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory
+     * @var BasketDtoFactory
      */
     private $basketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory
+     * @var RefundBasketDtoFactory
      */
     private $refundBasketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory
+     * @var CreateInvoiceBasketDtoFactory
      */
     private $createInvoiceBasketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory
+     * @var ShippingBasketPositionDtoCollectionFactory
      */
     private $shippingBasketPositionDtoCollectionFactory;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
 
     public function __construct(
         OrderInterface $order,
@@ -92,7 +96,8 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         BasketDtoFactory $basketDtoFactory,
         RefundBasketDtoFactory $refundBasketDtoFactory,
         CreateInvoiceBasketDtoFactory $createInvoiceBasketDtoFactory,
-        ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory
+        ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory,
+        SerializerInterface $serializer
     ) {
         $this->order = $order;
         $this->shipment = $shipment;
@@ -106,6 +111,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         $this->refundBasketDtoFactory = $refundBasketDtoFactory;
         $this->createInvoiceBasketDtoFactory = $createInvoiceBasketDtoFactory;
         $this->shippingBasketPositionDtoCollectionFactory = $shippingBasketPositionDtoCollectionFactory;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -126,7 +132,6 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
     }
 
     /**
-     * @param string $invoiceNumber
      * @return void
      */
     public function setOrderInvoiceNumber(string $invoiceNumber)
@@ -134,15 +139,16 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
     public function getOrderDateTime()
     {
         $createdAt = $this->order->getCreatedAt();
         if (is_null($createdAt)) {
-            return new DateTime();
+            return new \DateTime();
         }
-        return new DateTime($createdAt);
+
+        return new \DateTime($createdAt);
     }
 
     /**
@@ -185,6 +191,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         if (is_null($this->creditmemo)) {
             return new RefundBasketDto();
         }
+
         return $this->refundBasketDtoFactory->create($this->creditmemo);
     }
 
@@ -196,6 +203,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         if (is_null($this->invoice)) {
             return new CreateInvoiceBasketDto();
         }
+
         return $this->createInvoiceBasketDtoFactory->create($this->invoice);
     }
 
@@ -207,6 +215,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
         if (is_null($this->shipment)) {
             return new ShippingBasketPositionDtoCollection();
         }
+
         return $this->shippingBasketPositionDtoCollectionFactory->create($this->shipment);
     }
 
@@ -223,29 +232,56 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
      */
     public function getPreCheckResponseData()
     {
-        /** @phpstan-ignore-next-line because extension interface is generated by magento2 */
-        $preCheckResponse = $this->order->getExtensionAttributes()->getAxytosKaufaufrechnungPrecheckResult();
-        if (is_null($preCheckResponse)) {
+        $extensionAttributes = $this->order->getExtensionAttributes();
+        if (is_null($extensionAttributes)) {
             return [];
         }
+
+        /**
+         * @phpstan-ignore-next-line because extension interface is generated by magento2
+         *
+         * @var \Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributesInterface */
+        $axytosOrderAttributes = $extensionAttributes->getAxytosKaufaufrechnungOrderAttributes();
+        if (is_null($axytosOrderAttributes)) {
+            return [];
+        }
+
+        $preCheckResponse = strval($axytosOrderAttributes->getOrderPreCheckResult());
+        if ('' === $preCheckResponse) {
+            return [];
+        }
+
+        $preCheckResponse = $this->serializer->unserialize($preCheckResponse);
+        if (!is_array($preCheckResponse)) {
+            return [];
+        }
+
         return $preCheckResponse;
     }
 
     /**
      * @param array<mixed> $data
+     *
      * @return void
      */
     public function setPreCheckResponseData($data)
     {
-        $attributes = $this->order->getExtensionAttributes();
-
-        if (is_null($attributes)) {
+        $extensionAttributes = $this->order->getExtensionAttributes();
+        if (is_null($extensionAttributes)) {
             return;
         }
 
-        /** @phpstan-ignore-next-line because extension interface is generated by magento2 */
-        $attributes->setAxytosKaufaufrechnungPrecheckResult($data);
-        $this->order->setExtensionAttributes($attributes);
+        /**
+         * @phpstan-ignore-next-line because extension interface is generated by magento2
+         *
+         * @var \Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributesInterface */
+        $axytosOrderAttributes = $extensionAttributes->getAxytosKaufaufrechnungOrderAttributes();
+        if (is_null($axytosOrderAttributes)) {
+            return;
+        }
+
+        $axytosOrderAttributes->setOrderPreCheckResult(strval($this->serializer->serialize($data)));
+        $this->order->setExtensionAttributes($extensionAttributes);
 
         $this->orderRepository->save($this->order);
     }
@@ -255,6 +291,8 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
      */
     public function getDeliveryWeight()
     {
+        // not yet supported for magento2
+
         // for now delivery weight is not important for risk evaluation
         // because different shop systems don't always provide the necessary
         // information to accurately the exact delivery weight for each delivery
@@ -267,7 +305,8 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
      */
     public function getTrackingIds()
     {
-        throw new \Exception('Not Yet Implemented');
+        // not yet supported for magento2
+        return [];
     }
 
     /**
@@ -275,6 +314,7 @@ class InvoiceOrderContext implements InvoiceOrderContextInterface
      */
     public function getLogistician()
     {
-        throw new \Exception('Not Yet Implemented');
+        // not yet supported for magento2
+        return '';
     }
 }

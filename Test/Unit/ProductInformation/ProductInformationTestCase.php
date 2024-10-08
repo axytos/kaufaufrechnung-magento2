@@ -9,10 +9,12 @@ use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterface;
-use Magento\GiftMessage\Model\OrderItemRepository;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ProductInformationTestCase extends TestCase
 {
     /**

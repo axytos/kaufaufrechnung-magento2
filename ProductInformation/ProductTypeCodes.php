@@ -3,9 +3,7 @@
 namespace Axytos\KaufAufRechnung\ProductInformation;
 
 /**
- * see: https://docs.magento.com/user-guide/v2.3/catalog/product-types.html
- *
- * @package Axytos\KaufAufRechnung\ProductInformation
+ * see: https://docs.magento.com/user-guide/v2.3/catalog/product-types.html.
  */
 class ProductTypeCodes
 {

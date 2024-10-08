@@ -11,11 +11,11 @@ use Magento\Framework\App\ProductMetadataInterface;
 class UserAgentInfoProvider implements UserAgentInfoProviderInterface
 {
     /**
-     * @var \Magento\Framework\App\ProductMetadataInterface
+     * @var ProductMetadataInterface
      */
     private $productMetaDataInterface;
     /**
-     * @var \Axytos\ECommerce\PackageInfo\ComposerPackageInfoProvider
+     * @var ComposerPackageInfoProvider
      */
     private $composerPackageInfoProvider;
 
@@ -27,7 +27,7 @@ class UserAgentInfoProvider implements UserAgentInfoProviderInterface
 
     public function getPluginName(): string
     {
-        return "KaufAufRechnung";
+        return 'KaufAufRechnung';
     }
 
     public function getPluginVersion(): string
@@ -44,7 +44,7 @@ class UserAgentInfoProvider implements UserAgentInfoProviderInterface
 
     public function getShopSystemName(): string
     {
-        return "Magento";
+        return 'Magento';
     }
 
     public function getShopSystemVersion(): string

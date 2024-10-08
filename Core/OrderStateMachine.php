@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\Core;
 
 use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
-use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 
 class OrderStateMachine
 {
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
     /**
-     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     * @var PluginConfiguration
      */
     private $pluginConfig;
 

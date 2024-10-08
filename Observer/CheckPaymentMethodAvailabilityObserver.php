@@ -8,7 +8,6 @@ use Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface;
 use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
 use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 use Axytos\KaufAufRechnung\Model\Constants;
-use Exception;
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Payment\Model\Method\Adapter;
@@ -17,19 +16,19 @@ use Magento\Quote\Api\CartTotalRepositoryInterface;
 class CheckPaymentMethodAvailabilityObserver implements ObserverInterface
 {
     /**
-     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     * @var PluginConfigurationValidator
      */
     private $pluginConfigurationValidator;
     /**
-     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     * @var ErrorReportingClientInterface
      */
     private $errorReportingClient;
     /**
-     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     * @var PluginConfiguration
      */
     private $pluginConfiguration;
     /**
-     * @var \Magento\Quote\Api\CartTotalRepositoryInterface
+     * @var CartTotalRepositoryInterface
      */
     private $cartTotalRepository;
 
@@ -57,24 +56,26 @@ class CheckPaymentMethodAvailabilityObserver implements ObserverInterface
             }
 
             $this->setAxytosKaufAufRechnungAvailability($observer);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->errorReportingClient->reportError($exception);
         }
     }
 
     private function isPaymentMethodIsActiveEvent(\Magento\Framework\Event\Observer $observer): bool
     {
-        return $observer->getEvent()->getName() === 'payment_method_is_active';
+        return 'payment_method_is_active' === $observer->getEvent()->getName();
     }
 
     private function isForAxytosKaufAufRechnungPaymentMethod(\Magento\Framework\Event\Observer $observer): bool
     {
         /**
          * @var Adapter
+         *
          * @phpstan-ignore-next-line because getMethodInstance() is invoked via DataObject::__call
          */
         $methodInstance = $observer->getEvent()->getMethodInstance();
-        return $methodInstance->getCode() === Constants::PAYMENT_METHOD_CODE;
+
+        return Constants::PAYMENT_METHOD_CODE === $methodInstance->getCode();
     }
 
     private function setAxytosKaufAufRechnungAvailability(\Magento\Framework\Event\Observer $observer): void
@@ -83,6 +84,7 @@ class CheckPaymentMethodAvailabilityObserver implements ObserverInterface
 
         /**
          * @var DataObject
+         *
          * @phpstan-ignore-next-line because getResult() is invoked via DataObject::__call
          */
         $eventResult = $observer->getEvent()->getResult();

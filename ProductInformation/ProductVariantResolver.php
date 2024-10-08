@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\ProductInformation;
 
-use Exception;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\CreditmemoItemInterface;
 use Magento\Sales\Api\Data\InvoiceInterface;
@@ -18,12 +17,12 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 class ProductVariantResolver
 {
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory
+     * @var ProductInformationFactory
      */
     private $productInformationFactory;
 
     /**
-     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
+     * @var OrderItemRepositoryInterface
      */
     private $orderItemRepository;
 
@@ -37,50 +36,57 @@ class ProductVariantResolver
 
     /**
      * @param OrderInterface|InvoiceInterface|CreditmemoInterface|ShipmentInterface $itemContainer
+     *
      * @return array<array{'item':OrderItemInterface|InvoiceItemInterface|CreditmemoItemInterface|ShipmentItemInterface, 'product':ProductInformationInterface}>
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function resolveProductVariants($itemContainer)
     {
         if ($itemContainer instanceof OrderInterface) {
             return $this->resolveProductVariantsForOrder($itemContainer);
-        } elseif ($itemContainer instanceof InvoiceInterface) {
-            return $this->resolveProductVariantsForInvoice($itemContainer);
-        } elseif ($itemContainer instanceof CreditmemoInterface) {
-            return $this->resolveProductVariantsForCreditmemo($itemContainer);
-        } elseif ($itemContainer instanceof ShipmentInterface) {
-            return $this->resolveProductVariantsForShipment($itemContainer);
-        } else {
-            throw new \Exception('Unsupported item container! Use OrderInterface, InvoiceInterface, CreditmemoInterface or ShipmentInterface.');
         }
+        if ($itemContainer instanceof InvoiceInterface) {
+            return $this->resolveProductVariantsForInvoice($itemContainer);
+        }
+        if ($itemContainer instanceof CreditmemoInterface) {
+            return $this->resolveProductVariantsForCreditmemo($itemContainer);
+        }
+        if ($itemContainer instanceof ShipmentInterface) {
+            return $this->resolveProductVariantsForShipment($itemContainer);
+        }
+        throw new \Exception('Unsupported item container! Use OrderInterface, InvoiceInterface, CreditmemoInterface or ShipmentInterface.');
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @return array<array{'item':OrderItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForOrder(OrderInterface $order): array
     {
         // magento getItems() may return instance of Collection or array
         $orderItems = self::ensureArray(OrderItemInterface::class, $order->getItems());
+
         return $this->resolveProductVariantsForOrderItems($orderItems);
     }
 
     /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface[] $orderItems
+     *
      * @return array<array{'item':OrderItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForOrderItems(array $orderItems): array
     {
         // Create a map of order items by item ID
-        $allItems = array_reduce($orderItems, function ($carry, OrderItemInterface $orderItem) {
+        $allItems = array_reduce($orderItems, function (array $carry, OrderItemInterface $orderItem) {
             $carry[intval($orderItem->getItemId())] = $orderItem;
+
             return $carry;
         }, []);
 
         // Create a map of all products by item ID
-        $allProducts = array_reduce($allItems, function ($carry, OrderItemInterface $orderItem) {
+        $allProducts = array_reduce($allItems, function (array $carry, OrderItemInterface $orderItem) {
             $carry[intval($orderItem->getItemId())] = $this->productInformationFactory->createFromOrderItem($orderItem);
+
             return $carry;
         }, []);
 
@@ -93,12 +99,13 @@ class ProductVariantResolver
         $variantItems = array_filter($allItems, function (OrderItemInterface $orderItem) use ($configurableItems) {
             return !is_null($orderItem->getParentItemId())
                 && array_key_exists(intval($orderItem->getParentItemId()), $configurableItems)
-                && floatval($orderItem->getPriceInclTax()) === 0.0;
+                && 0.0 === floatval($orderItem->getPriceInclTax());
         });
 
         // Create a map of variant products by parent item ID
-        $variantProductsOfConfigurableItems = array_reduce($variantItems, function ($carry, OrderItemInterface $orderItem) use ($allProducts) {
+        $variantProductsOfConfigurableItems = array_reduce($variantItems, function (array $carry, OrderItemInterface $orderItem) use ($allProducts) {
             $carry[intval($orderItem->getParentItemId())] = $allProducts[intval($orderItem->getItemId())];
+
             return $carry;
         }, []);
 
@@ -125,18 +132,19 @@ class ProductVariantResolver
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\InvoiceInterface $invoice
      * @return array<array{'item':InvoiceItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForInvoice(InvoiceInterface $invoice): array
     {
         // magento getItems() may return instance of Collection or array
         $invoiceItems = self::ensureArray(InvoiceItemInterface::class, $invoice->getItems());
+
         return $this->resolveProductVariantsForInvoiceItems($invoiceItems);
     }
 
     /**
      * @param \Magento\Sales\Api\Data\InvoiceItemInterface[] $invoiceItems
+     *
      * @return array<array{'item':InvoiceItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForInvoiceItems(array $invoiceItems): array
@@ -152,8 +160,9 @@ class ProductVariantResolver
             return $item['orderItem'];
         }, $map);
 
-        $invoiceItemsByOrderItemId = array_reduce($map, function ($carry, $item) {
+        $invoiceItemsByOrderItemId = array_reduce($map, function (array $carry, $item) {
             $carry[intval($item['orderItem']->getItemId())] = $item['invoiceItem'];
+
             return $carry;
         }, []);
 
@@ -170,18 +179,19 @@ class ProductVariantResolver
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\CreditmemoInterface $creditmemo
      * @return array<array{'item':CreditmemoItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForCreditmemo(CreditmemoInterface $creditmemo): array
     {
         // magento getItems() may return instance of Collection or array
         $creditmemoItems = self::ensureArray(CreditmemoItemInterface::class, $creditmemo->getItems());
+
         return $this->resolveProductVariantsForCreditmemoItems($creditmemoItems);
     }
 
     /**
      * @param \Magento\Sales\Api\Data\CreditmemoItemInterface[] $creditmemoItems
+     *
      * @return array<array{'item':CreditmemoItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForCreditmemoItems(array $creditmemoItems): array
@@ -197,8 +207,9 @@ class ProductVariantResolver
             return $item['orderItem'];
         }, $map);
 
-        $creditmemoItemsByOrderItemId = array_reduce($map, function ($carry, $item) {
+        $creditmemoItemsByOrderItemId = array_reduce($map, function (array $carry, $item) {
             $carry[intval($item['orderItem']->getItemId())] = $item['creditmemoItem'];
+
             return $carry;
         }, []);
 
@@ -215,18 +226,19 @@ class ProductVariantResolver
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\ShipmentInterface $shipment
      * @return array<array{'item':ShipmentItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForShipment(ShipmentInterface $shipment): array
     {
         // magento getItems() may return instance of Collection or array
         $shipmentItems = self::ensureArray(ShipmentItemInterface::class, $shipment->getItems());
+
         return $this->resolveProductVariantsForShipmentItems($shipmentItems);
     }
 
     /**
      * @param \Magento\Sales\Api\Data\ShipmentItemInterface[] $shipmentItems
+     *
      * @return array<array{'item':ShipmentItemInterface, 'product':ProductInformationInterface}>
      */
     private function resolveProductVariantsForShipmentItems(array $shipmentItems): array
@@ -242,8 +254,9 @@ class ProductVariantResolver
             return $item['orderItem'];
         }, $map);
 
-        $shipmentItemsByOrderItemId = array_reduce($map, function ($carry, $item) {
+        $shipmentItemsByOrderItemId = array_reduce($map, function (array $carry, $item) {
             $carry[intval($item['orderItem']->getItemId())] = $item['shipmentItem'];
+
             return $carry;
         }, []);
 
@@ -261,8 +274,10 @@ class ProductVariantResolver
 
     /**
      * @phpstan-template T
+     *
      * @param class-string<T> $itemClass
-     * @param iterable<T> $items
+     * @param iterable<T>     $items
+     *
      * @return array<T>
      */
     private static function ensureArray($itemClass, $items): array

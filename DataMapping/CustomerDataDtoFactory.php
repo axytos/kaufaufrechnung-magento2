@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\CustomerDataDto;
-use DateTimeImmutable;
 use Magento\Sales\Api\Data\OrderInterface;
 
 class CustomerDataDtoFactory
@@ -14,8 +13,9 @@ class CustomerDataDtoFactory
     {
         $personalDataDto = new CustomerDataDto();
         $personalDataDto->externalCustomerId = $this->getExternalCustomerId($order);
-        $personalDataDto->dateOfBirth = is_null($order->getCustomerDob()) ? null : new DateTimeImmutable($order->getCustomerDob());
+        $personalDataDto->dateOfBirth = is_null($order->getCustomerDob()) ? null : new \DateTimeImmutable($order->getCustomerDob());
         $personalDataDto->email = $order->getCustomerEmail();
+
         return $personalDataDto;
     }
 

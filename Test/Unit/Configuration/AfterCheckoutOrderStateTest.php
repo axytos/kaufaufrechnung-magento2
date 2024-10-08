@@ -9,13 +9,16 @@ use Magento\Sales\Model\Order;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class AfterCheckoutOrderStateTest extends TestCase
 {
     /**
      * @dataProvider getOrderStateTestCases
      */
     #[DataProvider('getOrderStateTestCases')]
-    public function test_getOrderState_returns_correct_value(string $value, string $expectedValue): void
+    public function test_get_order_state_returns_correct_value(string $value, string $expectedValue): void
     {
         $afterCheckoutOrderState = new AfterCheckoutOrderState($value);
 
@@ -39,7 +42,7 @@ class AfterCheckoutOrderStateTest extends TestCase
         ];
     }
 
-    public function test_getOrderState_returns_ACTION_REOPEN_as_default(): void
+    public function test_get_order_state_returns_actio_n_reope_n_as_default(): void
     {
         $afterCheckoutOrderStatus = new AfterCheckoutOrderState('');
 

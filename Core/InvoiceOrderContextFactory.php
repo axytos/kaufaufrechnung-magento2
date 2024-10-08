@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\Core;
 
 use Axytos\ECommerce\Clients\Invoice\InvoiceOrderContextInterface;
-use Axytos\KaufAufRechnung\Core\InvoiceOrderContext;
 use Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory;
@@ -13,6 +12,7 @@ use Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\InvoiceInterface;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -22,37 +22,42 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 class InvoiceOrderContextFactory
 {
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepositoryInterface;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory
+     * @var CustomerDataDtoFactory
      */
     private $customerDataDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory
+     * @var InvoiceAddressDtoFactory
      */
     private $invoiceAddressDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory
+     * @var DeliveryAddressDtoFactory
      */
     private $deliveryAddressDtoFactoy;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory
+     * @var BasketDtoFactory
      */
     private $basketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory
+     * @var RefundBasketDtoFactory
      */
     private $refundBasketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory
+     * @var CreateInvoiceBasketDtoFactory
      */
     private $createInvoiceBasketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory
+     * @var ShippingBasketPositionDtoCollectionFactory
      */
     private $shippingBasketPositionDtoCollectionFactory;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
 
     public function __construct(
         OrderRepositoryInterface $orderRepositoryInterface,
@@ -62,7 +67,8 @@ class InvoiceOrderContextFactory
         BasketDtoFactory $basketDtoFactory,
         RefundBasketDtoFactory $refundBasketDtoFactory,
         CreateInvoiceBasketDtoFactory $createInvoiceBasketDtoFactory,
-        ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory
+        ShippingBasketPositionDtoCollectionFactory $shippingBasketPositionDtoCollectionFactory,
+        SerializerInterface $serializer
     ) {
         $this->orderRepositoryInterface = $orderRepositoryInterface;
         $this->customerDataDtoFactory = $customerDataDtoFactory;
@@ -72,8 +78,12 @@ class InvoiceOrderContextFactory
         $this->refundBasketDtoFactory = $refundBasketDtoFactory;
         $this->createInvoiceBasketDtoFactory = $createInvoiceBasketDtoFactory;
         $this->shippingBasketPositionDtoCollectionFactory = $shippingBasketPositionDtoCollectionFactory;
+        $this->serializer = $serializer;
     }
 
+    /**
+     * @return \Axytos\ECommerce\Clients\Invoice\InvoiceOrderContextInterface&\Axytos\KaufAufRechnung\Core\InvoiceOrderContext
+     */
     public function getInvoiceOrderContext(
         OrderInterface $order,
         ?ShipmentInterface $shipment = null,
@@ -92,7 +102,8 @@ class InvoiceOrderContextFactory
             $this->basketDtoFactory,
             $this->refundBasketDtoFactory,
             $this->createInvoiceBasketDtoFactory,
-            $this->shippingBasketPositionDtoCollectionFactory
+            $this->shippingBasketPositionDtoCollectionFactory,
+            $this->serializer
         );
     }
 }

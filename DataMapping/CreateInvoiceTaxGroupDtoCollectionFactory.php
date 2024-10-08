@@ -12,12 +12,12 @@ use Magento\Sales\Api\Data\InvoiceInterface;
 class CreateInvoiceTaxGroupDtoCollectionFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoFactory
+     * @var CreateInvoiceTaxGroupDtoFactory
      */
     private $createInvoiceTaxGroupDtoFactory;
 
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     * @var ProductVariantResolver
      */
     private $productVariantResolver;
 
@@ -36,6 +36,7 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
         $positionTaxValues = array_map(function ($itemResolution) {
             /** @var \Magento\Sales\Api\Data\InvoiceItemInterface $invoiceItem */
             $invoiceItem = $itemResolution['item'];
+
             return $this->createInvoiceTaxGroupDtoFactory->create($invoiceItem);
         }, $productVariantResolution);
 
@@ -47,17 +48,19 @@ class CreateInvoiceTaxGroupDtoCollectionFactory
             array_reduce(
                 $positionTaxValues,
                 function (array $agg, CreateInvoiceTaxGroupDto $cur) {
-                    if (array_key_exists("$cur->taxPercent", $agg)) {
-                        $agg["$cur->taxPercent"]->total += $cur->total;
-                        $agg["$cur->taxPercent"]->valueToTax += $cur->valueToTax;
+                    if (array_key_exists("{$cur->taxPercent}", $agg)) {
+                        $agg["{$cur->taxPercent}"]->total += $cur->total;
+                        $agg["{$cur->taxPercent}"]->valueToTax += $cur->valueToTax;
                     } else {
-                        $agg["$cur->taxPercent"] = $cur;
+                        $agg["{$cur->taxPercent}"] = $cur;
                     }
+
                     return $agg;
                 },
                 []
             )
         );
+
         return new CreateInvoiceTaxGroupDtoCollection(...$taxGroups);
     }
 }

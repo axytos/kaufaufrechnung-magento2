@@ -124,11 +124,16 @@
         <plugin name="AxytosKaufAufRechnung_OrderServicePlugin" type="Axytos\KaufAufRechnung\Plugin\OrderServicePlugin" />
     </type>
 
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="AxytosKaufAufRechnung_OrderRepositoryPlugin" type="Axytos\KaufAufRechnung\Plugin\OrderRepositoryPlugin" />
+    </type>
+
     <!-- ============================================================================================================================= -->
     <!-- Web API Controller== ======================================================================================================== -->
     <!-- ============================================================================================================================= -->
 
     <preference for="Axytos\KaufAufRechnung\Api\PaymentControllerInterface" type="Axytos\KaufAufRechnung\Api\PaymentController"/>
+    <preference for="Axytos\KaufAufRechnung\Api\ActionCallbackControllerInterface" type="Axytos\KaufAufRechnung\Api\ActionCallbackController"/>
 
     <!-- ============================================================================================================================= -->
     <!-- DataMapping ================================================================================================================= -->
@@ -204,6 +209,43 @@
 
     <type name="Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory"></type>
     <type name="Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver"></type>
+
+    <!-- ============================================================================================================================= -->
+    <!-- Custom Data ================================================================================================================= -->
+    <!-- ============================================================================================================================= -->
+
+    <preference for="Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributesInterface" type="Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributes" /> 
+
+    <type name="Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributesLoader"></type>
+
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributes" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">axytos_kaufaufrechnung_order_attributes</item>
+                    <item name="identifierField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <!-- ============================================================================================================================= -->
+    <!-- Core Adapter ================================================================================================================ -->
+    <!-- ============================================================================================================================= -->
+
+    <preference for="Axytos\KaufAufRechnung\Core\Abstractions\Model\Actions\ActionExecutorInterface" type="Axytos\KaufAufRechnung\Core\Model\Actions\ActionExecutor" /> 
+    <preference for="Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Configuration\ClientSecretProviderInterface" type="Axytos\KaufAufRechnung\Adapter\Configuration\ClientSecretProvider" /> 
+    <preference for="Axytos\KaufAufRechnung\Core\Plugin\Abstractions\OrderSyncRepositoryInterface" type="Axytos\KaufAufRechnung\Adapter\OrderSyncRepository" /> 
+    <preference for="Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Database\DatabaseTransactionFactoryInterface" type="Axytos\KaufAufRechnung\Adapter\Database\DatabaseTransactionFactory" /> 
+    <preference for="Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Logging\LoggerAdapterInterface" type="Axytos\KaufAufRechnung\Adapter\Logging\LoggerAdapter" /> 
+
+    <type name="Axytos\KaufAufRechnung\Core\Model\AxytosOrderFactory"></type>
+
+    <type name="Axytos\KaufAufRechnung\Adapter\HashCalculation\HashCalculator"></type>
+    <preference for="Axytos\KaufAufRechnung\Adapter\HashCalculation\HashAlgorithmInterface" type="Axytos\KaufAufRechnung\Adapter\HashCalculation\SHA256HashAlgorithm" /> 
+
+    <type name="Axytos\KaufAufRechnung\Adapter\PluginOrderFactory"></type>
 
     <!-- ============================================================================================================================= -->
     <!-- ============================================================================================================================= -->
