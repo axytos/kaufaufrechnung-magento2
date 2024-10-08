@@ -38,9 +38,9 @@ class PluginConfiguration extends AbstractHelper
         /** @phpstan-ignore-next-line */
         if (empty($errorMessage)) {
             return null;
-        } else {
-            return strval($errorMessage);
         }
+
+        return strval($errorMessage);
     }
 
     public function getMaximumOrderAmount(): float

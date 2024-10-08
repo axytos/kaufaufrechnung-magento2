@@ -9,11 +9,11 @@ use Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoCollectionF
 use Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoCollectionFactory;
 use Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoFactory;
+use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
 use Axytos\KaufAufRechnung\ProductInformation\ProductTypeCodes;
+use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationAssertionTrait;
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationMockFactoryTrait;
-use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
-use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -21,6 +21,9 @@ use Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterfa
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class CreateInvoiceBasketSkuMappingTest extends TestCase
 {
     use ProductInformationMockFactoryTrait;
@@ -47,7 +50,6 @@ class CreateInvoiceBasketSkuMappingTest extends TestCase
      * @var \Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configurableOptionsProvider;
-
 
     public function setUp(): void
     {

@@ -2,14 +2,14 @@
 
 namespace Axytos\KaufAufRechnung\Adapter\Information;
 
-use Axytos\KaufAufRechnung\Core\InvoiceOrderContext;
 use Axytos\KaufAufRechnung\Adapter\Information\Shipping\BasketPosition;
+use Axytos\KaufAufRechnung\Core\InvoiceOrderContext;
 use Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Information\ShippingInformationInterface;
 
 class ShippingInformation implements ShippingInformationInterface
 {
     /**
-     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContext
+     * @var InvoiceOrderContext
      */
     private $invoiceOrderContext;
 
@@ -26,6 +26,7 @@ class ShippingInformation implements ShippingInformationInterface
     public function getShippingBasketPositions()
     {
         $positions = $this->invoiceOrderContext->getShippingBasketPositions();
+
         return array_map(function ($position) {
             return new BasketPosition($position);
         }, $positions->getElements());

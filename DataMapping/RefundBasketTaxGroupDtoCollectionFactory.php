@@ -12,12 +12,12 @@ use Magento\Sales\Api\Data\CreditmemoInterface;
 class RefundBasketTaxGroupDtoCollectionFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoFactory
+     * @var RefundBasketTaxGroupDtoFactory
      */
     private $refundBasketTaxGroupDtoFactory;
 
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     * @var ProductVariantResolver
      */
     private $productVariantResolver;
 
@@ -36,6 +36,7 @@ class RefundBasketTaxGroupDtoCollectionFactory
         $positionTaxValues = array_map(function ($itemResolution) {
             /** @var \Magento\Sales\Api\Data\CreditmemoItemInterface $creditmemoItem */
             $creditmemoItem = $itemResolution['item'];
+
             return $this->refundBasketTaxGroupDtoFactory->create($creditmemoItem);
         }, $productVariantResolution);
 
@@ -47,17 +48,19 @@ class RefundBasketTaxGroupDtoCollectionFactory
             array_reduce(
                 $positionTaxValues,
                 function (array $agg, RefundBasketTaxGroupDto $cur) {
-                    if (array_key_exists("$cur->taxPercent", $agg)) {
-                        $agg["$cur->taxPercent"]->total += $cur->total;
-                        $agg["$cur->taxPercent"]->valueToTax += $cur->valueToTax;
+                    if (array_key_exists("{$cur->taxPercent}", $agg)) {
+                        $agg["{$cur->taxPercent}"]->total += $cur->total;
+                        $agg["{$cur->taxPercent}"]->valueToTax += $cur->valueToTax;
                     } else {
-                        $agg["$cur->taxPercent"] = $cur;
+                        $agg["{$cur->taxPercent}"] = $cur;
                     }
+
                     return $agg;
                 },
                 []
             )
         );
+
         return new RefundBasketTaxGroupDtoCollection(...$taxGroups);
     }
 }

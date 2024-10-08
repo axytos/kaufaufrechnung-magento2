@@ -10,11 +10,11 @@ use Axytos\KaufAufRechnung\DataMapping\RefundBasketPositionDtoCollectionFactory;
 use Axytos\KaufAufRechnung\DataMapping\RefundBasketPositionDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoCollectionFactory;
 use Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoFactory;
+use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
 use Axytos\KaufAufRechnung\ProductInformation\ProductTypeCodes;
+use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationAssertionTrait;
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationMockFactoryTrait;
-use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
-use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -22,6 +22,9 @@ use Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterfa
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class RefundBasketSkuMappingTest extends TestCase
 {
     use ProductInformationMockFactoryTrait;
@@ -48,7 +51,6 @@ class RefundBasketSkuMappingTest extends TestCase
      * @var \Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configurableOptionsProvider;
-
 
     public function setUp(): void
     {

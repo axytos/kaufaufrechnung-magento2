@@ -7,11 +7,11 @@ namespace Axytos\KaufAufRechnung\Tests\Unit\ProductInformation\DataMapping;
 use Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoCollectionFactory;
 use Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoFactory;
+use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
 use Axytos\KaufAufRechnung\ProductInformation\ProductTypeCodes;
+use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationAssertionTrait;
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationMockFactoryTrait;
-use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
-use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -19,6 +19,9 @@ use Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterfa
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class BasketSkuMappingTest extends TestCase
 {
     use ProductInformationMockFactoryTrait;

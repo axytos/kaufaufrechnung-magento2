@@ -65,9 +65,9 @@ Um das Plugin nutzen zu können, benötigen Sie valide Verbindungsdaten zu [http
 
 1. Zur Administration Ihrer Magento Distribution wechseln. Die Bezahlmethode axytos Kauf auf Rechnung befindet sich unter STORES > Configuration > SALES > Payment Methods > OTHER PAYMENT METHODS.
 
-2. __Enabled__ auf "Yes" umstellen
+2. __Enabled__ auf "Yes" umstellen.
 
-3. __API Host__ eintragen. Entweder [https://api.axytos.com/](https://api.axytos.com/) oder [https://api-sandbox.axytos.com/](https://api-sandbox.axytos.com/), die korrekten Werte werden Ihnen von axytos während des Onboarding mitgeteilt (siehe Voraussetzungen)
+3. __API Host__ auswählen, entweder 'Live' oder 'Sandbox'.
 
 4. __API Key__ eintragen. Der korrekte Wert wird Ihnen während des Onboarding von axytos mitgeteilt (siehe Voraussetzungen).
 

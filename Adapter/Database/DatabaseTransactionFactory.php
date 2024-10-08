@@ -9,7 +9,7 @@ use Magento\Framework\App\ResourceConnection;
 class DatabaseTransactionFactory implements DatabaseTransactionFactoryInterface
 {
     /**
-     * @var \Magento\Framework\App\ResourceConnection
+     * @var ResourceConnection
      */
     private $resourceConnection;
 

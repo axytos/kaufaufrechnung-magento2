@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\BasketPositionDtoCollection;
-use Axytos\KaufAufRechnung\ProductInformation\ProductInformationFactory;
 use Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver;
 use Magento\Sales\Api\Data\OrderInterface;
 
 class BasketPositionDtoCollectionFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\BasketPositionDtoFactory
+     * @var BasketPositionDtoFactory
      */
     private $basketPositionDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     * @var ProductVariantResolver
      */
     private $productVariantResolver;
 
@@ -37,6 +36,7 @@ class BasketPositionDtoCollectionFactory
             $orderItem = $itemResolution['item'];
             /** @var \Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface $productInfo */
             $productInfo = $itemResolution['product'];
+
             return $this->basketPositionDtoFactory->create($orderItem, $productInfo);
         }, $productVariantResolution);
 
@@ -44,7 +44,7 @@ class BasketPositionDtoCollectionFactory
 
         $voucherPosition = $this->basketPositionDtoFactory->createVoucherPosition($order);
         if (!is_null($voucherPosition)) {
-            if ($voucherPosition->grossPositionTotal !== 0.0) {
+            if (0.0 !== $voucherPosition->grossPositionTotal) {
                 array_push($positions, $voucherPosition);
             }
         }

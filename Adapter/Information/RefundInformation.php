@@ -2,14 +2,14 @@
 
 namespace Axytos\KaufAufRechnung\Adapter\Information;
 
+use Axytos\KaufAufRechnung\Adapter\Information\Refund\Basket;
 use Axytos\KaufAufRechnung\Core\InvoiceOrderContext;
 use Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Information\RefundInformationInterface;
-use Axytos\KaufAufRechnung\Adapter\Information\Refund\Basket;
 
 class RefundInformation implements RefundInformationInterface
 {
     /**
-     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContext
+     * @var InvoiceOrderContext
      */
     private $invoiceOrderContext;
 
@@ -31,6 +31,7 @@ class RefundInformation implements RefundInformationInterface
     public function getBasket()
     {
         $dto = $this->invoiceOrderContext->getRefundBasket();
+
         return new Basket($dto);
     }
 }

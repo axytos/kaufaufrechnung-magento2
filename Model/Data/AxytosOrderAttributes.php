@@ -12,12 +12,12 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
     /**
      * @var int|null
      */
-    private $magentoOrderEntityId = null;
+    private $magentoOrderEntityId;
 
     /**
      * @var string|null
      */
-    private $orderIncrementId = null;
+    private $orderIncrementId;
 
     /**
      * @var string
@@ -59,6 +59,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param int $id
+     *
      * @return void
      */
     public function setId($id)
@@ -76,6 +77,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param int|null $magentoOrderEntityId
+     *
      * @return void
      */
     public function setMagentoOrderEntityId($magentoOrderEntityId)
@@ -93,6 +95,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param string|null $orderIncrementId
+     *
      * @return void
      */
     public function setMagentoOrderIncrementId($orderIncrementId)
@@ -110,6 +113,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param string $orderPreCheckResult
+     *
      * @return void
      */
     public function setOrderPreCheckResult($orderPreCheckResult)
@@ -127,6 +131,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param bool $shippingReported
+     *
      * @return void
      */
     public function setShippingReported($shippingReported)
@@ -144,6 +149,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param string|null $reportedTrackingCode
+     *
      * @return void
      */
     public function setReportedTrackingCode($reportedTrackingCode)
@@ -161,6 +167,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param string $orderBasketHash
+     *
      * @return void
      */
     public function setOrderBasketHash($orderBasketHash)
@@ -178,6 +185,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param string $orderState
+     *
      * @return void
      */
     public function setOrderState($orderState)
@@ -195,6 +203,7 @@ class AxytosOrderAttributes implements AxytosOrderAttributesInterface
 
     /**
      * @param string $orderStateData
+     *
      * @return void
      */
     public function setOrderStateData($orderStateData)

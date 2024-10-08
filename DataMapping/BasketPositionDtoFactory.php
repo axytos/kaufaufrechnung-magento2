@@ -7,14 +7,13 @@ namespace Axytos\KaufAufRechnung\DataMapping;
 use Axytos\ECommerce\DataTransferObjects\BasketPositionDto;
 use Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface;
 use Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator;
-use AxytosKaufAufRechnungShopware5\Adapter\Common\BasketPosition;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 
 class BasketPositionDtoFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator
+     * @var ShippingPositionTaxPercentCalculator
      */
     private $shippingPositionTaxPercentCalculator;
 
@@ -33,12 +32,13 @@ class BasketPositionDtoFactory
         $position->productId = $productInformation->getSku();
         $position->productName = $productInformation->getName();
         $position->productCategory = $productInformation->getCategory();
-        $position->quantity = intval($floatQuantity); // api does not accept float values yet
+        $position->quantity = floatval($floatQuantity); // api does not accept float values yet[REMOVE]
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($orderItem->getPrice());
         $position->grossPricePerUnit = floatval($orderItem->getPriceInclTax());
         $position->netPositionTotal = round($floatQuantity * $position->netPricePerUnit, 2);
         $position->grossPositionTotal = round($floatQuantity * $position->grossPricePerUnit, 2);
+
         return $position;
     }
 
@@ -58,6 +58,7 @@ class BasketPositionDtoFactory
         $position->grossPricePerUnit = $discountAmount;
         $position->netPositionTotal = 0;
         $position->grossPositionTotal = $position->grossPricePerUnit;
+
         return $position;
     }
 
@@ -72,6 +73,7 @@ class BasketPositionDtoFactory
         $position->grossPricePerUnit = floatval($order->getShippingInclTax());
         $position->netPositionTotal = round($position->quantity * $position->netPricePerUnit, 2);
         $position->grossPositionTotal = round($position->quantity * $position->grossPricePerUnit, 2);
+
         return $position;
     }
 }

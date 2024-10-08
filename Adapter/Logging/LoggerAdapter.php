@@ -8,12 +8,11 @@ use Axytos\KaufAufRechnung\Logging\LoggerAdapter as LoggingLoggerAdapter;
 class LoggerAdapter implements LoggerAdapterInterface
 {
     /**
-     * @var \Axytos\KaufAufRechnung\Logging\LoggerAdapter
+     * @var LoggingLoggerAdapter
      */
     private $logger;
 
     /**
-     * @param LoggingLoggerAdapter $logger
      * @return void
      */
     public function __construct(LoggingLoggerAdapter $logger)
@@ -23,6 +22,7 @@ class LoggerAdapter implements LoggerAdapterInterface
 
     /**
      * @param string $message
+     *
      * @return void
      */
     public function error($message)
@@ -32,6 +32,7 @@ class LoggerAdapter implements LoggerAdapterInterface
 
     /**
      * @param string $message
+     *
      * @return void
      */
     public function warning($message)
@@ -41,6 +42,7 @@ class LoggerAdapter implements LoggerAdapterInterface
 
     /**
      * @param string $message
+     *
      * @return void
      */
     public function info($message)
@@ -50,6 +52,7 @@ class LoggerAdapter implements LoggerAdapterInterface
 
     /**
      * @param string $message
+     *
      * @return void
      */
     public function debug($message)

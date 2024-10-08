@@ -8,7 +8,7 @@ use Magento\Framework\DB\Adapter\AdapterInterface;
 class DatabaseTransaction implements DatabaseTransactionInterface
 {
     /**
-     * @var \Magento\Framework\DB\Adapter\AdapterInterface
+     * @var AdapterInterface
      */
     private $database;
 

@@ -12,7 +12,6 @@ trait ProductInformationAssertionTrait
 {
     /**
      * @param array<array{'item':OrderItemInterface|InvoiceItemInterface|CreditmemoItemInterface|ShipmentItemInterface, 'product':ProductInformationInterface}> $resolutions
-     * @return void
      */
     protected function assertUniqueProductSKUs(array $resolutions): void
     {
@@ -23,6 +22,6 @@ trait ProductInformationAssertionTrait
             return $product->getSku();
         }, $productInformations);
         $uniqueSkus = array_unique($skus);
-        $this->assertCount(count($skus), $uniqueSkus, "All SKUs should be unique, found: " . join(', ', $skus));
+        $this->assertCount(count($skus), $uniqueSkus, 'All SKUs should be unique, found: ' . join(', ', $skus));
     }
 }

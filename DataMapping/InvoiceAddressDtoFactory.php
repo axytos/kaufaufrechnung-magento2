@@ -28,6 +28,7 @@ class InvoiceAddressDtoFactory
         if (!is_null($street) && count($street) > 0) {
             $invoiceAddressDto->addressLine1 = current($street);
         }
+
         return $invoiceAddressDto;
     }
 }

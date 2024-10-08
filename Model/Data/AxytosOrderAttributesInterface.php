@@ -21,6 +21,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param int $id
+     *
      * @return void
      */
     public function setId($id);
@@ -31,7 +32,8 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
     public function getMagentoOrderEntityId();
 
     /**
-     * @param int|null  $magentoOrderEntityId
+     * @param int|null $magentoOrderEntityId
+     *
      * @return void
      */
     public function setMagentoOrderEntityId($magentoOrderEntityId);
@@ -43,6 +45,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param string|null $magentoOrderIncrementId
+     *
      * @return void
      */
     public function setMagentoOrderIncrementId($magentoOrderIncrementId);
@@ -54,6 +57,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param string $orderPreCheckResult
+     *
      * @return void
      */
     public function setOrderPreCheckResult($orderPreCheckResult);
@@ -65,6 +69,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param bool $shippingReported
+     *
      * @return void
      */
     public function setShippingReported($shippingReported);
@@ -76,6 +81,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param string|null $reportedTrackingCode
+     *
      * @return void
      */
     public function setReportedTrackingCode($reportedTrackingCode);
@@ -87,6 +93,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param string $orderBasketHash
+     *
      * @return void
      */
     public function setOrderBasketHash($orderBasketHash);
@@ -98,6 +105,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param string $orderState
+     *
      * @return void
      */
     public function setOrderState($orderState);
@@ -109,6 +117,7 @@ interface AxytosOrderAttributesInterface extends \Magento\Framework\Api\Extensib
 
     /**
      * @param string $orderStateData
+     *
      * @return void
      */
     public function setOrderStateData($orderStateData);

@@ -2,22 +2,19 @@
 
 namespace Axytos\KaufAufRechnung\Adapter;
 
-use Magento\Sales\Api\Data\OrderInterface;
-use Magento\Sales\Api\Data\ShipmentInterface;
 use Magento\Sales\Api\Data\CreditmemoInterface;
 use Magento\Sales\Api\Data\InvoiceInterface;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\Data\ShipmentInterface;
 use Magento\Sales\Model\Order;
 
 class MagentoSalesOrder
 {
     /**
-     * @var \Magento\Sales\Model\Order
+     * @var Order
      */
     private $order;
 
-    /**
-     * @param \Magento\Sales\Model\Order $order
-     */
     public function __construct(Order $order)
     {
         $this->order = $order;
@@ -38,14 +35,14 @@ class MagentoSalesOrder
     {
         $collection = $this->order->getShipmentsCollection();
 
-        if (is_null($collection) || $collection === false) {
+        if (is_null($collection) || false === $collection) {
             return null;
         }
 
         /** @var array<ShipmentInterface> */
         $items = array_values($collection->getItems());
 
-        if (count($items) === 0) {
+        if (0 === count($items)) {
             return null;
         }
 
@@ -59,14 +56,14 @@ class MagentoSalesOrder
     {
         $collection = $this->order->getCreditmemosCollection();
 
-        if (is_null($collection) || $collection === false) {
+        if (is_null($collection) || false === $collection) {
             return null;
         }
 
         /** @var array<CreditmemoInterface> */
         $items = array_values($collection->getItems());
 
-        if (count($items) === 0) {
+        if (0 === count($items)) {
             return null;
         }
 
@@ -80,14 +77,14 @@ class MagentoSalesOrder
     {
         $collection = $this->order->getInvoiceCollection();
 
-        if (is_null($collection) || $collection === false) {
+        if (is_null($collection) || false === $collection) {
             return null;
         }
 
         /** @var array<InvoiceInterface> */
         $items = array_values($collection->getItems());
 
-        if (count($items) === 0) {
+        if (0 === count($items)) {
             return null;
         }
 

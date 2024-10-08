@@ -11,7 +11,7 @@ use Magento\Sales\Model\Order;
 
 class PluginOrderFactory
 {
-        /**
+    /**
      * @var InvoiceOrderContextFactory
      */
     private $invoiceOrderContextFactory;
@@ -52,11 +52,13 @@ class PluginOrderFactory
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $order
+     *
      * @return \Axytos\KaufAufRechnung\Core\Plugin\Abstractions\PluginOrderInterface
      */
     public function create($order)
     {
         $magentoOrderInfo = $this->loadMagentoSalesOrder($order);
+
         return new PluginOrder(
             $magentoOrderInfo,
             $this->invoiceOrderContextFactory,
@@ -68,6 +70,7 @@ class PluginOrderFactory
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface[] $orders
+     *
      * @return \Axytos\KaufAufRechnung\Core\Plugin\Abstractions\PluginOrderInterface[]
      */
     public function createMany($orders)
@@ -77,6 +80,7 @@ class PluginOrderFactory
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $order
+     *
      * @return MagentoSalesOrder
      */
     private function loadMagentoSalesOrder($order)
@@ -91,7 +95,7 @@ class PluginOrderFactory
         /** @phpstan-ignore-next-line */
         $order = $this->orderRepository->get($order->getEntityId());
 
-        /** @var \Magento\Sales\Model\Order */
+        /** @var Order */
         $orderModel = $this->objectManager->create(Order::class);
         $orderModel = $orderModel->loadByIncrementId(strval($order->getIncrementId()));
 

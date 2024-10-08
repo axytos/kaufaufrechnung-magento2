@@ -14,11 +14,11 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 class CreateInvoiceBasketPositionDtoFactory
 {
     /**
-     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
+     * @var OrderItemRepositoryInterface
      */
     private $orderItemRepositoryInterface;
     /**
-     * @var \Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator
+     * @var ShippingPositionTaxPercentCalculator
      */
     private $shippingPositionTaxPercentCalculator;
 
@@ -40,12 +40,13 @@ class CreateInvoiceBasketPositionDtoFactory
         $position = new CreateInvoiceBasketPositionDto();
         $position->productId = $productInformation->getSku();
         $position->productName = $productInformation->getName();
-        $position->quantity = intval($floatQuantity); // api does not accept float values yet
+        $position->quantity = floatval($floatQuantity); // api does not accept float values yet
         $position->taxPercent = floatval($orderItem->getTaxPercent());
         $position->netPricePerUnit = floatval($invoiceItem->getPrice());
         $position->grossPricePerUnit = floatval($invoiceItem->getPriceInclTax());
         $position->netPositionTotal = round($floatQuantity * $position->netPricePerUnit, 2);
         $position->grossPositionTotal = round($floatQuantity * $position->grossPricePerUnit, 2);
+
         return $position;
     }
 
@@ -61,9 +62,10 @@ class CreateInvoiceBasketPositionDtoFactory
         $position->quantity = 1;
         $position->taxPercent = 0.0;
         $position->netPricePerUnit = 0;
-        $position->grossPricePerUnit = $discountAmount ;
+        $position->grossPricePerUnit = $discountAmount;
         $position->netPositionTotal = 0;
         $position->grossPositionTotal = $position->grossPricePerUnit;
+
         return $position;
     }
 
@@ -78,6 +80,7 @@ class CreateInvoiceBasketPositionDtoFactory
         $position->grossPricePerUnit = floatval($invoice->getShippingInclTax());
         $position->netPositionTotal = floatval($invoice->getShippingAmount());
         $position->grossPositionTotal = floatval($invoice->getShippingInclTax());
+
         return $position;
     }
 }

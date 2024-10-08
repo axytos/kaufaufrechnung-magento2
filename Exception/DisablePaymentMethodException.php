@@ -25,7 +25,7 @@ class DisablePaymentMethodException extends LocalizedException
      */
     public function getParameters()
     {
-        if ($this->paymentMethod !== '') {
+        if ('' !== $this->paymentMethod) {
             return ['paymentMethod' => $this->paymentMethod];
         }
 

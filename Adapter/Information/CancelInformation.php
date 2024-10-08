@@ -8,7 +8,7 @@ use Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Information\CancelInformatio
 class CancelInformation implements CancelInformationInterface
 {
     /**
-     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContext
+     * @var InvoiceOrderContext
      */
     private $invoiceOrderContext;
 

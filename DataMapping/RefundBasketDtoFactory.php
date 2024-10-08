@@ -10,11 +10,11 @@ use Magento\Sales\Api\Data\CreditmemoInterface;
 class RefundBasketDtoFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketPositionDtoCollectionFactory
+     * @var RefundBasketPositionDtoCollectionFactory
      */
     private $refundBasketPositionDtoCollectionFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketTaxGroupDtoCollectionFactory
+     * @var RefundBasketTaxGroupDtoCollectionFactory
      */
     private $refundBasketTaxGroupDtoCollectionFactory;
 
@@ -33,6 +33,7 @@ class RefundBasketDtoFactory
         $refundBasket->taxGroups = $this->refundBasketTaxGroupDtoCollectionFactory->create($creditmemo);
         $refundBasket->grossTotal = floatval($creditmemo->getGrandTotal());
         $refundBasket->netTotal = floatval($creditmemo->getGrandTotal()) - floatval($creditmemo->getTaxAmount());
+
         return $refundBasket;
     }
 }

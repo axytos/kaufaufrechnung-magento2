@@ -11,12 +11,12 @@ use Magento\Sales\Api\Data\InvoiceInterface;
 class CreateInvoiceBasketPositionDtoCollectionFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoFactory
+     * @var CreateInvoiceBasketPositionDtoFactory
      */
     private $createInvoiceBasketPositionDtoFactory;
 
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     * @var ProductVariantResolver
      */
     private $productVariantResolver;
 
@@ -37,6 +37,7 @@ class CreateInvoiceBasketPositionDtoCollectionFactory
             $invoiceItem = $itemResolution['item'];
             /** @var \Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface $productInfo */
             $productInfo = $itemResolution['product'];
+
             return $this->createInvoiceBasketPositionDtoFactory->create($invoiceItem, $productInfo);
         }, $productVariantResolution);
 
@@ -47,7 +48,7 @@ class CreateInvoiceBasketPositionDtoCollectionFactory
 
         $voucherPosition = $this->createInvoiceBasketPositionDtoFactory->createVoucherPosition($invoice);
         if (!is_null($voucherPosition)) {
-            if ($voucherPosition->grossPositionTotal !== 0.0) {
+            if (0.0 !== $voucherPosition->grossPositionTotal) {
                 array_push($positions, $voucherPosition);
             }
         }

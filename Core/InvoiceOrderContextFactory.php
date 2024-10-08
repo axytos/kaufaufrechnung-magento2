@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\Core;
 
 use Axytos\ECommerce\Clients\Invoice\InvoiceOrderContextInterface;
-use Axytos\KaufAufRechnung\Core\InvoiceOrderContext;
 use Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory;
 use Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory;
@@ -23,40 +22,40 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 class InvoiceOrderContextFactory
 {
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepositoryInterface;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CustomerDataDtoFactory
+     * @var CustomerDataDtoFactory
      */
     private $customerDataDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\InvoiceAddressDtoFactory
+     * @var InvoiceAddressDtoFactory
      */
     private $invoiceAddressDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\DeliveryAddressDtoFactory
+     * @var DeliveryAddressDtoFactory
      */
     private $deliveryAddressDtoFactoy;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\BasketDtoFactory
+     * @var BasketDtoFactory
      */
     private $basketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketDtoFactory
+     * @var RefundBasketDtoFactory
      */
     private $refundBasketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketDtoFactory
+     * @var CreateInvoiceBasketDtoFactory
      */
     private $createInvoiceBasketDtoFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoCollectionFactory
+     * @var ShippingBasketPositionDtoCollectionFactory
      */
     private $shippingBasketPositionDtoCollectionFactory;
 
     /**
-     * @var \Magento\Framework\Serialize\SerializerInterface
+     * @var SerializerInterface
      */
     private $serializer;
 
@@ -83,10 +82,6 @@ class InvoiceOrderContextFactory
     }
 
     /**
-     * @param OrderInterface $order
-     * @param null|ShipmentInterface $shipment
-     * @param null|CreditmemoInterface $creditmemo
-     * @param null|InvoiceInterface $invoice
      * @return \Axytos\ECommerce\Clients\Invoice\InvoiceOrderContextInterface&\Axytos\KaufAufRechnung\Core\InvoiceOrderContext
      */
     public function getInvoiceOrderContext(

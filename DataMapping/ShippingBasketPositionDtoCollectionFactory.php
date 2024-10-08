@@ -11,12 +11,12 @@ use Magento\Sales\Api\Data\ShipmentInterface;
 class ShippingBasketPositionDtoCollectionFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\ShippingBasketPositionDtoFactory
+     * @var ShippingBasketPositionDtoFactory
      */
     private $shippingBasketPositionDtoFactory;
 
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     * @var ProductVariantResolver
      */
     private $productVariantResolver;
 
@@ -37,6 +37,7 @@ class ShippingBasketPositionDtoCollectionFactory
             $shipmentItem = $itemResolution['item'];
             /** @var \Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface $productInfo */
             $productInfo = $itemResolution['product'];
+
             return $this->shippingBasketPositionDtoFactory->create($shipmentItem, $productInfo);
         }, $productVariantResolution);
 

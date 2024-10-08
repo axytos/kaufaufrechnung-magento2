@@ -10,11 +10,11 @@ use Magento\Sales\Api\Data\InvoiceInterface;
 class CreateInvoiceBasketDtoFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceBasketPositionDtoCollectionFactory
+     * @var CreateInvoiceBasketPositionDtoCollectionFactory
      */
     private $createInvoiceBasketPositionDtoCollectionFactory;
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\CreateInvoiceTaxGroupDtoCollectionFactory
+     * @var CreateInvoiceTaxGroupDtoCollectionFactory
      */
     private $createInvoiceTaxGroupDtoCollectionFactory;
 
@@ -33,6 +33,7 @@ class CreateInvoiceBasketDtoFactory
         $basket->taxGroups = $this->createInvoiceTaxGroupDtoCollectionFactory->create($invoice);
         $basket->grossTotal = floatval($invoice->getGrandTotal());
         $basket->netTotal = floatval($invoice->getGrandTotal()) - floatval($invoice->getTaxAmount());
+
         return $basket;
     }
 }

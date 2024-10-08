@@ -6,14 +6,12 @@ use Axytos\KaufAufRechnung\Core\InvoiceOrderContext;
 use Axytos\KaufAufRechnung\Core\Plugin\Abstractions\Information\PaymentInformationInterface;
 
 /**
- * payment callbacks are currently not a supported feature for magento
- *
- * @package Axytos\KaufAufRechnung\Adapter\Information
+ * payment callbacks are currently not a supported feature for magento.
  */
 class PaymentInformation implements PaymentInformationInterface
 {
     /**
-     * @var \Axytos\KaufAufRechnung\Core\InvoiceOrderContext
+     * @var InvoiceOrderContext
      */
     private $invoiceOrderContext;
 

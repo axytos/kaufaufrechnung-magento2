@@ -13,11 +13,11 @@ use Magento\Sales\Api\OrderItemRepositoryInterface;
 class RefundBasketTaxGroupDtoFactory
 {
     /**
-     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
+     * @var OrderItemRepositoryInterface
      */
     private $orderItemRepositoryInterface;
     /**
-     * @var \Axytos\KaufAufRechnung\ValueCalculation\ShippingPositionTaxPercentCalculator
+     * @var ShippingPositionTaxPercentCalculator
      */
     private $shippingPositionTaxPercentCalculator;
 

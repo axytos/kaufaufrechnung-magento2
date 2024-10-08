@@ -13,30 +13,26 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 class OrderSyncRepository implements OrderSyncRepositoryInterface
 {
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $orderRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Axytos\KaufAufRechnung\Adapter\PluginOrderFactory
+     * @var PluginOrderFactory
      */
     private $pluginOrderFactory;
 
     /**
-     * @var \Axytos\KaufAufRechnung\Model\Data\AxytosOrderAttributesLoader
+     * @var AxytosOrderAttributesLoader
      */
     private $axytosOrderAttributesLoader;
 
     /**
-     * @param OrderRepositoryInterface $orderRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param PluginOrderFactory $pluginOrderFactory
-     * @param AxytosOrderAttributesLoader $axytosOrderAttributesLoader
      * @return void
      */
     public function __construct(
@@ -52,9 +48,10 @@ class OrderSyncRepository implements OrderSyncRepositoryInterface
     }
 
     /**
-     * @param string[] $orderStates
-     * @param int|null $limit
+     * @param string[]    $orderStates
+     * @param int|null    $limit
      * @param string|null $startId
+     *
      * @return PluginOrderInterface[]
      */
     public function getOrdersByStates($orderStates, $limit = null, $startId = null)
@@ -64,28 +61,32 @@ class OrderSyncRepository implements OrderSyncRepositoryInterface
 
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter(OrderInterface::ENTITY_ID, $orderEntityIds, 'in')
-            ->create();
+            ->create()
+        ;
 
         $orderList = $this->orderRepository->getList($searchCriteria);
 
         $orders = $this->filterOrdersWithAxytosPaymentMethod($orderList->getItems());
+
         return $this->pluginOrderFactory->createMany($orders);
     }
 
     /**
      * @param string|int $orderNumber
+     *
      * @return PluginOrderInterface|null
      */
     public function getOrderByOrderNumber($orderNumber)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter(OrderInterface::INCREMENT_ID, strval($orderNumber))
-            ->create();
+            ->create()
+        ;
 
         $orderList = $this->orderRepository->getList($searchCriteria);
         $orders = $this->filterOrdersWithAxytosPaymentMethod($orderList->getItems());
 
-        if (count($orders) === 0) {
+        if (0 === count($orders)) {
             return null;
         }
 
@@ -94,6 +95,7 @@ class OrderSyncRepository implements OrderSyncRepositoryInterface
 
     /**
      * @param array<OrderInterface> $orders
+     *
      * @return array<OrderInterface>
      */
     private function filterOrdersWithAxytosPaymentMethod(array $orders): array
@@ -107,7 +109,7 @@ class OrderSyncRepository implements OrderSyncRepositoryInterface
         // - https://magento.stackexchange.com/a/323019
         return array_filter($orders, function (OrderInterface $order) {
             return !is_null($order->getPayment())
-                && $order->getPayment()->getMethod() === Constants::PAYMENT_METHOD_CODE;
+                && Constants::PAYMENT_METHOD_CODE === $order->getPayment()->getMethod();
         });
     }
 }

@@ -8,17 +8,14 @@ use Axytos\ECommerce\Clients\Invoice\PaymentStatus;
 use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
 use Axytos\KaufAufRechnung\Configuration\PluginConfiguration;
 use Axytos\KaufAufRechnung\Core\Plugin\Abstractions\OrderSyncRepositoryInterface;
-use Exception;
 use Magento\Framework\Webapi\Exception as WebapiException;
 use Magento\Framework\Webapi\Request as WebapiRequest;
 
 /**
  * Call: http://localhost/rest/V1/axytos/KaufAufRechnung/payment/123
- * Or Call: http://localhost/rest/[store_code]/V1/axytos/KaufAufRechnung/payment/123 -- CURRENTLY NOT SUPPORTED
+ * Or Call: http://localhost/rest/[store_code]/V1/axytos/KaufAufRechnung/payment/123 -- CURRENTLY NOT SUPPORTED.
  *
  * See: https://www.mageplaza.com/devdocs/magento-2-create-api/
- *
- * @package Axytos\KaufAufRechnung\Api
  */
 class PaymentController implements PaymentControllerInterface
 {
@@ -27,23 +24,23 @@ class PaymentController implements PaymentControllerInterface
      */
     private $request;
     /**
-     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     * @var PluginConfigurationValidator
      */
     private $pluginConfigurationValidator;
     /**
-     * @var \Axytos\KaufAufRechnung\Configuration\PluginConfiguration
+     * @var PluginConfiguration
      */
     private $pluginConfiguration;
     /**
-     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     * @var ErrorReportingClientInterface
      */
     private $errorReportingClient;
     /**
-     * @var \Axytos\ECommerce\Clients\Invoice\InvoiceClientInterface
+     * @var InvoiceClientInterface
      */
     private $invoiceClient;
     /**
-     * @var \Axytos\KaufAufRechnung\Core\Plugin\Abstractions\OrderSyncRepositoryInterface
+     * @var OrderSyncRepositoryInterface
      */
     private $orderSyncRepository;
 
@@ -67,8 +64,6 @@ class PaymentController implements PaymentControllerInterface
      * {@inheritDoc}
      *
      * Payment.
-     *
-     * @param string $paymentId
      */
     public function payment(string $paymentId)
     {
@@ -86,7 +81,7 @@ class PaymentController implements PaymentControllerInterface
             // rethrow WebapiException
             // because mangento sets http status codes via WebapiExceptions
             throw $webApiException;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->errorReportingClient->reportError($exception);
             throw new WebapiException(__(), 0, WebapiException::HTTP_INTERNAL_ERROR);
         }
@@ -113,9 +108,11 @@ class PaymentController implements PaymentControllerInterface
         switch ($invoiceOrderPaymentUpdate->paymentStatus) {
             case PaymentStatus::PAID:
                 $pluginOrder->saveHasBeenPaid();
+
                 return;
             case PaymentStatus::OVERPAID:
                 $pluginOrder->saveHasBeenPaid();
+
                 return;
         }
     }
