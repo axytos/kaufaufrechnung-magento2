@@ -11,12 +11,12 @@ use Magento\Sales\Api\Data\CreditmemoInterface;
 class RefundBasketPositionDtoCollectionFactory
 {
     /**
-     * @var \Axytos\KaufAufRechnung\DataMapping\RefundBasketPositionDtoFactory
+     * @var RefundBasketPositionDtoFactory
      */
     private $refundBasketPositionDtoFactory;
 
     /**
-     * @var \Axytos\KaufAufRechnung\ProductInformation\ProductVariantResolver
+     * @var ProductVariantResolver
      */
     private $productVariantResolver;
 
@@ -37,6 +37,7 @@ class RefundBasketPositionDtoCollectionFactory
             $creditmemoItem = $itemResolution['item'];
             /** @var \Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface $productInfo */
             $productInfo = $itemResolution['product'];
+
             return $this->refundBasketPositionDtoFactory->create($creditmemoItem, $productInfo);
         }, $productVariantResolution);
 

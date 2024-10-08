@@ -9,6 +9,9 @@ use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationAssert
 use Axytos\KaufAufRechnung\Test\Unit\ProductInformation\ProductInformationMockFactoryTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+/**
+ * @internal
+ */
 class ProductInformationValueMappingTest extends ProductInformationTestCase
 {
     use ProductInformationMockFactoryTrait;
@@ -16,7 +19,9 @@ class ProductInformationValueMappingTest extends ProductInformationTestCase
 
     /**
      * @dataProvider getProductTypeCodes
+     *
      * @param string $productTypeCode
+     *
      * @return void
      */
     #[DataProvider('getProductTypeCodes')]
@@ -34,18 +39,18 @@ class ProductInformationValueMappingTest extends ProductInformationTestCase
                 'getSku' => 'sku1',
                 'getName' => 'Product1',
                 'custom_attributes' => [
-                    'category_ids' => [2,3]
+                    'category_ids' => [2, 3],
                 ],
-                'getTypeId' => $productTypeCode
+                'getTypeId' => $productTypeCode,
             ],
             [
                 'getId' => 2,
                 'getSku' => 'sku2',
                 'getName' => 'Product2',
                 'custom_attributes' => [
-                    'category_ids' => [1,3]
+                    'category_ids' => [1, 3],
                 ],
-                'getTypeId' => $productTypeCode
+                'getTypeId' => $productTypeCode,
             ],
         ]);
 
@@ -70,7 +75,7 @@ class ProductInformationValueMappingTest extends ProductInformationTestCase
         $this->assertEquals('Product1', $actual->getName());
         $this->assertEquals('Category2;Category3', $actual->getCategory());
 
-        if ($productTypeCode === ProductTypeCodes::CONFIGURABLE) {
+        if (ProductTypeCodes::CONFIGURABLE === $productTypeCode) {
             $this->assertEquals(true, $actual->isConfigurable());
         } else {
             $this->assertEquals(false, $actual->isConfigurable());
@@ -82,7 +87,7 @@ class ProductInformationValueMappingTest extends ProductInformationTestCase
         $this->assertEquals('Product2', $actual->getName());
         $this->assertEquals('Category1;Category3', $actual->getCategory());
 
-        if ($productTypeCode === ProductTypeCodes::CONFIGURABLE) {
+        if (ProductTypeCodes::CONFIGURABLE === $productTypeCode) {
             $this->assertEquals(true, $actual->isConfigurable());
         } else {
             $this->assertEquals(false, $actual->isConfigurable());

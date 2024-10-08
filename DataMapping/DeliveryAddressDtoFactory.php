@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Axytos\KaufAufRechnung\DataMapping;
 
 use Axytos\ECommerce\DataTransferObjects\DeliveryAddressDto;
-use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderAddressInterface;
+use Magento\Sales\Api\Data\OrderInterface;
 
 class DeliveryAddressDtoFactory
 {
@@ -28,6 +28,7 @@ class DeliveryAddressDtoFactory
         if (!is_null($street) && count($street) > 0) {
             $deliveryAddressDto->addressLine1 = current($street);
         }
+
         return $deliveryAddressDto;
     }
 

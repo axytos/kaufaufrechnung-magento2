@@ -11,8 +11,9 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="api_host" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="api_host" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>API-Host</label>
+                    <source_model>Axytos\KaufAufRechnung\Model\Admin\ApiHostOptions</source_model>
                 </field>
                 <field id="api_key" translate="label" type="password" sortOrder="12" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>API-Key</label>
@@ -20,8 +21,7 @@
                 <field id="client_secret" translate="label" type="password" sortOrder="13" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Client Secret</label>
                 </field>
-                <field id="order_status_after_checkout" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="1"
-                       showInStore="0">
+                <field id="order_status_after_checkout" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Order State after Checkout</label>
                     <source_model>Axytos\KaufAufRechnung\Model\Admin\OrderStateAfterCheckoutDisplayOptions</source_model>
                 </field>

@@ -11,6 +11,9 @@ use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DecimalQuantityPositionsTest extends TestCase
 {
     /**
@@ -23,19 +26,19 @@ class DecimalQuantityPositionsTest extends TestCase
         $orderItem = $this->createMock(OrderItemInterface::class);
         $productInfo = $this->createMock(ProductInformationInterface::class);
 
-        $orderItem->method('getQtyOrdered')->willReturn(2);
+        $orderItem->method('getQtyOrdered')->willReturn(2.2);
         $orderItem->method('getTaxPercent')->willReturn(19.00);
         $orderItem->method('getPrice')->willReturn(10.00); // net price per unit
         $orderItem->method('getPriceInclTax')->willReturn(11.90); // gross price per unit
 
         $position = $sut->create($orderItem, $productInfo);
 
-        $this->assertEquals(2, $position->quantity); // api does not support decimal quantities yet
+        $this->assertEquals(2.2, $position->quantity); // api does not support decimal quantities yet [REMOVB]
         $this->assertEquals(19.00, $position->taxPercent);
         $this->assertEquals(10.00, $position->netPricePerUnit);
-        $this->assertEquals(20.00, $position->netPositionTotal);
+        $this->assertEquals(22.00, $position->netPositionTotal);
         $this->assertEquals(11.90, $position->grossPricePerUnit);
-        $this->assertEquals(23.80, $position->grossPositionTotal);
+        $this->assertEquals(26.18, $position->grossPositionTotal);
     }
 
     /**
@@ -55,7 +58,7 @@ class DecimalQuantityPositionsTest extends TestCase
 
         $position = $sut->create($orderItem, $productInfo);
 
-        $this->assertEquals(1, $position->quantity); // api does not support decimal quantities yet
+        $this->assertEquals(1.77, $position->quantity); // api does not support decimal quantities yet [REMOVE]
         $this->assertEquals(19.00, $position->taxPercent);
         $this->assertEquals(10.00, $position->netPricePerUnit);
         $this->assertEquals(17.70, $position->netPositionTotal);
@@ -119,7 +122,7 @@ class DecimalQuantityPositionsTest extends TestCase
 
         $position = $sut->create($invoiceItem, $productInfo);
 
-        $this->assertEquals(1, $position->quantity); // api does not support decimal quantities yet
+        $this->assertEquals(1.77, $position->quantity); // api does not support decimal quantities yet
         $this->assertEquals(19.00, $position->taxPercent);
         $this->assertEquals(10.00, $position->netPricePerUnit);
         $this->assertEquals(17.70, $position->netPositionTotal);

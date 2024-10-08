@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\ProductInformation;
 
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Model\Product\Type;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
@@ -19,15 +15,15 @@ use Magento\Sales\Api\Data\OrderItemInterface;
 class ProductInformationFactory
 {
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     * @var ProductRepositoryInterface
      */
     private $productRepository;
     /**
-     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
+     * @var CategoryRepositoryInterface
      */
     private $categoryRepository;
     /**
-     * @var \Magento\ConfigurableProduct\Pricing\Price\ConfigurableOptionsProviderInterface
+     * @var ConfigurableOptionsProviderInterface
      */
     private $configurableOptionsProvider;
 
@@ -41,10 +37,6 @@ class ProductInformationFactory
         $this->configurableOptionsProvider = $configurableOptionsProvider;
     }
 
-    /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @return null|\Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface
-     */
     public function createFromProduct(ProductInterface $product): ?ProductInformationInterface
     {
         return new ProductInformation(
@@ -56,8 +48,8 @@ class ProductInformationFactory
 
     /**
      * @param string|int|null $productId
-     * @return null|\Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     *
+     * @throws NoSuchEntityException
      */
     public function createFromProductId($productId): ?ProductInformationInterface
     {
@@ -66,13 +58,12 @@ class ProductInformationFactory
         }
         /** @var ProductInterface */
         $product = $this->productRepository->getById(intval($productId));
+
         return $this->createFromProduct($product);
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
-     * @return null|\Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function createFromOrderItem(OrderItemInterface $orderItem): ?ProductInformationInterface
     {
@@ -80,9 +71,9 @@ class ProductInformationFactory
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @return \Axytos\KaufAufRechnung\ProductInformation\ProductInformationInterface[]
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     *
+     * @throws NoSuchEntityException
      */
     public function createFromOrder(OrderInterface $order): array
     {
@@ -93,11 +84,11 @@ class ProductInformationFactory
                 array_push($productInformations, $productInformation);
             }
         }
+
         return $productInformations;
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return string[]
      */
     private function loadProductCategoryNames(ProductInterface $product): array
@@ -110,12 +101,11 @@ class ProductInformationFactory
                 array_push($categoryNames, $name);
             }
         }
+
         return $categoryNames;
     }
 
     /**
-     *
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return \Magento\Catalog\Api\Data\CategoryInterface[]
      */
     private function loadProductCategories(ProductInterface $product): array
@@ -133,11 +123,11 @@ class ProductInformationFactory
                 // skip
             }
         }
+
         return $categories;
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return array<mixed>
      */
     private function loadProductCategoryIds(ProductInterface $product): array
@@ -159,7 +149,6 @@ class ProductInformationFactory
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return \Magento\Catalog\Api\Data\ProductInterface[]
      */
     private function loadVariants(ProductInterface $product): array
@@ -168,6 +157,7 @@ class ProductInformationFactory
         if (is_null($variants)) {
             return [];
         }
+
         return $variants;
     }
 }

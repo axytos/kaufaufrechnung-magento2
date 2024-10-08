@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Axytos\KaufAufRechnung\Model\Ui;
 
-use Magento\Checkout\Model\ConfigProviderInterface;
 use Axytos\ECommerce\Clients\Checkout\CheckoutClientInterface;
 use Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface;
 use Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator;
 use Axytos\KaufAufRechnung\Model\Constants;
-use Exception;
+use Magento\Checkout\Model\ConfigProviderInterface;
 
 class CreditCheckInfoProvider implements ConfigProviderInterface
 {
     /**
-     * @var \Axytos\ECommerce\Clients\Invoice\PluginConfigurationValidator
+     * @var PluginConfigurationValidator
      */
     private $pluginConfigurationValidator;
     /**
-     * @var \Axytos\ECommerce\Clients\Checkout\CheckoutClientInterface
+     * @var CheckoutClientInterface
      */
     private $checkoutClientInterface;
     /**
-     * @var \Axytos\ECommerce\Clients\ErrorReporting\ErrorReportingClientInterface
+     * @var ErrorReportingClientInterface
      */
     private $errorReportingClient;
 
@@ -46,12 +45,12 @@ class CreditCheckInfoProvider implements ConfigProviderInterface
                 'creditCheckInfo' => [
                     Constants::PAYMENT_METHOD_CODE => [
                         'infoText' => [
-                            $this->getInfoText()
-                        ]
-                    ]
-                ]
+                            $this->getInfoText(),
+                        ],
+                    ],
+                ],
             ];
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->errorReportingClient->reportError($exception);
             throw $exception;
         }
@@ -60,7 +59,7 @@ class CreditCheckInfoProvider implements ConfigProviderInterface
     private function getInfoText(): string
     {
         if ($this->pluginConfigurationValidator->isInvalid()) {
-            return "";
+            return '';
         }
 
         return $this->checkoutClientInterface->getCreditCheckAgreementInfo();
