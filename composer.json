@@ -75,5 +75,5 @@
             "magento/composer-dependency-version-audit-plugin": true
         }
     },
-    "minimum-stability": "RC"
+    "minimum-stability": "stable"
 }
