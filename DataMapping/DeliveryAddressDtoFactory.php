@@ -28,6 +28,9 @@ class DeliveryAddressDtoFactory
         if (!is_null($street) && count($street) > 0) {
             $deliveryAddressDto->addressLine1 = current($street);
         }
+        if (!is_null($street) && count($street) > 1) {
+            $deliveryAddressDto->addressLine2 = $street[1];
+        }
 
         return $deliveryAddressDto;
     }
