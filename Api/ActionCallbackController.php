@@ -104,7 +104,7 @@ class ActionCallbackController implements ActionCallbackControllerInterface
      * @param int    $statusCode
      * @param string $data
      *
-     * @return never
+     * @return void
      */
     private function sendJsonResponse($statusCode, $data)
     {
@@ -113,7 +113,5 @@ class ActionCallbackController implements ActionCallbackControllerInterface
         $this->response->setMimeType('application/json');
         $this->response->setContent($data);
         $this->response->send();
-        // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
-        exit; // so setStatusCode will not be overwritten by magento, see: https://magento.stackexchange.com/a/283231
     }
 }
