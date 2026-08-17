@@ -247,6 +247,12 @@
 
     <type name="Axytos\KaufAufRechnung\Adapter\PluginOrderFactory"></type>
 
+    <type name="Axytos\KaufAufRechnung\Observer\SendInvoiceOnCreate">
+        <arguments>
+            <argument name="orderSyncWorker" xsi:type="object">Axytos\KaufAufRechnung\Core\OrderSyncWorker</argument>
+            <argument name="logger" xsi:type="object">Axytos_KaufAufRechnung_Logger</argument>
+        </arguments>
+    </type>
     <!-- ============================================================================================================================= -->
     <!-- ============================================================================================================================= -->
     <!-- ============================================================================================================================= -->

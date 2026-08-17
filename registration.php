@@ -1,5 +1,7 @@
 <?php
 
-use Magento\Framework\Component\ComponentRegistrar;
-
-ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Axytos_KaufAufRechnung', __DIR__);
+\Magento\Framework\Component\ComponentRegistrar::register(
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'Axytos_KaufAufRechnung',
+    __DIR__
+);
