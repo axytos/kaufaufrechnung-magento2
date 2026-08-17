@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="axytos_order_sync" 
+             instance="Axytos\KaufAufRechnung\Cron\SyncOrders" 
+             method="execute">
+            <!-- Alle 5 Minuten - anpassbar nach Bedarf -->
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>
