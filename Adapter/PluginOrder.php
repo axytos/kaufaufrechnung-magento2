@@ -385,4 +385,15 @@ class PluginOrder implements PluginOrderInterface
 
         return $this->hashCalculator->calculateBasketHash($basket);
     }
+
+    public function saveHasRefundReported(): void
+    {
+        // persist flag (db / order attribute / whatever OXID6 uses)
+    }
+
+    public function hasRefundReported(): bool
+    {
+        // read flag
+        return false;
+    }
 }

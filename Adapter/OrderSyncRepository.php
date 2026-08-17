@@ -51,10 +51,11 @@ class OrderSyncRepository implements OrderSyncRepositoryInterface
      * @param string[]    $orderStates
      * @param int|null    $limit
      * @param string|null $startId
+     * @param mixed|null  $cutoffDate
      *
      * @return PluginOrderInterface[]
      */
-    public function getOrdersByStates($orderStates, $limit = null, $startId = null)
+    public function getOrdersByStates($orderStates, $limit = null, $startId = null, $cutoffDate = null)
     {
         /** @var array<int> */
         $orderEntityIds = $this->axytosOrderAttributesLoader->getOrderEntityIdsByStates($orderStates, $limit, $startId);
